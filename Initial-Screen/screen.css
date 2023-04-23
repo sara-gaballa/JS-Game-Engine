@@ -1,0 +1,12 @@
+.home {
+    width: 100%;
+    height: 100%;
+    background: url("https://marketplace.canva.com/EAE98IQlC5E/1/0/1600w/canva-purple-simple-gaming-background-futuristic-game-zone-desktop-wallpaper-iC5A8PGB4t0.jpg") no-repeat center/ cover;
+
+}
+.game-item{
+    display: inline;
+    position: relative;
+    top: 200px;
+    padding-left: 30px;
+}
