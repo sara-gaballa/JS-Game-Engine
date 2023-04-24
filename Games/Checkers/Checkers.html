@@ -1,11 +1,28 @@
-<link rel="stylesheet" href="Checkers.css">
-  <iframe src="../../Game-Engine/draw.html" width="1000" height="740" style="border: none;" scrolling="no"></iframe>
-  <table id="board">
-    <script type="module">
-      import Checkers from "./checkers.js";
-      window.addEventListener("load", function() {
-        const game = new Checkers();
-        game.draw_board();
-      });
-    </script>
-</table>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Checkers</title>
+    <link rel="stylesheet" href="checkers.css">
+  </head>
+  <body>
+    <ul class="controls">
+      <li>
+        <label for="from-input">From:</label>
+        <input type="text" placeholder="from" id="from-input">
+      </li>
+      <li>
+        <label for="to-input">To:</label>
+        <input type="text" placeholder="to" id="to-input">
+      </li>
+      <li>
+        <button id="but">Connect</button>
+      </li>
+    </ul>
+
+    <table id="board"></table>
+
+    <iframe src="../../Game-Engine/draw.html" width="1000" height="740" style="border: none;" scrolling="no"></iframe>
+
+    <script type="module" src="./checkers.js"></script>
+  </body>
+</html>

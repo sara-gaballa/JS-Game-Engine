@@ -1,14 +1,59 @@
-table {
-    border-collapse: collapse;
-    position: absolute;
-    top: 100px;
-    left: 100px;
+* {
+    box-sizing: border-box;
+    z-index: 1; /* set a higher z-index value */
   }
   
-  td {
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  
+  }
+  
+  ul.controls {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  ul.controls li {
+    margin-right: 10px;
+  }
+  
+  ul.controls label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  ul.controls input {
+    font-size: 18px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  ul.controls button {
+    font-size: 18px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    cursor: pointer;
+  }
+  
+  table#board {
+    border-collapse: collapse;
+    margin: 0 auto;
+    border: 2px solid #444;
+  }
+  
+  table#board td {
     width: 50px;
     height: 50px;
-    border: 1px solid black;
+    border: 1px solid #444;
     text-align: center;
     vertical-align: middle;
     font-size: 30px;
@@ -17,23 +62,40 @@ table {
     background-color: white;
   }
   
-  td.black {
+  table#board td.black {
     background-color: #494949;
+ 
   }
   
-  .piece {
+  table#board .piece {
     width: 90%;
     height: 90%;
     border-radius: 50%;
     margin: auto;
     box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75);
+  
   }
   
-  .piece.red {
+  table#board .piece.red {
     background-color: black;
   }
   
-  .piece.white {
+  table#board .piece.white {
     background-color: white;
+  }
+  #board {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    z-index: 1; /* set a higher z-index value */
+  }
+  
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* set a lower z-index value */
   }
   

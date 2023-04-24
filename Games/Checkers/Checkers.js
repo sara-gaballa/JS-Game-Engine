@@ -28,5 +28,36 @@ export default class Checkers extends GameEngine {
           board.appendChild(row);
         }
       }
+      makeMove(from, to) {
+        const fromRow = parseInt(from.charAt(0));
+        const fromCol = from.charAt(1);
+        const toRow = parseInt(to.charAt(0));
+        const toCol = to.charAt(1);
+        console.log(`Moving from row ${fromRow}, column ${fromCol} to row ${toRow}, column ${toCol}`);
     
+        const fromCell = document.querySelector(`#board tr:nth-child(${fromRow}) td:nth-child(${fromCol.charCodeAt(0) - 96})`);
+        const toCell = document.querySelector(`#board tr:nth-child(${toRow}) td:nth-child(${toCol.charCodeAt(0) - 96})`);
+    
+        const piece = fromCell.querySelector(".piece");
+        if (piece) {
+            fromCell.removeChild(piece);
+            toCell.appendChild(piece);
+        }
+    }
+    
+    
+
+      init() {
+        this.draw_board();
+        const connectButton = document.getElementById("but");
+        connectButton.addEventListener("click", () => {
+          const fromInput = document.getElementById("from-input");
+          const toInput = document.getElementById("to-input");
+          const from = fromInput.value;
+          const to = toInput.value;
+          this.makeMove(from, to);
+        });
+      }
 }
+const game = new Checkers();
+game.init();

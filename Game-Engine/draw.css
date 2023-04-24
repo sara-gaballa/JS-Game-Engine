@@ -1,11 +1,30 @@
 #timer {
-    position: absolute;
-    top: 20px;
-    left: 50px;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  #game-img {
-    position: relative;
-  }
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 1; /* set a higher z-index value */
+}
+
+#game-img {
+  position: absolute;
+  z-index: 0; /* set a lower z-index value */
+}
+
+#board {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  z-index: 1; /* set a higher z-index value */
+}
+
+iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* set a lower z-index value */
+}
