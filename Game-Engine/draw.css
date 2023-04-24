@@ -1,0 +1,11 @@
+#timer {
+    position: absolute;
+    top: 20px;
+    left: 50px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  #game-img {
+    position: relative;
+  }

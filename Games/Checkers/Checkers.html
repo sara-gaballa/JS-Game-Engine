@@ -1,0 +1,11 @@
+<link rel="stylesheet" href="Checkers.css">
+  <iframe src="../../Game-Engine/draw.html" width="1000" height="740" style="border: none;" scrolling="no"></iframe>
+  <table id="board">
+    <script type="module">
+      import Checkers from "./checkers.js";
+      window.addEventListener("load", function() {
+        const game = new Checkers();
+        game.draw_board();
+      });
+    </script>
+</table>
