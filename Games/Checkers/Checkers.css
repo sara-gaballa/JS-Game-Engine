@@ -14,11 +14,11 @@ table {
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
-    background-color: #e6e6e6;
+    background-color: white;
   }
   
   td.black {
-    background-color: #7f7f7f;
+    background-color: #494949;
   }
   
   .piece {
@@ -30,10 +30,10 @@ table {
   }
   
   .piece.red {
-    background-color: red;
+    background-color: black;
   }
   
-  .piece.black {
-    background-color: black;
+  .piece.white {
+    background-color: white;
   }
   

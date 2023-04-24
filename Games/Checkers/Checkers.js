@@ -1,4 +1,4 @@
-import { GameEngine } from "../../Game-Engine/Engine-interface.js";
+import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 export default class Checkers extends GameEngine {
     constructor() {
         super([8, 8], ["red", "black"]);
