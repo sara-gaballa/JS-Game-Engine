@@ -59,6 +59,7 @@ export default class Checkers extends GameEngine {
           if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]){
             // this.makeMove(fromRow,fromCol,toRow,toCol);
             // remove the opponents' piece
+            console.log("Eating my oponent")
             this.grid[fromRow+1][fromCol-1] = 0;
             return true;
           }else{
@@ -69,6 +70,8 @@ export default class Checkers extends GameEngine {
         else if(this.grid[fromRow+1][fromCol+1] === 1 && (this.grid[fromRow+2][fromCol+2] === 0 || this.grid[fromRow+2][fromCol] === 0)){ // same as before
           if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol+2] || this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]){
             // this.makeMove(fromRow,fromCol,toRow,toCol);
+            console.log("Eating my oponent")
+            this.grid[fromRow+1][fromCol+1] = 0;
             return true;
           } else{
             alert('Invalid move. You can attack');
@@ -93,6 +96,7 @@ export default class Checkers extends GameEngine {
           // have the opportunity to attack
           if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
             // eat your opponent
+            console.log("Eating my oponent")
             this.grid[fromRow-1][fromCol-1] = 0;
             return true;
           }else{
@@ -103,6 +107,7 @@ export default class Checkers extends GameEngine {
         else if(this.grid[fromRow-1][fromCol+1] === -1 && (this.grid[fromRow-2][fromCol-2] === 0 || this.grid[fromRow-2][fromCol] === 0)){
           if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
             // eat your opponent
+            console.log("Eating my oponent")
             this.grid[fromRow-1][fromCol+1] = 0;
             return true;
           } else{
