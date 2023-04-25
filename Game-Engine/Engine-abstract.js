@@ -4,7 +4,7 @@ export class GameEngine {
       this.pieces = pieces;
       // this.board = Array.from({ length: boardSize[0] }, () => Array.from({ length: boardSize[1] }, () => null));
     }
-    drawBoard(){}
+    drawBoard(grid){}
     
     isValid(input){
       throw new Error("Method 'isValid()' must be implemented in each class.");
@@ -23,27 +23,33 @@ export class GameEngine {
     // }
     
     takeInputFromUser(){
+      console.log("In take input:in the game engine")
       // must be implemented
-      input = prompt("Enter a valid move:");
-      return input;
+      // return [fromRow,fromCol,toRow,toCol];
     }
-    play(input, game, turn){ // two players ==> overloading
-      whichPlayer(turn);
-      this.play(input,game);
-      reverseTurns(turn);
-    }
-    play(input, game){ // one player ==> overloading
-      while(!(this.isValid(input))){
-        console.log("Invalid move.\nPlease enter a valid move.");
-        input = takeInputFromUser();
+
+    play(input, grid, turn){ // two players ==> overloading
+      if(arguments.length === 3){
+        console.log("In play: 2 players of the game engine")
+        this.whichPlayer();
+        this.play(input,grid);
+        this.reverseTurns();
+      }else{ // 1 player
+        console.log("In play: 1 player of the game engine")
+        if(!(this.isValid(input))){
+          console.log("Invalid move.\nPlease enter a valid move.");
+          // input = this.takeInputFromUser();
+        }
+        console.log("After input")
+        let newState = this.makeMove(input);
+        this.drawBoard(newState);
       }
-      newState = this.makeMove();
-      this.drawBoard();
     }
-    whichPlayer(turn){
+
+    whichPlayer(){
       throw new Error("Method 'whichPlayer()' must be implemented in each class.");
     }
-    reverseTurns(turn){
+    reverseTurns(){
       throw new Error("Method 'reverseTurns()' must be implemented in each class.");
     } 
 }

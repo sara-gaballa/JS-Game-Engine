@@ -59,11 +59,11 @@
     font-size: 30px;
     font-weight: bold;
     cursor: pointer;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
   }
   
   table#board td.black {
-    background-color: #494949;
+    background-color: #525050;
  
   }
   
@@ -76,12 +76,12 @@
   
   }
   
-  table#board .piece.red {
-    background-color: black;
+  table#board .piece.black {
+    background-color: rgb(16, 13, 13);
   }
   
   table#board .piece.white {
-    background-color: white;
+    background-color: rgb(244, 222, 222);
   }
   #board {
     position: absolute;
