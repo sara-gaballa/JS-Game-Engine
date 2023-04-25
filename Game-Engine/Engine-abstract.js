@@ -36,10 +36,13 @@ export class GameEngine {
         this.reverseTurns();
       }else{ // 1 player
         console.log("In play: 1 player of the game engine")
-        if(!(this.isValid(input))){
+        while(!(this.isValid(input))){
           console.log("Invalid move.\nPlease enter a valid move.");
-          // input = this.takeInputFromUser();
+          input = this.takeInputFromUser();
         }
+        // else{
+        //   console.log("Valid move");
+        // }
         console.log("After input")
         let newState = this.makeMove(input);
         this.drawBoard(newState);

@@ -49,7 +49,6 @@ export default class Checkers extends GameEngine {
     }
     if(this.grid[fromRow][fromCol] === this.currentPlayer){
       if(this.grid[fromRow][fromCol] === -1){
-
         if((fromRow+2) < 0 || (fromRow+2) > 8 || (fromCol-2) < 0 || (fromCol-2) > 8) {
           console.log("In third")
           return false;
@@ -60,6 +59,7 @@ export default class Checkers extends GameEngine {
           if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]){
             // this.makeMove(fromRow,fromCol,toRow,toCol);
             // remove the opponents' piece
+            this.grid[fromRow+1][fromCol-1] = 0;
             return true;
           }else{
             alert('Invalid move. You can attack');
@@ -93,6 +93,7 @@ export default class Checkers extends GameEngine {
           // have the opportunity to attack
           if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
             // eat your opponent
+            this.grid[fromRow-1][fromCol-1] = 0;
             return true;
           }else{
             alert('Invalid move. You can attack');
@@ -102,6 +103,7 @@ export default class Checkers extends GameEngine {
         else if(this.grid[fromRow-1][fromCol+1] === -1 && (this.grid[fromRow-2][fromCol-2] === 0 || this.grid[fromRow-2][fromCol] === 0)){
           if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
             // eat your opponent
+            this.grid[fromRow-1][fromCol+1] = 0;
             return true;
           } else{
             alert('Invalid move. You can attack');
