@@ -6,6 +6,7 @@ if (game === 'Checkers') {
   window.location.href = "../Games/" + game + "/" + game +".html";
 } else if (game === 'chess') {
     console.log(game);
+    window.location.href = "../Games/" + game + "/" + game +".html";
 } else if (game === 'connectfour') {
     console.log(game);
 } else if (game === 'sudoku') {
