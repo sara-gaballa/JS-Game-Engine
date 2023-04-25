@@ -2,7 +2,7 @@ import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
 export default class Chess extends GameEngine {
     constructor(grid) {
-        super([8, 8], ["red", "black"]);
+        super([8, 8], []);
         this.currentPlayer = 0;
         this.grid = grid;
       }
@@ -116,10 +116,43 @@ export default class Chess extends GameEngine {
             }
             
         });
-        
-       
+    }
+    isValid(from, to){
+        const fromRow = parseInt(from.charAt(0)) - 1;
+        const fromCol = from.charAt(1).charCodeAt(0) - 65;
+        const toRow = parseInt(to.charAt(0)) - 1;
+        const toCol = to.charAt(1).charCodeAt(0) - 65;
+        var bool = false
+        console.log("from "+ fromRow+" col "+ fromCol)
+        if(this.grid[fromRow][fromCol] == "P"){//العسكري
+            if((toRow - fromRow == -1 && toCol == fromCol) ){
+                bool = true
+            }
+        }
+        if(bool){
+            this.grid[toRow][toCol] = this.grid[fromRow][fromCol];
+            this.grid[fromRow][fromCol] = 0;
+        }
+       return bool
     }
     
+    makeMove(from, to) {
+        console.log(this.grid);
+        if(from != undefined && to != undefined && this.isValid(from,to)){
+           this.drawboard();
+        }
+    }
+    init() {
+        this.drawboard();
+        const connectButton = document.getElementById("but");
+        connectButton.addEventListener("click", () => {
+          const fromInput = document.getElementById("from-input");
+          const toInput = document.getElementById("to-input");
+          const from = fromInput.value;
+          const to = toInput.value;
+          this.makeMove(from, to);
+        });
+      }
     
     
 }
@@ -134,4 +167,4 @@ var grid = [
     ["R", "Kn", "B", "Q", "K", "B", "Kn", "R"],
   ];
 const game = new Chess(grid);
-game.drawboard(); // call the drawboard() method to draw the board and pawn on the canvas
+game.init(); // call the drawboard() method to draw the board and pawn on the canvas

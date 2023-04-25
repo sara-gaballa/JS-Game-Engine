@@ -2,11 +2,23 @@
 <html>
   <head>
     <title>Chess</title>
+    <link rel="stylesheet" href="Chess.css">
   </head>
   <body>
     <canvas id="canvas1" width="700" height="700" style="position:absolute;"></canvas>
-    <canvas id="canvas2" width="600" height="600" style="position:absolute;"></canvas>
-
     <script type="module" src="./Chess.js"></script>
+    <ul class="controls">
+        <li>
+          <label for="from-input">From:</label>
+          <input type="text" placeholder="from" id="from-input">
+        </li>
+        <li>
+          <label for="to-input">To:</label>
+          <input type="text" placeholder="to" id="to-input">
+        </li>
+        <li>
+          <button id="but">Connect</button>
+        </li>
+      </ul>
   </body>
 </html>
