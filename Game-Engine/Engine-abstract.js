@@ -43,7 +43,7 @@ export class GameEngine {
         // else{
         //   console.log("Valid move");
         // }
-        console.log("After input")
+        console.log("After input in play")
         let newState = this.makeMove(input);
         this.drawBoard(newState);
       }

@@ -9,13 +9,28 @@ export default class Checkers extends GameEngine {
 
   drawBoard() {
     const board = document.getElementById("board");
+    let letters = "ABCDEFGH";
     board.innerHTML = ""; // clear the board before drawing the new board
     // draw board
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 9; i++) {
       const row = document.createElement("tr");
-      for (let j = 0; j < 8; j++) {
+      for (let j = -1; j < 8; j++) {
         const cell = document.createElement("td");
-        if ((i + j) % 2 === 0) {
+        if (j === -1) {
+          if(i === 8) {
+            cell.textContent = '';
+          }else
+            cell.textContent = i+1;//|| ''
+          row.appendChild(cell);
+          continue;
+        }
+        if (i === 8) {
+          cell.textContent = letters.charAt(j);
+          cell.classList.add('letter');
+          row.appendChild(cell);
+          continue;
+        }
+        if ((i + j) % 2 !== 0) {
           cell.className = "black";
         }
         const pieceValue = this.grid[i][j];
@@ -48,15 +63,15 @@ export default class Checkers extends GameEngine {
       return false;
     }
     if(this.grid[fromRow][fromCol] === this.currentPlayer){
-      if(this.grid[fromRow][fromCol] === -1){
+      if(this.grid[fromRow][fromCol] === 1){ // black
         if((fromRow+2) < 0 || (fromRow+2) > 8 || (fromCol-2) < 0 || (fromCol-2) > 8) {
           console.log("In third")
           return false;
         }
-        if(this.grid[fromRow+1][fromCol-1] === 1 && (this.grid[fromRow+2][fromCol-2] === 0 || this.grid[fromRow+2][fromCol] === 0)){ // 0 0 -1 0 0
-          // have the opportunity to attack                                                                                         // 0 1  0 1 0
+        else if(this.grid[fromRow+1][fromCol-1] === -1 && (this.grid[fromRow+2][fromCol-2] === 0 || this.grid[fromRow+2][fromCol] === 0)){ // 0 0 1 0 0
+          // have the opportunity to attack                                                                                         // 0 -1  0 -1 0
           //                                                                                                                        // 0 0  0 0 0
-          if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]){
+          if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol-2] ){//|| this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]
             // this.makeMove(fromRow,fromCol,toRow,toCol);
             // remove the opponents' piece
             console.log("Eating my oponent")
@@ -67,8 +82,8 @@ export default class Checkers extends GameEngine {
             return false;
           }
         }
-        else if(this.grid[fromRow+1][fromCol+1] === 1 && (this.grid[fromRow+2][fromCol+2] === 0 || this.grid[fromRow+2][fromCol] === 0)){ // same as before
-          if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol+2] || this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]){
+        else if(this.grid[fromRow+1][fromCol+1] === -1 && (this.grid[fromRow+2][fromCol+2] === 0 )){ // same as before //|| this.grid[fromRow+2][fromCol] === 0
+          if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol+2]){// || this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]
             // this.makeMove(fromRow,fromCol,toRow,toCol);
             console.log("Eating my oponent")
             this.grid[fromRow+1][fromCol+1] = 0;
@@ -78,10 +93,10 @@ export default class Checkers extends GameEngine {
             return false;
           }
         }
-        if(this.grid[toRow+1][toCol] === this.grid[fromRow+1][fromCol-1] || this.grid[fromRow+1][fromCol+1] === this.grid[toRow+1][toCol]){
+        else if(this.grid[toRow+1][toCol] === this.grid[fromRow+1][fromCol-1] || this.grid[fromRow+1][fromCol+1] === this.grid[toRow+1][toCol]){
           if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
             return true;
-          }else if(this.grid[toRow][toCol] === -1){// error
+          }else if(this.grid[toRow][toCol] === 1){// error
             alert("you can't eat your piece or bypass it");
             return false;
           }
@@ -91,12 +106,15 @@ export default class Checkers extends GameEngine {
           return false;
         }
       }
-      else if(this.grid[fromRow][fromCol] === 1){
-        if(this.grid[fromRow-1][fromCol-1] === -1 && (this.grid[fromRow-2][fromCol-2] === 0 || this.grid[fromRow-2][fromCol] === 0)){
+      else if(this.grid[fromRow][fromCol] === -1){ // white
+        console.log("Checking the validity: White player");
+        if(this.grid[fromRow-1][fromCol-1] === 1 && (this.grid[fromRow-2][fromCol-2] === 0 || this.grid[fromRow-2][fromCol] === 0)){
           // have the opportunity to attack
-          if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
+          console.log("White have the opp to attack");
+          // if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
+          if(toRow === fromRow-2 && toCol === fromCol-2){
             // eat your opponent
-            console.log("Eating my oponent")
+            console.log("Eating my oponent here")
             this.grid[fromRow-1][fromCol-1] = 0;
             return true;
           }else{
@@ -104,8 +122,10 @@ export default class Checkers extends GameEngine {
             return false;
           }
         }
-        else if(this.grid[fromRow-1][fromCol+1] === -1 && (this.grid[fromRow-2][fromCol-2] === 0 || this.grid[fromRow-2][fromCol] === 0)){
-          if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
+        // this.grid[fromRow-2][fromCol-2] === 0 || 
+        else if(this.grid[fromRow-1][fromCol+1] === 1 && (this.grid[fromRow-2][fromCol+2] === 0)){
+          console.log("White have the opp tp attack 2");
+          if(toRow === fromRow-2 && toCol === fromCol+2){
             // eat your opponent
             console.log("Eating my oponent")
             this.grid[fromRow-1][fromCol+1] = 0;
@@ -117,9 +137,12 @@ export default class Checkers extends GameEngine {
         }
         if(this.grid[toRow][toCol] === this.grid[fromRow-1][fromCol-1] || this.grid[toRow][toCol] === this.grid[fromRow-1][fromCol+1]){
           if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
+            console.log("VALID MOVE FOR WHITE");
+            console.log("The pieceeee: ",this.grid[fromRow-1][fromCol+1])
+            console.log("From row:", fromRow, ",formCol: " , fromCol);
             return true;
-          }else if(this.grid[toRow][toCol] === 1){// error
-            alert("you can't eat your piece or bypass it");
+          }else if(this.grid[toRow][toCol] === -1){// error
+            alert("You can't eat your piece or bypass it");
             return false;
           }
         }
@@ -133,7 +156,7 @@ export default class Checkers extends GameEngine {
         return false; 
       }
     }else{
-      console.log("not current player");
+      alert("Not current player's piece");
       return false;
     }
   }
@@ -152,7 +175,7 @@ export default class Checkers extends GameEngine {
     }
   
 
-    console.log(this.grid);
+    // console.log(this.grid);
     // this.drawBoard();
     return this.grid;
   }
@@ -162,25 +185,25 @@ export default class Checkers extends GameEngine {
     let fromCol = from?.charAt(1);
     let toRow = parseInt(to?.charAt(0));
     let toCol = to?.charAt(1);
-    console.log(`fromRow = ${fromRow} ,fromCol = ${fromCol} ,toRow = ${toRow} ,toCol = ${toCol}`);
-    console.log("returning from the takeInput");
+    // console.log(`fromRow = ${fromRow} ,fromCol = ${fromCol} ,toRow = ${toRow} ,toCol = ${toCol}`);
+    // console.log("returning from the takeInput");
     fromRow = fromRow-1;
     toRow = toRow-1;
     toCol = (toCol.charCodeAt(0) - 96) -1;
     fromCol = (fromCol.charCodeAt(0) - 96) -1;
+    // const fromInput = document.getElementById("from-input");
+    // const toInput = document.getElementById("to-input");
+    // fromInput.value = "";
+    // toInput.value = "";
     this.controller([fromRow,fromCol,toRow,toCol]);
   }
 
   controller(input){
-    console.log("In Controller");
+    // console.log("In Controller");
     // const input= this.takeInputFromUser();
-    console.log("I am here ")
-    console.log("input:",input,"grid:",this.grid,"parent:", this.currentPlayer)
+    // console.log("I am here ")
+    // console.log("input:",input,"grid:",this.grid,"parent:", this.currentPlayer)
     this.play(input,this.grid,this.currentPlayer);
-    // takes input from user
-    // isValid
-    // if isValid ==> makeMove, Next Player
-    // else userInput again, (same player)
   }
   whichPlayer(){
     return this.currentPlayer;
@@ -191,9 +214,10 @@ export default class Checkers extends GameEngine {
     }else{
       this.currentPlayer = 1;
     }
-    console.log("Current player:", this.currentPlayer);
+    console.log("Current player:", this.currentPlayer === -1?"white":"black");
   }
   init() {
+    console.log("Current player: ",this.currentPlayer === -1?"white":"black");
     this.drawBoard(this.grid);
     const connectButton = document.getElementById("but");
     connectButton.addEventListener("click", () => {
@@ -214,14 +238,15 @@ export default class Checkers extends GameEngine {
   }   
 }
 var grid = [
-  [-1, 0, -1, 0, -1, 0, -1, 0],
-  [0, -1, 0, -1, 0, -1, 0, -1],
-  [-1, 0, -1, 0, -1, 0, -1, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 1, 0, 1, 0, 1, 0, 1],
   [1, 0, 1, 0, 1, 0, 1, 0],
   [0, 1, 0, 1, 0, 1, 0, 1],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [-1, 0, -1, 0, -1, 0, -1, 0],
+  [0, -1, 0, -1, 0, -1, 0, -1],
+  [-1, 0, -1, 0, -1, 0, -1, 0]
 ];
+// -1 is white, 1 is black
 const game = new Checkers(grid);
 game.init();
