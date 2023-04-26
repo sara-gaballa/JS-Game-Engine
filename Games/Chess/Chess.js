@@ -120,9 +120,9 @@ export default class Chess extends GameEngine {
     pawnMove(fromRow, fromCol, toRow, toCol, color){
         var bool = false
         if(color == "black"){
-            if((toRow - fromRow == 1 && toCol == fromCol) || (fromRow == 1 && ((toRow - fromRow == 2 && toCol == fromCol))) && this.grid[7 - toRow][toCol] == 0){//if one move or first move is double celled 
+            if(((toRow - fromRow == 1 && toCol == fromCol) || (fromRow == 1 && ((toRow - fromRow == 2 && toCol == fromCol))))){//if one move or first move is double celled 
                 bool = true
-            }else if((toRow - fromRow == 1 &&  Math.abs(toCol - fromCol) == 1) && this.grid[7 - toRow][toCol] != 0 && this.grid[7 - toRow][toCol] == 0){//killing move
+            }else if(((toRow - fromRow == 1 &&  Math.abs(toCol - fromCol) == 1) && this.grid[7 - toRow][toCol] != 0 )&& this.grid[7 - toRow][toCol] == 0){//killing move
                 bool = true
             }
         }else {//white pawn
@@ -205,9 +205,16 @@ export default class Chess extends GameEngine {
         }
         return bool
     }
+    queenMove(fromRow, fromCol, toRow, toCol, color){
+        if(this.bishopMove(fromRow, fromCol, toRow, toCol, color) || this.rookMove(fromRow, fromCol, toRow, toCol, color)){
+            return true
+        }else{
+            return false
+        }
+    }
     isValid(fromRow, fromCol, toRow, toCol){
         console.log("fromR "+ fromRow+" fromcol "+ fromCol +"ftoR "+ toRow+" tocol "+ toCol)
-        if(fromRow != toRow && fromCol != toCol){
+        if((fromRow != toRow || fromCol != toCol) && (( this.grid[7 - toRow][toCol].toString().charAt(0)!= "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0 ) && ((this.grid[7 - toRow][toCol].toString().charAt(0)== "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0)))){
             if(this.grid[7 - fromRow][fromCol] == "P" && this.currentPlayer == 1){
                 return this.pawnMove(fromRow, fromCol, toRow, toCol, "black")
             }else if(this.grid[7 - fromRow][fromCol] == "-P" && this.currentPlayer == -1){
@@ -224,10 +231,14 @@ export default class Chess extends GameEngine {
                 return this.kingMove(fromRow, fromCol, toRow, toCol)
             }else if(this.grid[7 - fromRow][fromCol] == "-K" && this.currentPlayer == -1){
                 return this.kingMove(fromRow, fromCol, toRow, toCol)
-            } if(this.grid[7 - fromRow][fromCol] == "Kn" && this.currentPlayer == 1){
+            }else if(this.grid[7 - fromRow][fromCol] == "Kn" && this.currentPlayer == 1){
                 return this.knightMove(fromRow, fromCol, toRow, toCol, "black")
             }else if(this.grid[7 - fromRow][fromCol] == "-Kn" && this.currentPlayer == -1){
                return this.knightMove(fromRow, fromCol, toRow, toCol, "white")
+            }else if(this.grid[7 - fromRow][fromCol] == "Q" && this.currentPlayer == 1){
+                return this.queenMove(fromRow, fromCol, toRow, toCol)
+            }else if(this.grid[7 - fromRow][fromCol] == "-Q" && this.currentPlayer == -1){
+               return this.queenMove(fromRow, fromCol, toRow, toCol)
             }
         }else{
             return false
@@ -271,9 +282,9 @@ var grid = [
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, "P", 0, 0, 0, 0, "P"],
-    ["R", "Kn", "B", 0, "K", 0, "Kn", "R"],
+    [0, 0, 0, 0, 0, 0, 0, "P"],
+    [0, 0, "P", 0, 0, 0, 0, 0],
+    ["R", "Kn", "B", 0, "K", "Q", "Kn", "R"],
   ];
 const game = new Chess(grid);
 game.init(); // call the drawboard() method to draw the board and pawn on the canvas
