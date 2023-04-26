@@ -120,9 +120,9 @@ export default class Chess extends GameEngine {
     pawnMove(fromRow, fromCol, toRow, toCol, color){
         var bool = false
         if(color == "black"){
-            if((toRow - fromRow == 1 && toCol == fromCol) || (fromRow == 1 && ((toRow - fromRow == 2 && toCol == fromCol)))){//if one move or first move is double celled 
+            if((toRow - fromRow == 1 && toCol == fromCol) || (fromRow == 1 && ((toRow - fromRow == 2 && toCol == fromCol))) && this.grid[7 - toRow][toCol] == 0){//if one move or first move is double celled 
                 bool = true
-            }else if((toRow - fromRow == 1 &&  Math.abs(toCol - fromCol) == 1) && this.grid[7 - toRow][toCol] != 0){//killing move
+            }else if((toRow - fromRow == 1 &&  Math.abs(toCol - fromCol) == 1) && this.grid[7 - toRow][toCol] != 0 && this.grid[7 - toRow][toCol] == 0){//killing move
                 bool = true
             }
         }else {//white pawn
@@ -134,19 +134,105 @@ export default class Chess extends GameEngine {
         }
         return bool
     }
-    rookMove(fromRow, fromCol, toRow, toCol, color){
-        var bool = false
-        
-        return bool
+    rookMove(fromRow, fromCol, toRow, toCol){
+        if(toRow - fromRow != 0 && toCol == fromCol) {//vertical move
+            if(toRow > fromRow){
+                for (let i = 7 - fromRow - 1; i > 7 - toRow; i--) {//check there is not a piece on the way
+                    console.log(i)
+                    if(this.grid[i][toCol] != 0) return false
+                }
+                return true
+            }else {
+                for (let i = 7 - fromRow + 1; i < 7 - toRow; i++) {//check there is not a piece on the way
+                    if(this.grid[i][toCol] != 0) return false
+                }
+                return true
+            }
+        }else if(toRow == fromRow  && toCol - fromCol != 0){//horizontal move
+            if(toCol > fromCol){
+                for (let i = fromCol + 1; i < toCol; i++) {//check there is not a piece on the way
+                    if(this.grid[fromRow][i] != 0) return false
+                }
+                return true
+            }else {
+                for (let i = toCol ; i < fromCol ; i++) {//check there is not a piece on the way
+                    if(this.grid[fromRow][i] != 0) return false
+                }
+                return true
+            }
+        }
+        return false
     }
 
-    isValid(fromRow, fromCol, toRow, toCol){
-        console.log("from "+ fromRow+" col "+ fromCol)
-        if(this.grid[7 - fromRow][fromCol] == "P" && this.currentPlayer == 1){
-            return this.pawnMove(fromRow, fromCol, toRow, toCol, "black")
-        }else if(this.grid[7 - fromRow][fromCol] == "-P" && this.currentPlayer == -1){
-           return this.pawnMove(fromRow, fromCol, toRow, toCol, "white")
+    bishopMove(fromRow, fromCol, toRow, toCol){
+        if(Math.abs(toCol - fromCol) != Math.abs(toRow - fromRow)) return false
+        let xDiff = 7 - toRow > 7 - fromRow ? 1 : -1;
+        let yDiff = fromCol > toCol ? -1 : 1;
+        let x = 7 - fromRow + xDiff;
+        let y = fromCol + yDiff;
+        
+        // If the path is not empty, return false
+        while (x != 7 - toRow && y != toCol) {
+            if (this.grid[x][y] !== 0) {
+                return false;
+            }
+            x += xDiff;
+            y += yDiff;
         }
+        return true
+    }  
+
+    kingMove(fromRow, fromCol, toRow, toCol){
+       if( Math.abs(fromRow - toRow) == 1 && Math.abs(fromCol - toCol) == 1 || Math.abs(fromRow - toRow) == 0 && Math.abs(fromCol - toCol) == 1 || Math.abs(fromRow - toRow) == 1 && Math.abs(fromCol - toCol) == 0) return true
+        else return false
+    }       
+    knightMove(fromRow, fromCol, toRow, toCol, color){
+        var bool = false;
+        if(color == "black"){
+            if(toRow >= 8 || toCol >= 8 || toRow < 0 || toCol < 0) bool = false;
+            if((toCol == fromCol - 2 && (toRow == fromRow - 1 || toRow == fromRow + 1)) || (toCol == fromCol + 2 && (toRow == fromRow - 1 || toRow == fromRow + 1)) || (toRow == fromRow - 2 && (toCol == fromCol - 1 || toCol == fromCol + 1)) || (toRow == fromRow + 2 && (toCol == fromCol - 1 || toCol == fromCol + 1))){
+                if(this.grid[7 - toRow][toCol].toString().charAt(0)== "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0){
+                    bool = true;
+                }else bool = false;
+            }
+        }else {//white knight
+            if(toRow >= 8 || toCol >= 8 || toRow < 0 || toCol < 0) bool = false;
+            if((toCol == fromCol - 2 && (toRow == fromRow - 1 || toRow == fromRow + 1)) || (toCol == fromCol + 2 && (toRow == fromRow - 1 || toRow == fromRow + 1)) || (toRow == fromRow - 2 && (toCol == fromCol - 1 || toCol == fromCol + 1)) || (toRow == fromRow + 2 && (toCol == fromCol - 1 || toCol == fromCol + 1))){
+                if(this.grid[7 - toRow][toCol].toString().charAt(0)!= "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0){
+                    bool = true;
+                }else bool = false;
+            }
+        }
+        return bool
+    }
+    isValid(fromRow, fromCol, toRow, toCol){
+        console.log("fromR "+ fromRow+" fromcol "+ fromCol +"ftoR "+ toRow+" tocol "+ toCol)
+        if(fromRow != toRow && fromCol != toCol){
+            if(this.grid[7 - fromRow][fromCol] == "P" && this.currentPlayer == 1){
+                return this.pawnMove(fromRow, fromCol, toRow, toCol, "black")
+            }else if(this.grid[7 - fromRow][fromCol] == "-P" && this.currentPlayer == -1){
+               return this.pawnMove(fromRow, fromCol, toRow, toCol, "white")
+            }else if(this.grid[7 - fromRow][fromCol] == "R" && this.currentPlayer == 1){
+                return this.rookMove(fromRow, fromCol, toRow, toCol)
+            }else if(this.grid[7 - fromRow][fromCol] == "-R" && this.currentPlayer == -1){
+                return this.rookMove(fromRow, fromCol, toRow, toCol)
+            }else if(this.grid[7 - fromRow][fromCol] == "B" && this.currentPlayer == 1){
+                return this.bishopMove(fromRow, fromCol, toRow, toCol)
+            }else if(this.grid[7 - fromRow][fromCol] == "-B" && this.currentPlayer == -1){
+                return this.bishopMove(fromRow, fromCol, toRow, toCol)
+            }else if(this.grid[7 - fromRow][fromCol] == "K" && this.currentPlayer == 1){
+                return this.kingMove(fromRow, fromCol, toRow, toCol)
+            }else if(this.grid[7 - fromRow][fromCol] == "-K" && this.currentPlayer == -1){
+                return this.kingMove(fromRow, fromCol, toRow, toCol)
+            } if(this.grid[7 - fromRow][fromCol] == "Kn" && this.currentPlayer == 1){
+                return this.knightMove(fromRow, fromCol, toRow, toCol, "black")
+            }else if(this.grid[7 - fromRow][fromCol] == "-Kn" && this.currentPlayer == -1){
+               return this.knightMove(fromRow, fromCol, toRow, toCol, "white")
+            }
+        }else{
+            return false
+        }
+        
 
     }
     
@@ -181,13 +267,13 @@ export default class Chess extends GameEngine {
 }
 var grid = [
     ["-R", "-Kn", "-B", "-Q", "-K", "-B", "-Kn", "-R"],
-    ["-P", "-P", "-P", "-P", "-P", "-P", "-P", "-P"],
+    [0, 0, "-P", "-P", "-P", "-P", "-P", "-P"],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    ["P", "P", "P", "P", "P", "P", "P", "P"],
-    ["R", "Kn", "B", "Q", "K", "B", "Kn", "R"],
+    [0, 0, "P", 0, 0, 0, 0, "P"],
+    ["R", "Kn", "B", 0, "K", 0, "Kn", "R"],
   ];
 const game = new Chess(grid);
 game.init(); // call the drawboard() method to draw the board and pawn on the canvas
