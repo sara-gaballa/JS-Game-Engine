@@ -3,7 +3,7 @@ import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 export default class Chess extends GameEngine {
     constructor(grid) {
         super([8, 8], []);
-        this.currentPlayer = 0;
+        this.currentPlayer = 1;//black
         this.grid = grid;
       }
     drawBoard(){
@@ -30,7 +30,7 @@ export default class Chess extends GameEngine {
                // Add numbers and letters to the top cells
         ctx.font = "bold 15px Arial";
         ctx.fillStyle = "#000";
-        const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
+        const letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
         for (let i = 0; i < 8; i++) {
             const x = i * CELL_SIZE + 30 + CELL_SIZE / 2 - 10;
             const y1 = 20;
@@ -41,7 +41,7 @@ export default class Chess extends GameEngine {
 
         ctx.font = "bold 15px Arial";
         ctx.fillStyle = "#000";
-        const num = ["1", "2", "3", "4", "5", "6", "7", "8"];
+        const num = [ "8", "7", "6", "5", "4", "3", "2", "1"];
         for (let i = 0; i < 8; i++) {
             const y = i * CELL_SIZE + 30 + CELL_SIZE / 2 + 12;
             const x1 = 20;
@@ -117,29 +117,48 @@ export default class Chess extends GameEngine {
             
         });
     }
-    isValid(from, to){
-        const fromRow = parseInt(from.charAt(0)) - 1;
-        const fromCol = from.charAt(1).charCodeAt(0) - 65;
-        const toRow = parseInt(to.charAt(0)) - 1;
-        const toCol = to.charAt(1).charCodeAt(0) - 65;
+    pawnMove(fromRow, fromCol, toRow, toCol, color){
         var bool = false
-        console.log("from "+ fromRow+" col "+ fromCol)
-        if(this.grid[fromRow][fromCol] == "P"){//العسكري
-            if((toRow - fromRow == -1 && toCol == fromCol) ){
+        if(color == "black"){
+            if((toRow - fromRow == 1 && toCol == fromCol) || (fromRow == 1 && ((toRow - fromRow == 2 && toCol == fromCol)))){//if one move or first move is double celled 
+                bool = true
+            }else if((toRow - fromRow == 1 &&  Math.abs(toCol - fromCol) == 1) && this.grid[7 - toRow][toCol] != 0){//killing move
+                bool = true
+            }
+        }else {//white pawn
+            if((toRow - fromRow == -1 && toCol == fromCol) || (fromRow == 6 && ((toRow - fromRow == -2 && toCol == fromCol)))){//if one move or first move is double celled 
+                bool = true
+            }else if((toRow - fromRow == -1 &&  Math.abs(toCol - fromCol) == 1) && this.grid[7 - toRow][toCol] != 0){//killing move
                 bool = true
             }
         }
-        if(bool){
-            this.grid[toRow][toCol] = this.grid[fromRow][fromCol];
-            this.grid[fromRow][fromCol] = 0;
+        return bool
+    }
+    rookMove(fromRow, fromCol, toRow, toCol, color){
+        var bool = false
+        
+        return bool
+    }
+
+    isValid(fromRow, fromCol, toRow, toCol){
+        console.log("from "+ fromRow+" col "+ fromCol)
+        if(this.grid[7 - fromRow][fromCol] == "P" && this.currentPlayer == 1){
+            return this.pawnMove(fromRow, fromCol, toRow, toCol, "black")
+        }else if(this.grid[7 - fromRow][fromCol] == "-P" && this.currentPlayer == -1){
+           return this.pawnMove(fromRow, fromCol, toRow, toCol, "white")
         }
-       return bool
+
     }
     
-    makeMove(from, to) {
+    makeMove(fromRow, fromCol, toRow, toCol) {
         console.log(this.grid);
-        if(from != undefined && to != undefined && this.isValid(from,to)){
-           this.drawBoard();
+        if(fromRow != undefined && fromCol!= undefined && toRow != undefined && toCol != undefined && this.isValid(fromRow, fromCol, toRow, toCol)){
+            this.currentPlayer = -1 * this.currentPlayer
+            this.grid[7 - toRow][toCol] = this.grid[7 - fromRow][fromCol];
+            this.grid[7 - fromRow][fromCol] = 0;
+            this.drawBoard();
+        }else{
+            alert("Invalid move")
         }
     }
     init() {
@@ -150,7 +169,11 @@ export default class Chess extends GameEngine {
           const toInput = document.getElementById("to-input");
           const from = fromInput.value;
           const to = toInput.value;
-          this.makeMove(from, to);
+          const fromRow = parseInt(from.charAt(0)) - 1;
+          const fromCol = from.charAt(1).charCodeAt(0) - 97;
+          const toRow = parseInt(to.charAt(0)) - 1;
+          const toCol = to.charAt(1).charCodeAt(0) - 97;
+          this.makeMove(fromRow, fromCol, toRow, toCol);
         });
       }
     

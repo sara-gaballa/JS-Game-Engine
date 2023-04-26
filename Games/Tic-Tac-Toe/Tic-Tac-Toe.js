@@ -51,6 +51,11 @@ export default class TicTacToe extends GameEngine {
     }
     
     isValid(toRow,toCol){
+      const toInt = parseInt(toRow, 10);
+      if (!Number.isInteger(toInt)) {
+        
+        return false;
+      }
         if(toRow > 2 || toCol >2)  return false;
         if(this.grid[toRow][toCol]!=0){
             //full 
