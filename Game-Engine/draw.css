@@ -10,6 +10,16 @@
 
 #game-img {
   position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, rgba(198, 159, 228, 0.85), rgba(98, 147, 239, 0.85)), url("https://wallpapercave.com/wp/KSnFrMw.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   z-index: 0; /* set a lower z-index value */
 }
 

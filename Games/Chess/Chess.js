@@ -6,7 +6,7 @@ export default class Chess extends GameEngine {
         this.currentPlayer = 0;
         this.grid = grid;
       }
-    drawboard(){
+    drawBoard(){
         const canvas = document.getElementById("canvas1");
         const ctx = canvas.getContext("2d");
     
@@ -14,7 +14,7 @@ export default class Chess extends GameEngine {
         const BOARD_SIZE = CELL_SIZE * 8;
     
         ctx.fillStyle = "#FFF";
-        ctx.fillRect(50, 50, BOARD_SIZE, BOARD_SIZE);
+        ctx.fillRect(30, 30, BOARD_SIZE, BOARD_SIZE);
     
         // Draw the background cells
         for (let i = 0; i < 8; i++) {
@@ -24,7 +24,7 @@ export default class Chess extends GameEngine {
                 } else {
                     ctx.fillStyle = "#666666";
                 }
-                ctx.fillRect(i * CELL_SIZE + 50, j * CELL_SIZE + 50, CELL_SIZE, CELL_SIZE);
+                ctx.fillRect(i * CELL_SIZE + 30, j * CELL_SIZE + 30, CELL_SIZE, CELL_SIZE);
             }
         }
                // Add numbers and letters to the top cells
@@ -32,9 +32,9 @@ export default class Chess extends GameEngine {
         ctx.fillStyle = "#000";
         const letters = ["A", "B", "C", "D", "E", "F", "G", "H"];
         for (let i = 0; i < 8; i++) {
-            const x = i * CELL_SIZE + 50 + CELL_SIZE / 2 - 10;
-            const y1 = 40;
-            const y2 = BOARD_SIZE + 50  + 26;
+            const x = i * CELL_SIZE + 30 + CELL_SIZE / 2 - 10;
+            const y1 = 20;
+            const y2 = BOARD_SIZE + 20  + 26;
             ctx.fillText(letters[i], x , y1);
             ctx.fillText(letters[i], x, y2);
         }
@@ -43,9 +43,9 @@ export default class Chess extends GameEngine {
         ctx.fillStyle = "#000";
         const num = ["1", "2", "3", "4", "5", "6", "7", "8"];
         for (let i = 0; i < 8; i++) {
-            const y = i * CELL_SIZE + 50 + CELL_SIZE / 2 + 12;
-            const x1 = 30;
-            const x2 = BOARD_SIZE +50 + 5;
+            const y = i * CELL_SIZE + 30 + CELL_SIZE / 2 + 12;
+            const x1 = 20;
+            const x2 = BOARD_SIZE +30 + 5;
             ctx.fillText(num[i], x1, y);
             ctx.fillText(num[i], x2, y);
         }
@@ -85,31 +85,31 @@ export default class Chess extends GameEngine {
                     for (let j = 0; j < 8; j++) {
                         if(this.grid[i][j][0] == "-"){
                             if(this.grid[i][j] == "-P"){
-                                ctx.drawImage(IMAGES.pawn2, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.pawn2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "-R"){
-                                ctx.drawImage(IMAGES.rook2, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.rook2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "-Kn"){
-                                ctx.drawImage(IMAGES.Knight2, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.Knight2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "-B"){
-                                ctx.drawImage(IMAGES.Bishop2, j * CELL_SIZE + 40, i * CELL_SIZE + 40, 85, 85);
+                                ctx.drawImage(IMAGES.Bishop2, j * CELL_SIZE + 20, i * CELL_SIZE + 20, 85, 85);
                             }else if(this.grid[i][j] == "-Q"){
-                                ctx.drawImage(IMAGES.Queen2, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.Queen2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "-K"){
-                                ctx.drawImage(IMAGES.King2, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.King2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }
                         }else{
                             if(this.grid[i][j] == "P"){
-                                ctx.drawImage(IMAGES.pawn1, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.pawn1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "R"){
-                                ctx.drawImage(IMAGES.rook1, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.rook1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "Kn"){
-                                ctx.drawImage(IMAGES.Knight1, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.Knight1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "B"){
-                                ctx.drawImage(IMAGES.Bishop1, j * CELL_SIZE + 40, i * CELL_SIZE + 40, 85, 85);
+                                ctx.drawImage(IMAGES.Bishop1, j * CELL_SIZE + 20, i * CELL_SIZE + 20, 85, 85);
                             }else if(this.grid[i][j] == "Q"){
-                                ctx.drawImage(IMAGES.Queen1, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.Queen1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "K"){
-                                ctx.drawImage(IMAGES.King1, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 75, 75);
+                                ctx.drawImage(IMAGES.King1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }
                       }
                 }
@@ -139,11 +139,11 @@ export default class Chess extends GameEngine {
     makeMove(from, to) {
         console.log(this.grid);
         if(from != undefined && to != undefined && this.isValid(from,to)){
-           this.drawboard();
+           this.drawBoard();
         }
     }
     init() {
-        this.drawboard();
+        this.drawBoard();
         const connectButton = document.getElementById("but");
         connectButton.addEventListener("click", () => {
           const fromInput = document.getElementById("from-input");
