@@ -2,95 +2,141 @@ import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
 export default class EightQueens extends GameEngine {
   constructor(grid) {
-    super([6, 7], ["red", "yellow"]);
+    super([9, 8], ["red", "yellow"]);
     this.grid = grid;
   }
 
-  drawBoard(){
-    const board = document.getElementById("board");
-    board.innerHTML = ""; // clear the board before drawing the new board
+  drawBoard() {
+    const canvas = document.getElementById("canvas1");
+    const ctx = canvas.getContext("2d");
+  
+    const CELL_SIZE = 55;
+    const BOARD_SIZE = CELL_SIZE * 8;
+  
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  
+    ctx.fillStyle = "#FFF";
+    ctx.fillRect(50, 50, BOARD_SIZE, BOARD_SIZE);
+  
+    // Draw the background cells
     for (let i = 0; i < 8; i++) {
-      const row = document.createElement("tr");
       for (let j = 0; j < 8; j++) {
-        const cell = document.createElement("td");
         if ((i + j) % 2 === 0) {
-          cell.className = "black";
-          const pieceValue = this.grid[i][j];
-          if (pieceValue === 1) {
-            const piece = document.createElement("div");
-            piece.className = "piece red";
-            cell.appendChild(piece);
-          } 
+          ctx.fillStyle = "#EEE";
+        } else {
+          ctx.fillStyle = "#000000";
         }
-        row.appendChild(cell);
+        ctx.fillRect(i * CELL_SIZE + 50, j * CELL_SIZE + 50, CELL_SIZE, CELL_SIZE);
       }
-      board.appendChild(row);
     }
-    const board2 = document.getElementById("board2");
-    board2.innerHTML = ""; // clear the board before drawing the new board
-
-    for (let i = 0; i < 1; i++) {
-      const row = document.createElement("tr");
-
-      for (let j = 0; j < 8; j++) {
-        const cell = document.createElement("td");
-        const img = document.createElement("img");
-
-        // Set the image source to the path of your image file
-        img.src = "https://cdn-icons-png.flaticon.com/512/4880/4880372.png";
-
-        // Add any additional attributes to the image element as needed
-        img.setAttribute("alt", "Description of the image");
-
-        // Add the image element to the cell
-        cell.appendChild(img);
-
-        // Add any additional styling to the cell element as needed
-        cell.style.border = "1px solid black";
-
-        // Add the cell element to the row
-        row.appendChild(cell);
+  
+    // Add numbers and letters to the top cells
+    ctx.font = "bold 15px Arial";
+    ctx.fillStyle = "#000";
+  
+    const num = ["0", "1", "2", "3", "4", "5", "6", "7"];
+    for (let i = 0; i < 8; i++) {
+      const y = i * CELL_SIZE + 50 + CELL_SIZE / 2 + 12;
+      const x1 = 30;
+      const x2 = BOARD_SIZE + 50 + 5;
+      ctx.fillText(num[i], x1, y);
+      ctx.fillText(num[i], x2, y);
+    }
+  
+    // Load the image and draw it on the canvas when it has finished loading
+    const img = new Image();
+    img.src = "https://cdn-icons-png.flaticon.com/512/4880/4880372.png";
+    img.onload = function() {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 8; j++) {
+          if (this.grid[i][j] == 1) {
+            ctx.drawImage(img, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 55, 55);
+          }
+        }
       }
-      board2.appendChild(row);
-    }
+    }.bind(this);
   }
+  
+  
 
-      makeMove(col) {
-        console.log("col: "+col);
-        if(this.isValid(col)){
-            let row = -1;
-            for(let i = 5;i>=0;i--){
-                if(this.grid[i][col]==0){
-                    row = i;
-                    break;
-                }
-            }
-            this.grid[row][col] = this.currentPlayer;
-            this.whichPlayer(this.currentPlayer);
+      makeMove(queen,to) {
+        const queenInt = queen.charCodeAt(0) - 97;
+        if(this.isValid(queenInt,to)){
+          console.log("to: "+to );
+          console.log("queen: " +queenInt);
+          this.grid[to][queenInt]=1;
+          this.grid[8][queenInt]=0;
+          console.log(this.grid);
+          this.drawBoard();
         } else{
+            console.log("invalid move");
             alert("invalid move");
         }
-        console.log(this.grid);
-        this.drawBoard();
+        
     }
-    
-    isValid(col){
-        if(this.grid[0][col]!=0){
-            //full 
+    isValid(queen,to){
+      const toInt = parseInt(to, 10);
+      if (!Number.isInteger(toInt)) {
+        
+        return false;
+      }
+      if(queen < 0 || queen > 7 || to < 0 || to > 7){
+        
+        return false;
+      }
+      else {
+        for(let i = 0 ;i < 8;i++ ){
+          if(grid[to][i]==1){
+            
             return false;
-        } else {
-            return true;
+          }
         }
-    }
+        for(let j = 0 ;j < 8 ;j++){
+          if(grid[j][queen]==1){
+            
+            return false;
+          }
+        }
+        let i = to;
+        for(let j = queen ;j >= 0 && i >=0; j-- ){
+          if(grid[i][j]==1){
+            
+            return false;
+          }else i--;
+        }
+        let k = to;
+        for(let j = queen ;j < 8 && k != 8; j++ ){
+          if(grid[k][j]==1){
+            console.log("here?");
+            return false;
+          }else k++;
+        }
+        let l = to;
+        for(let j = queen ;j >= 0 && l != 8; j-- ){
+          if(grid[l][j]==1){
+            return false;
+          }else l++;
+        }
+        let p = to;
+        for(let j = queen ;j < 8 && p >= 0; j++ ){
+          if(grid[p][j]==1){
+            return false;
+          }else p--;
+        }
+      }
+     return true;
+  }
     
     
       init() {
         this.drawBoard();
         const connectButton = document.getElementById("but");
         connectButton.addEventListener("click", () => {
+          const queenInput = document.getElementById("from-input");
           const toInput = document.getElementById("to-input");
-          const col = toInput.value;
-          this.makeMove(col);
+          const queen =queenInput.value;
+          const to = toInput.value;
+          this.makeMove(queen,to);
         });
       }
       
@@ -103,7 +149,9 @@ var grid = [
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0]
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 1, 1, 1]
+  
 ];
 const game = new EightQueens(grid);
 game.init();

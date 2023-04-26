@@ -11,6 +11,10 @@
         <input type="text" placeholder="to" id="to-input">
       </li>
       <li>
+        <label for="from-input">Queen letter:</label>
+        <input type="text" placeholder="from" id="from-input">
+      </li>
+      <li>
         <button id="but">Connect</button>
       </li>
     </ul>
@@ -24,18 +28,7 @@
       <li>g</li>
       <li>h</li>
   </ul>
-  <ul class="col-letters">
-      <li>0</li>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-  </ul>
-    <table id="board"></table>
-    <table id="board2"></table>
+  <canvas id="canvas1" width="700" height="700" style="position:absolute;"></canvas>
     <iframe src="../../Game-Engine/draw.html" width="1000" height="740" style="border: none;" scrolling="no"></iframe>
     <script type="module" src="./Eight-Queens.js"></script>
   </body>

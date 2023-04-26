@@ -48,11 +48,12 @@ export default class Connect4 extends GameEngine {
             }
             this.grid[row][col] = this.currentPlayer;
             this.whichPlayer(this.currentPlayer);
+            console.log(this.grid);
+            this.drawBoard();
         } else{
             alert("invalid move");
         }
-        console.log(this.grid);
-        this.drawBoard();
+        
     }
     
     isValid(col){
