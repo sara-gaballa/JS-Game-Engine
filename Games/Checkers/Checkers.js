@@ -97,13 +97,13 @@ export default class Checkers extends GameEngine {
     if(this.currentPlayer === -1){
       sign = -1;
     }
-    if(this.grid[toRow][toCol] === this.grid[fromRow+1*sign][fromCol-1*sign] || this.grid[fromRow+1*sign][fromCol+1*sign] === this.grid[toRow][toCol]){
+    if((toRow ===fromRow+1*sign && toCol === fromCol-1*sign) || (fromRow+1*sign === toRow && fromCol+1*sign== toCol)){
       if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
         return true;
       }else if(this.grid[toRow][toCol] !== 0){// error
         return false;
       }
-    }
+    }return false;
   }
   
   // TODO isValid
@@ -133,6 +133,7 @@ export default class Checkers extends GameEngine {
       }
       else if(rightSide === 2 || rightSide === 0){ //this is a valid path but user didn't choose it
         let leftSide = this.check_grand_left(fromRow,fromCol,toRow,toCol);
+        console.log("LeftSide = ", leftSide);
         if(leftSide === 1){
           return true;
         }else if(leftSide === 2){
@@ -140,6 +141,7 @@ export default class Checkers extends GameEngine {
           return false;
         }else if(leftSide ===  0){
           if(this.check_move(fromRow,fromCol,toRow,toCol)){
+            console.log("I am here in check_move");
             return true;
           }else{
             alert("Invalid move!!");
@@ -262,6 +264,8 @@ export default class Checkers extends GameEngine {
     }else{
       this.currentPlayer = 1;
     }
+    const curPlayer = document.getElementById("currPlayer");
+    curPlayer.value = this.currentPlayer === -1?"White":"Black"
     console.log("Current player:", this.currentPlayer === -1?"white":"black");
   }
   init() {
@@ -283,6 +287,8 @@ export default class Checkers extends GameEngine {
     // let to = arr[1];
     // console.log(`from = ${from}, to = ${to}`)
     // this.makeMove(from, to);
+    const curPlayer = document.getElementById("currPlayer");
+    curPlayer.value = this.currentPlayer === -1?"White":"Black"
   }   
 }
 var grid = [
