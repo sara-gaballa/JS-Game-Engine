@@ -34,15 +34,12 @@ export class GameEngine {
         this.whichPlayer();
         this.play(input,grid);
         this.reverseTurns();
-      }else{ // 1 player
+      }else{ // 1 player ==> overloading
         console.log("In play: 1 player of the game engine")
         while(!(this.isValid(input))){
           console.log("Invalid move.\nPlease enter a valid move.");
           input = this.takeInputFromUser();
         }
-        // else{
-        //   console.log("Valid move");
-        // }
         console.log("After input in play")
         let newState = this.makeMove(input);
         this.drawBoard(newState);

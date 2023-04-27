@@ -48,6 +48,64 @@ export default class Checkers extends GameEngine {
       board.appendChild(row);
     }
   }
+
+  check_grand_right(fromRow,fromCol,toRow,toCol){// method to check if you can eat your opponent if right grand parent is empty
+    let sign = 1;
+    if(this.currentPlayer === -1){
+      sign = -1;
+    }
+    if((fromCol+2) < 0 || (fromCol+2) > 8) {
+      console.log("In third1")
+      return 0;
+    }
+    console.log("this.grid[fromRow+1*sign][fromCol+1] = ",this.grid[fromRow+1*sign][fromCol+1]);
+    
+    if(this.grid[fromRow+1*sign][fromCol+1] === -1*sign && (this.grid[fromRow+2*sign][fromCol+2] === 0)){ // same as before //|| this.grid[fromRow+2][fromCol] === 0
+      if(toRow === fromRow+2*sign && toCol === fromCol+2){
+        console.log("Eating my oponent");
+        this.grid[fromRow+1*sign][fromCol+1] = 0;
+        return 1;
+      } else{
+        console.log("User didn't input this path in grand_right");
+        return 2;
+      }
+    }return 0; //means that  there is nothing to eat
+  }
+  check_grand_left(fromRow,fromCol,toRow,toCol){
+    let sign = 1;
+    if(this.currentPlayer === -1){
+      sign = -1;
+    }
+    if((fromCol-2) < 0 || (fromCol-2) > 8) {
+      console.log("In third2")
+      return 0;
+    }
+    if(this.grid[fromRow+1*sign][fromCol-1] === -1*sign && this.grid[fromRow+2*sign][fromCol-2] === 0){ // same as before //|| this.grid[fromRow+2][fromCol] === 0
+      if(toRow === fromRow+2*sign && toCol === fromCol-2){
+        console.log("Eating my oponent")
+        this.grid[fromRow+1*sign][fromCol-1] = 0;
+        return 1;
+      } else{
+        console.log("User didn't input this path in grand_left");
+        return 2;
+      }
+    }return 0; //means that  there is nothing to eat
+  }
+
+  check_move(fromRow,fromCol,toRow,toCol){
+    let sign = 1;
+    if(this.currentPlayer === -1){
+      sign = -1;
+    }
+    if(this.grid[toRow][toCol] === this.grid[fromRow+1*sign][fromCol-1*sign] || this.grid[fromRow+1*sign][fromCol+1*sign] === this.grid[toRow][toCol]){
+      if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
+        return true;
+      }else if(this.grid[toRow][toCol] !== 0){// error
+        return false;
+      }
+    }
+  }
+  
   // TODO isValid
   isValid(input){
     console.log("In isValid:in checkers")
@@ -58,108 +116,97 @@ export default class Checkers extends GameEngine {
       console.log("In first")
       return false;
     }
+    if(fromRow == NaN ||fromCol == NaN || toRow == NaN || toCol == NaN) {
+      console.log("In first2")
+      return false;
+    }
     if(fromRow < 0 || fromRow > 8 || fromCol < 0 || fromCol > 8 || toRow < 0 || toRow > 8 || toCol < 0 || toCol > 8) {
       console.log("In second")
       return false;
     }
     if(this.grid[fromRow][fromCol] === this.currentPlayer){
-      if(this.grid[fromRow][fromCol] === 1){ // black
-        if((fromRow+2) < 0 || (fromRow+2) > 8 || (fromCol-2) < 0 || (fromCol-2) > 8) {
-          console.log("In third")
+      let rightSide = this.check_grand_right(fromRow,fromCol,toRow,toCol);
+      console.log("rightSide = ", rightSide);
+      if(rightSide === 1){
+        console.log("rightSide === 1")
+        return true;
+      }
+      else if(rightSide === 2 || rightSide === 0){ //this is a valid path but user didn't choose it
+        let leftSide = this.check_grand_left(fromRow,fromCol,toRow,toCol);
+        if(leftSide === 1){
+          return true;
+        }else if(leftSide === 2){
+          alert("You can attack!");
           return false;
-        }
-        else if(this.grid[fromRow+1][fromCol-1] === -1 && (this.grid[fromRow+2][fromCol-2] === 0 || this.grid[fromRow+2][fromCol] === 0)){ // 0 0 1 0 0
-          // have the opportunity to attack                                                                                         // 0 -1  0 -1 0
-          //                                                                                                                        // 0 0  0 0 0
-          if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol-2] ){//|| this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]
-            // this.makeMove(fromRow,fromCol,toRow,toCol);
-            // remove the opponents' piece
-            console.log("Eating my oponent")
-            this.grid[fromRow+1][fromCol-1] = 0;
+        }else if(leftSide ===  0){
+          if(this.check_move(fromRow,fromCol,toRow,toCol)){
             return true;
           }else{
-            alert('Invalid move. You can attack');
+            alert("Invalid move!!");
             return false;
           }
         }
-        else if(this.grid[fromRow+1][fromCol+1] === -1 && (this.grid[fromRow+2][fromCol+2] === 0 )){ // same as before //|| this.grid[fromRow+2][fromCol] === 0
-          if(this.grid[toRow][toCol] === this.grid[fromRow+2][fromCol+2]){// || this.grid[toRow][toCol] ===  this.grid[fromRow+2][fromCol]
-            // this.makeMove(fromRow,fromCol,toRow,toCol);
-            console.log("Eating my oponent")
-            this.grid[fromRow+1][fromCol+1] = 0;
-            return true;
-          } else{
-            alert('Invalid move. You can attack');
-            return false;
-          }
-        }
-        else if(this.grid[toRow+1][toCol] === this.grid[fromRow+1][fromCol-1] || this.grid[fromRow+1][fromCol+1] === this.grid[toRow+1][toCol]){
-          if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
-            return true;
-          }else if(this.grid[toRow][toCol] === 1){// error
-            alert("you can't eat your piece or bypass it");
-            return false;
-          }
-        }
-        else{
-          alert("Invalid move");
-          return false;
-        }
-      }
-      else if(this.grid[fromRow][fromCol] === -1){ // white
-        console.log("Checking the validity: White player");
-        if(this.grid[fromRow-1][fromCol-1] === 1 && (this.grid[fromRow-2][fromCol-2] === 0 || this.grid[fromRow-2][fromCol] === 0)){
-          // have the opportunity to attack
-          console.log("White have the opp to attack");
-          // if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
-          if(toRow === fromRow-2 && toCol === fromCol-2){
-            // eat your opponent
-            console.log("Eating my oponent here")
-            this.grid[fromRow-1][fromCol-1] = 0;
-            return true;
-          }else{
-            alert('Invalid move. You can attack');
-            return false;
-          }
-        }
-        // this.grid[fromRow-2][fromCol-2] === 0 || 
-        else if(this.grid[fromRow-1][fromCol+1] === 1 && (this.grid[fromRow-2][fromCol+2] === 0)){
-          console.log("White have the opp tp attack 2");
-          if(toRow === fromRow-2 && toCol === fromCol+2){
-            // eat your opponent
-            console.log("Eating my oponent")
-            this.grid[fromRow-1][fromCol+1] = 0;
-            return true;
-          } else{
-            alert('Invalid move. You can attack');
-            return false;
-          }
-        }
-        if(this.grid[toRow][toCol] === this.grid[fromRow-1][fromCol-1] || this.grid[toRow][toCol] === this.grid[fromRow-1][fromCol+1]){
-          if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
-            console.log("VALID MOVE FOR WHITE");
-            console.log("The pieceeee: ",this.grid[fromRow-1][fromCol+1])
-            console.log("From row:", fromRow, ",formCol: " , fromCol);
-            return true;
-          }else if(this.grid[toRow][toCol] === -1){// error
-            alert("You can't eat your piece or bypass it");
-            return false;
-          }
-        }
-        else{
-          alert("Invalid move");
-          return false;
-        }
-      }
-      else if(this.grid[fromRow][fromCol] === 0){
-        alert("Invalid move");
-        return false; 
       }
     }else{
       alert("Not current player's piece");
+      console.log("Current player:", this.currentPlayer)
       return false;
-    }
+    }      
+    //   else if(this.grid[fromRow][fromCol] === -1){ // white
+    //     console.log("Checking the validity: White player");
+    //     if(this.grid[fromRow-1][fromCol-1] === 1 && (this.grid[fromRow-2][fromCol-2] === 0 || this.grid[fromRow-2][fromCol] === 0)){
+    //       // have the opportunity to attack
+    //       console.log("White have the opp to attack");
+    //       // if(this.grid[toRow][toCol] === this.grid[fromRow-2][fromCol-2] || this.grid[toRow][toCol] ===  this.grid[fromRow-2][fromCol]){
+    //       if(toRow === fromRow-2 && toCol === fromCol-2){
+    //         // eat your opponent
+    //         console.log("Eating my oponent here")
+    //         this.grid[fromRow-1][fromCol-1] = 0;
+    //         return true;
+    //       }else{
+    //         alert('Invalid move. You can attack');
+    //         return false;
+    //       }
+    //     }
+    //     // this.grid[fromRow-2][fromCol-2] === 0 || 
+    //     else if(this.grid[fromRow-1][fromCol+1] === 1 && (this.grid[fromRow-2][fromCol+2] === 0)){
+    //       console.log("White have the opp tp attack 2");
+    //       if(toRow === fromRow-2 && toCol === fromCol+2){
+    //         // eat your opponent
+    //         console.log("Eating my oponent")
+    //         this.grid[fromRow-1][fromCol+1] = 0;
+    //         return true;
+    //       } else{
+    //         alert('Invalid move. You can attack');
+    //         return false;
+    //       }
+    //     }
+    //     if(this.grid[toRow][toCol] === this.grid[fromRow-1][fromCol-1] || this.grid[toRow][toCol] === this.grid[fromRow-1][fromCol+1]){
+    //       if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
+    //         console.log("VALID MOVE FOR WHITE");
+    //         console.log("The pieceeee: ",this.grid[fromRow-1][fromCol+1])
+    //         console.log("From row:", fromRow, ",formCol: " , fromCol);
+    //         return true;
+    //       }else if(this.grid[toRow][toCol] === -1){// error
+    //         alert("You can't eat your piece or bypass it");
+    //         return false;
+    //       }
+    //     }
+    //     else{
+    //       alert("Invalid move");
+    //       return false;
+    //     }
+    //   }
+    //   else if(this.grid[fromRow][fromCol] === 0){
+    //     alert("Invalid move");
+    //     return false; 
+    //   }
+    // }else{
+    //   alert("Not current player's piece");
+    //   return false;
+    // }
   }
+
   // takeInputFromUser
   // play
   // whichPlayer
@@ -183,18 +230,19 @@ export default class Checkers extends GameEngine {
   takeInputFromUser(from,to) {
     let fromRow = parseInt(from?.charAt(0));
     let fromCol = from?.charAt(1);
+    // while(fromRow === undefined || fromCol === undefined);
     let toRow = parseInt(to?.charAt(0));
     let toCol = to?.charAt(1);
     // console.log(`fromRow = ${fromRow} ,fromCol = ${fromCol} ,toRow = ${toRow} ,toCol = ${toCol}`);
     // console.log("returning from the takeInput");
     fromRow = fromRow-1;
     toRow = toRow-1;
-    toCol = (toCol.charCodeAt(0) - 96) -1;
-    fromCol = (fromCol.charCodeAt(0) - 96) -1;
-    // const fromInput = document.getElementById("from-input");
-    // const toInput = document.getElementById("to-input");
-    // fromInput.value = "";
-    // toInput.value = "";
+    toCol = (toCol?.charCodeAt(0) - 96) -1;
+    fromCol = (fromCol?.charCodeAt(0) - 96) -1;
+    const fromInput = document.getElementById("from-input");
+    const toInput = document.getElementById("to-input");
+    fromInput.value = "";
+    toInput.value = "";
     this.controller([fromRow,fromCol,toRow,toCol]);
   }
 
