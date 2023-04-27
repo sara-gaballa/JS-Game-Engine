@@ -23,9 +23,7 @@ export class GameEngine {
     // }
     
     takeInputFromUser(){
-      console.log("In take input:in the game engine")
-      // must be implemented
-      // return [fromRow,fromCol,toRow,toCol];
+      throw new Error("Method 'takeInputFromUser()' must be implemented in each class.");
     }
 
     play(input, grid, turn){ // two players ==> overloading
