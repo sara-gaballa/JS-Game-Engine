@@ -66,19 +66,19 @@ export default class Chess extends GameEngine {
             // add more images here
           };
           
-          IMAGES.pawn1.src = "https://cdn-icons-png.flaticon.com/512/657/657487.png";
-          IMAGES.rook1.src = "https://cdn-icons-png.flaticon.com/512/1626/1626883.png";
-          IMAGES.Knight1.src = "https://cdn-icons-png.flaticon.com/512/3612/3612777.png";
-          IMAGES.Bishop1.src = "https://cdn-icons-png.flaticon.com/512/5077/5077021.png";
-          IMAGES.Queen1.src = "https://cdn-icons-png.flaticon.com/512/658/658098.png";
-          IMAGES.King1.src = "https://cdn-icons-png.flaticon.com/512/3522/3522646.png";
+          IMAGES.pawn1.src = "https://upload.wikimedia.org/wikipedia/commons/c/c7/Chess_pdt45.svg";
+          IMAGES.rook1.src = "https://upload.wikimedia.org/wikipedia/commons/f/ff/Chess_rdt45.svg";
+          IMAGES.Knight1.src = "https://upload.wikimedia.org/wikipedia/commons/e/ef/Chess_ndt45.svg";
+          IMAGES.Bishop1.src = "https://upload.wikimedia.org/wikipedia/commons/9/98/Chess_bdt45.svg";
+          IMAGES.Queen1.src = "https://upload.wikimedia.org/wikipedia/commons/4/47/Chess_qdt45.svg";
+          IMAGES.King1.src = "https://upload.wikimedia.org/wikipedia/commons/f/f0/Chess_kdt45.svg";
 
-          IMAGES.pawn2.src = "https://cdn-icons-png.flaticon.com/512/657/657588.png";
-          IMAGES.rook2.src = "https://cdn-icons-png.flaticon.com/512/1626/1626848.png";
-          IMAGES.Knight2.src = "https://cdn-icons-png.flaticon.com/512/3610/3610829.png";
-          IMAGES.Bishop2.src = "https://cdn-icons-png.flaticon.com/512/5077/5077028.png";
-          IMAGES.Queen2.src = "https://cdn-icons-png.flaticon.com/512/657/657997.png";
-          IMAGES.King2.src = "https://cdn-icons-png.flaticon.com/512/3522/3522656.png";
+          IMAGES.pawn2.src = "https://upload.wikimedia.org/wikipedia/commons/4/45/Chess_plt45.svg";
+          IMAGES.rook2.src = "https://upload.wikimedia.org/wikipedia/commons/7/72/Chess_rlt45.svg";
+          IMAGES.Knight2.src = "https://upload.wikimedia.org/wikipedia/commons/7/70/Chess_nlt45.svg";
+          IMAGES.Bishop2.src = "https://upload.wikimedia.org/wikipedia/commons/b/b1/Chess_blt45.svg";
+          IMAGES.Queen2.src = "https://upload.wikimedia.org/wikipedia/commons/1/15/Chess_qlt45.svg";
+          IMAGES.King2.src = "https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg";
           Promise.all(Object.values(IMAGES).map(img => new Promise(resolve => img.onload = resolve)))
             .then(() => {
                 for (let i = 0; i < 8; i++) {
@@ -91,24 +91,24 @@ export default class Chess extends GameEngine {
                             }else if(this.grid[i][j] == "-Kn"){
                                 ctx.drawImage(IMAGES.Knight2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "-B"){
-                                ctx.drawImage(IMAGES.Bishop2, j * CELL_SIZE + 20, i * CELL_SIZE + 20, 85, 85);
+                                ctx.drawImage(IMAGES.Bishop2, j * CELL_SIZE + 25, i * CELL_SIZE + 25, 85, 85);
                             }else if(this.grid[i][j] == "-Q"){
                                 ctx.drawImage(IMAGES.Queen2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }else if(this.grid[i][j] == "-K"){
                                 ctx.drawImage(IMAGES.King2, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }
                         }else{
-                            if(this.grid[i][j] == "P"){
+                            if(this.grid[i][j] == "+P"){
                                 ctx.drawImage(IMAGES.pawn1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
-                            }else if(this.grid[i][j] == "R"){
+                            }else if(this.grid[i][j] == "+R"){
                                 ctx.drawImage(IMAGES.rook1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
-                            }else if(this.grid[i][j] == "Kn"){
+                            }else if(this.grid[i][j] == "+Kn"){
                                 ctx.drawImage(IMAGES.Knight1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
-                            }else if(this.grid[i][j] == "B"){
-                                ctx.drawImage(IMAGES.Bishop1, j * CELL_SIZE + 20, i * CELL_SIZE + 20, 85, 85);
-                            }else if(this.grid[i][j] == "Q"){
+                            }else if(this.grid[i][j] == "+B"){
+                                ctx.drawImage(IMAGES.Bishop1, j * CELL_SIZE + 25, i * CELL_SIZE + 25, 85, 85);
+                            }else if(this.grid[i][j] == "+Q"){
                                 ctx.drawImage(IMAGES.Queen1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
-                            }else if(this.grid[i][j] == "K"){
+                            }else if(this.grid[i][j] == "+K"){
                                 ctx.drawImage(IMAGES.King1, j * CELL_SIZE + 30, i * CELL_SIZE + 30, 75, 75);
                             }
                       }
@@ -214,33 +214,33 @@ export default class Chess extends GameEngine {
     }
     isValid(fromRow, fromCol, toRow, toCol){
         console.log("fromR "+ fromRow+" fromcol "+ fromCol +"ftoR "+ toRow+" tocol "+ toCol)
-        //if((fromRow != toRow || fromCol != toCol) && (( this.grid[7 - toRow][toCol].toString().charAt(0)!= "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0 ) && ((this.grid[7 - toRow][toCol].toString().charAt(0)== "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0)))){
-            if(this.grid[7 - fromRow][fromCol] == "P" && this.currentPlayer == 1){
+        if((fromRow != toRow || fromCol != toCol) && (this.grid[7 - toRow][toCol].toString().charAt(0) !=  this.grid[7 - fromRow][fromCol].toString().charAt(0))){
+            if(this.grid[7 - fromRow][fromCol] == "+P" && this.currentPlayer == 1){
                 return this.pawnMove(fromRow, fromCol, toRow, toCol, "black")
             }else if(this.grid[7 - fromRow][fromCol] == "-P" && this.currentPlayer == -1){
                return this.pawnMove(fromRow, fromCol, toRow, toCol, "white")
-            }else if(this.grid[7 - fromRow][fromCol] == "R" && this.currentPlayer == 1){
+            }else if(this.grid[7 - fromRow][fromCol] == "+R" && this.currentPlayer == 1){
                 return this.rookMove(fromRow, fromCol, toRow, toCol)
             }else if(this.grid[7 - fromRow][fromCol] == "-R" && this.currentPlayer == -1){
                 return this.rookMove(fromRow, fromCol, toRow, toCol)
-            }else if(this.grid[7 - fromRow][fromCol] == "B" && this.currentPlayer == 1){
+            }else if(this.grid[7 - fromRow][fromCol] == "+B" && this.currentPlayer == 1){
                 return this.bishopMove(fromRow, fromCol, toRow, toCol)
             }else if(this.grid[7 - fromRow][fromCol] == "-B" && this.currentPlayer == -1){
                 return this.bishopMove(fromRow, fromCol, toRow, toCol)
-            }else if(this.grid[7 - fromRow][fromCol] == "K" && this.currentPlayer == 1){
+            }else if(this.grid[7 - fromRow][fromCol] == "+K" && this.currentPlayer == 1){
                 return this.kingMove(fromRow, fromCol, toRow, toCol)
             }else if(this.grid[7 - fromRow][fromCol] == "-K" && this.currentPlayer == -1){
                 return this.kingMove(fromRow, fromCol, toRow, toCol)
-            }else if(this.grid[7 - fromRow][fromCol] == "Kn" && this.currentPlayer == 1){
+            }else if(this.grid[7 - fromRow][fromCol] == "+Kn" && this.currentPlayer == 1){
                 return this.knightMove(fromRow, fromCol, toRow, toCol, "black")
             }else if(this.grid[7 - fromRow][fromCol] == "-Kn" && this.currentPlayer == -1){
                return this.knightMove(fromRow, fromCol, toRow, toCol, "white")
-            }else if(this.grid[7 - fromRow][fromCol] == "Q" && this.currentPlayer == 1){
+            }else if(this.grid[7 - fromRow][fromCol] == "+Q" && this.currentPlayer == 1){
                 return this.queenMove(fromRow, fromCol, toRow, toCol)
             }else if(this.grid[7 - fromRow][fromCol] == "-Q" && this.currentPlayer == -1){
                return this.queenMove(fromRow, fromCol, toRow, toCol)
             }
-   // }
+   }
     else{
             return false
         }
@@ -279,13 +279,13 @@ export default class Chess extends GameEngine {
 }
 var grid = [
     ["-R", "-Kn", "-B", "-Q", "-K", "-B", "-Kn", "-R"],
-    [0, 0, "-P", "-P", "-P", "-P", "-P", "-P"],
+    ["-P", "-P", "-P", "-P", "-P", "-P", "-P", "-P"],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, "P", 0, 0, 0, 0],
-    [0, "Q", 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, "P"],
-    [0, 0, "P", 0, 0, 0, 0, 0],
-    ["R", "Kn", "B", 0, "K", "Q", "Kn", "R"],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    ["+P", "+P", "+P", "+P", "+P", "+P", "+P", "+P"],
+    ["+R", "+Kn", "+B","+Q", "+K", "+B", "+Kn", "+R"],
   ];
 const game = new Chess(grid);
 game.init(); // call the drawboard() method to draw the board and pawn on the canvas
