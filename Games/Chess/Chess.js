@@ -214,7 +214,7 @@ export default class Chess extends GameEngine {
     }
     isValid(fromRow, fromCol, toRow, toCol){
         console.log("fromR "+ fromRow+" fromcol "+ fromCol +"ftoR "+ toRow+" tocol "+ toCol)
-        if((fromRow != toRow || fromCol != toCol) && (( this.grid[7 - toRow][toCol].toString().charAt(0)!= "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0 ) && ((this.grid[7 - toRow][toCol].toString().charAt(0)== "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0)))){
+        //if((fromRow != toRow || fromCol != toCol) && (( this.grid[7 - toRow][toCol].toString().charAt(0)!= "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0 ) && ((this.grid[7 - toRow][toCol].toString().charAt(0)== "-" || this.grid[7 - toRow][toCol].toString().charAt(0)== 0)))){
             if(this.grid[7 - fromRow][fromCol] == "P" && this.currentPlayer == 1){
                 return this.pawnMove(fromRow, fromCol, toRow, toCol, "black")
             }else if(this.grid[7 - fromRow][fromCol] == "-P" && this.currentPlayer == -1){
@@ -240,7 +240,8 @@ export default class Chess extends GameEngine {
             }else if(this.grid[7 - fromRow][fromCol] == "-Q" && this.currentPlayer == -1){
                return this.queenMove(fromRow, fromCol, toRow, toCol)
             }
-        }else{
+   // }
+    else{
             return false
         }
         
@@ -280,8 +281,8 @@ var grid = [
     ["-R", "-Kn", "-B", "-Q", "-K", "-B", "-Kn", "-R"],
     [0, 0, "-P", "-P", "-P", "-P", "-P", "-P"],
     [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, "P", 0, 0, 0, 0],
+    [0, "Q", 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, "P"],
     [0, 0, "P", 0, 0, 0, 0, 0],
     ["R", "Kn", "B", 0, "K", "Q", "Kn", "R"],
