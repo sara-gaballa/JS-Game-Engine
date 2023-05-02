@@ -77,31 +77,57 @@ class GameEngine {
   //   }
   // }
 
-  play(grid, turn) { // two players ==> overloading
-      if (arguments.length === 2) {
-        console.log('In play: 2 players of the game engine');
-        this.whichPlayer(turn);
-        this.play(grid);
-        this.reverseTurns(turn);
-      } else { // 1 player ==> overloading
-        console.log('In play: 1 player of the game engine');
-        // while (!(this.isValid(input))) {
-        //   console.log('Invalid move.\nPlease enter a valid move.');
-        //   input = this.takeInputFromUser();
-        // }
-        // console.log('After input in play');
-        // let newState = this.makeMove(input);
-        // this.drawBoard(newState);
-        while(true){
-          this.takeInputFromUser().then((input) => {
-            let valid = this.controller(input,grid);
-            if(valid){
-              this.drawBoard(grid);
-            }
-          });
-        }
+  // play(grid, turn) { // two players ==> overloading
+  //     if (arguments.length === 2) {
+  //       console.log('In play: 2 players of the game engine');
+  //       this.whichPlayer(turn);
+  //       this.play(grid);
+  //       this.reverseTurns(turn);
+  //     } else { // 1 player ==> overloading
+  //       console.log('In play: 1 player of the game engine');
+  //       // while (!(this.isValid(input))) {
+  //       //   console.log('Invalid move.\nPlease enter a valid move.');
+  //       //   input = this.takeInputFromUser();
+  //       // }
+  //       // console.log('After input in play');
+  //       // let newState = this.makeMove(input);
+  //       // this.drawBoard(newState);
+  //       while(true){
+  //         this.takeInputFromUser().then((input) => {
+  //           let valid = this.controller(input,grid);
+  //           if(valid){
+  //             this.drawBoard(grid);
+  //           }
+  //         });
+  //       }
+  //     }
+  // }
+
+  play(state,turn){
+    // onee player
+    if (arguments.length === 1) {
+    while(true){
+      let valid;
+      this.takeInputFromUser().then((input) => {
+        valid = this.controller(state,input);
+      });
+      if(valid)
+        this.drawBoard(state);
+      
+    }
+  }else if(arguments.length === 2) {
+    // two players
+    while(true){
+      let valid;
+      this.takeInputFromUser().then((input) => {
+        valid = this.controller(state,input);
+      });
+      if(valid){
+        this.drawBoard(state);
+        turn = this.reverseTurns(turn);
       }
-    
+    }
+  }
   }
     whichPlayer(){
       throw new Error("Method 'whichPlayer()' must be implemented in each class.");
