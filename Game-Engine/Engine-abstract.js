@@ -43,7 +43,7 @@ class GameEngine {
       return new Promise(() => {
         this.rl.question('Enter a move: ', (input) => {
 
-          console.log(`You entered, ${input.length}`);
+          console.log(`You entered, ${input}`);
           console.log('In take input:in the game engine');
         });
       });
@@ -103,12 +103,12 @@ class GameEngine {
   //     }
   // }
 
-  play(state,turn){
+  async play(state,turn){
     // onee player
     if (arguments.length === 1) {
     while(true){
       let valid;
-      this.takeInputFromUser().then((input) => {
+      await this.takeInputFromUser().then((input) => {
         valid = this.controller(state,input);
       });
       if(valid)
@@ -119,7 +119,7 @@ class GameEngine {
     // two players
     while(true){
       let valid;
-      this.takeInputFromUser().then((input) => {
+      await this.takeInputFromUser().then((input) => {
         valid = this.controller(state,input);
       });
       if(valid){
@@ -138,6 +138,16 @@ class GameEngine {
 }
 
 const game = new GameEngine([8, 8], ["♔", "♚"]);
-
+var grid = [
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 1, 1, 1, 1, 1, 1, 1]
+];
 // call the play method
-game.play();
+game.play(grid);
