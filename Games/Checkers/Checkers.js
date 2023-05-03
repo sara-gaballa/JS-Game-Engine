@@ -227,7 +227,7 @@ export class Checkers extends GameEngine {// export default
       [0, -1, 0, -1, 0, -1, 0, -1],
       [-1, 0, -1, 0, -1, 0, -1, 0]
     ];
-    
+    this.drawBoard(grid);
     let noOfPlayers = 2;
     // console.log("Current player: ",currentPlayer === -1?"white":"black");
     // this.drawBoard(grid);
@@ -256,7 +256,8 @@ export class Checkers extends GameEngine {// export default
   }   
 }
 // -1 is white, 1 is black
-// const game = new Checkers(grid);
-// // game.init();
+// const game = new Checkers();
 // game.play();
+// game.init();
+
 // module.exports = GameEngine;
