@@ -1,6 +1,6 @@
-// import GameEngine from "../../Game-Engine/Engine-abstract.js";
+import {GameEngine} from "../../Game-Engine/Engine-abstract.js";
 
-class Checkers extends GameEngine {// export default 
+export class Checkers extends GameEngine {// export default
   constructor() {
     super([8, 8], ["white", "black"]);
     // this.currentPlayer = -1;
@@ -256,7 +256,7 @@ class Checkers extends GameEngine {// export default
   }   
 }
 // -1 is white, 1 is black
-const game = new Checkers(grid);
-// game.init();
-game.play();
-module.exports = GameEngine;
+// const game = new Checkers(grid);
+// // game.init();
+// game.play();
+// module.exports = GameEngine;

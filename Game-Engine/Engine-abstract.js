@@ -1,4 +1,3 @@
-const { default: Checkers } = require('../Games/Checkers/checkers');
 
 export class GameEngine {// 
   constructor() {//boardSize, pieces
@@ -7,11 +6,11 @@ export class GameEngine {//
     // this.board = Array.from({ length: boardSize[0] }, () => Array.from({ length: boardSize[1] }, () => null));
 
 
-    const readline = require('readline');
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
+    // const readline = require('readline');
+    // this.rl = readline.createInterface({
+    //   input: process.stdin,
+    //   output: process.stdout
+    // });
   }
     drawBoard(grid){}
 
@@ -82,7 +81,7 @@ export class GameEngine {//
 
 // const game = new GameEngine();
 
-const game = new Checkers(grid);
+// const game = new Checkers(grid);
 // var grid = [
 //   [0, 0, 0, 0, 0, 0, 0, 0],
 //   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -95,4 +94,4 @@ const game = new Checkers(grid);
 //   [1, 1, 1, 1, 1, 1, 1, 1]
 // ];
 // game.play();
-module.exports = Checkers;
+// module.exports = Checkers;
