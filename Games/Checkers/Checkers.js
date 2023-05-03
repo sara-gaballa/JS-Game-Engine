@@ -1,13 +1,12 @@
 import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
 export default class Checkers extends GameEngine {
-  constructor(grid) {
+  constructor() {
     super([8, 8], ["white", "black"]);
     this.currentPlayer = -1;
-    this.grid = grid;
   }
 
-  drawBoard() {
+  drawBoard(grid) {
     const board = document.getElementById("board");
     let letters = "ABCDEFGH";
     board.innerHTML = ""; // clear the board before drawing the new board
@@ -33,7 +32,7 @@ export default class Checkers extends GameEngine {
         if ((i + j) % 2 === 0) {
           cell.className = "black";
         }
-        const pieceValue = this.grid[i-1][j];
+        const pieceValue = grid[i-1][j];
         if (pieceValue === 1) {
           const piece = document.createElement("div");
           piece.className = "piece black";
@@ -58,12 +57,12 @@ export default class Checkers extends GameEngine {
       console.log("In third1")
       return 0;
     }
-    console.log("this.grid[fromRow+1*sign][fromCol+1] = ",this.grid[fromRow+1*sign][fromCol+1]);
+    console.log("grid[fromRow+1*sign][fromCol+1] = ",grid[fromRow+1*sign][fromCol+1]);
     
-    if(this.grid[fromRow+1*sign][fromCol+1] === -1*sign && (this.grid[fromRow+2*sign][fromCol+2] === 0)){ // same as before //|| this.grid[fromRow+2][fromCol] === 0
+    if(grid[fromRow+1*sign][fromCol+1] === -1*sign && (grid[fromRow+2*sign][fromCol+2] === 0)){ // same as before //|| grid[fromRow+2][fromCol] === 0
       if(toRow === fromRow+2*sign && toCol === fromCol+2){
         console.log("Eating my oponent");
-        this.grid[fromRow+1*sign][fromCol+1] = 0;
+        grid[fromRow+1*sign][fromCol+1] = 0;
         return 1;
       } else{
         console.log("User didn't input this path in grand_right");
@@ -80,10 +79,10 @@ export default class Checkers extends GameEngine {
       console.log("In third2")
       return 0;
     }
-    if(this.grid[fromRow+1*sign][fromCol-1] === -1*sign && this.grid[fromRow+2*sign][fromCol-2] === 0){ // same as before //|| this.grid[fromRow+2][fromCol] === 0
+    if(grid[fromRow+1*sign][fromCol-1] === -1*sign && grid[fromRow+2*sign][fromCol-2] === 0){ // same as before //|| grid[fromRow+2][fromCol] === 0
       if(toRow === fromRow+2*sign && toCol === fromCol-2){
         console.log("Eating my oponent")
-        this.grid[fromRow+1*sign][fromCol-1] = 0;
+        grid[fromRow+1*sign][fromCol-1] = 0;
         return 1;
       } else{
         console.log("User didn't input this path in grand_left");
@@ -98,9 +97,9 @@ export default class Checkers extends GameEngine {
       sign = -1;
     }
     if((toRow ===fromRow+1*sign && toCol === fromCol-1*sign) || (fromRow+1*sign === toRow && fromCol+1*sign== toCol)){
-      if(this.grid[toRow][toCol] === 0){// do the move if nothing is there
+      if(grid[toRow][toCol] === 0){// do the move if nothing is there
         return true;
-      }else if(this.grid[toRow][toCol] !== 0){// error
+      }else if(grid[toRow][toCol] !== 0){// error
         return false;
       }
     }return false;
@@ -124,7 +123,7 @@ export default class Checkers extends GameEngine {
       console.log("In second")
       return false;
     }
-    if(this.grid[fromRow][fromCol] === this.currentPlayer){
+    if(grid[fromRow][fromCol] === this.currentPlayer){
       let rightSide = this.check_grand_right(fromRow,fromCol,toRow,toCol);
       console.log("rightSide = ", rightSide);
       if(rightSide === 1){
@@ -163,17 +162,17 @@ export default class Checkers extends GameEngine {
 
   makeMove(input) {
     let [fromRow,fromCol,toRow,toCol] = input ||[0,0,0,0];
-    if(fromRow == undefined ||fromCol == undefined || toRow == undefined || toCol == undefined) return this.grid;
+    if(fromRow == undefined ||fromCol == undefined || toRow == undefined || toCol == undefined) return grid;
     if(fromRow !== 0 || fromCol !== 0 || toRow !== 0 || toCol !== 0){
-      this.grid[toRow][toCol] = this.grid[fromRow][fromCol];
+      grid[toRow][toCol] = grid[fromRow][fromCol];
       console.log(`Moving from row ${fromRow}, column ${fromCol} , to row ${toRow}, column ${toCol}`);
-      this.grid[fromRow][fromCol] = 0;
+      grid[fromRow][fromCol] = 0;
     }
   
 
-    // console.log(this.grid);
+    // console.log(grid);
     // this.drawBoard();
-    return this.grid;
+    return grid;
   }
 
   takeInputFromUser(from,to) {
@@ -199,8 +198,8 @@ export default class Checkers extends GameEngine {
     // console.log("In Controller");
     // const input= this.takeInputFromUser();
     // console.log("I am here ")
-    // console.log("input:",input,"grid:",this.grid,"parent:", this.currentPlayer)
-    this.play(input,this.grid,this.currentPlayer);
+    // console.log("input:",input,"grid:",grid,"parent:", this.currentPlayer)
+    this.play(input,grid,this.currentPlayer);
   }
   whichPlayer(){
     return this.currentPlayer;
@@ -216,8 +215,19 @@ export default class Checkers extends GameEngine {
     console.log("Current player:", this.currentPlayer === -1?"white":"black");
   }
   init() {
+    var grid = [
+      [0, 1, 0, 1, 0, 1, 0, 1],
+      [1, 0, 1, 0, 1, 0, 1, 0],
+      [0, 1, 0, 1, 0, 1, 0, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [-1, 0, -1, 0, -1, 0, -1, 0],
+      [0, -1, 0, -1, 0, -1, 0, -1],
+      [-1, 0, -1, 0, -1, 0, -1, 0]
+    ];
+    
     console.log("Current player: ",this.currentPlayer === -1?"white":"black");
-    this.drawBoard(this.grid);
+    this.drawBoard(grid);
     const connectButton = document.getElementById("but");
     connectButton.addEventListener("click", () => {
       console.log("Button is clicked");
@@ -238,16 +248,7 @@ export default class Checkers extends GameEngine {
     curPlayer.value = this.currentPlayer === -1?"White":"Black"
   }   
 }
-var grid = [
-  [0, 1, 0, 1, 0, 1, 0, 1],
-  [1, 0, 1, 0, 1, 0, 1, 0],
-  [0, 1, 0, 1, 0, 1, 0, 1],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [-1, 0, -1, 0, -1, 0, -1, 0],
-  [0, -1, 0, -1, 0, -1, 0, -1],
-  [-1, 0, -1, 0, -1, 0, -1, 0]
-];
+
 // -1 is white, 1 is black
 const game = new Checkers(grid);
 game.init();
