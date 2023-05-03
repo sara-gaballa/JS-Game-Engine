@@ -1,4 +1,4 @@
-import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
+// import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
 export default class Chess extends GameEngine {
     constructor(grid) {
@@ -289,3 +289,4 @@ var grid = [
   ];
 const game = new Chess(grid);
 game.init(); // call the drawboard() method to draw the board and pawn on the canvas
+let chess 

@@ -1,9 +1,9 @@
-import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
+// import GameEngine from "../../Game-Engine/Engine-abstract.js";
 
-export default class Checkers extends GameEngine {
+class Checkers extends GameEngine {// export default 
   constructor() {
     super([8, 8], ["white", "black"]);
-    this.currentPlayer = -1;
+    // this.currentPlayer = -1;
   }
 
   drawBoard(grid) {
@@ -205,6 +205,7 @@ export default class Checkers extends GameEngine {
     return this.currentPlayer;
   }
   reverseTurns(){
+
     if(this.currentPlayer === 1){
       this.currentPlayer = -1;
     }else{
@@ -214,6 +215,7 @@ export default class Checkers extends GameEngine {
     curPlayer.value = this.currentPlayer === -1?"White":"Black"
     console.log("Current player:", this.currentPlayer === -1?"white":"black");
   }
+
   init() {
     var grid = [
       [0, 1, 0, 1, 0, 1, 0, 1],
@@ -226,29 +228,35 @@ export default class Checkers extends GameEngine {
       [-1, 0, -1, 0, -1, 0, -1, 0]
     ];
     
-    console.log("Current player: ",this.currentPlayer === -1?"white":"black");
-    this.drawBoard(grid);
-    const connectButton = document.getElementById("but");
-    connectButton.addEventListener("click", () => {
-      console.log("Button is clicked");
-      const fromInput = document.getElementById("from-input");
-      const toInput = document.getElementById("to-input");
-      if(fromInput !== null && toInput !== null){
-        const from = fromInput.value;
-        const to = toInput.value;
-        this.takeInputFromUser(from,to);
-      }
-    });
+    let noOfPlayers = 2;
+    // console.log("Current player: ",currentPlayer === -1?"white":"black");
+    // this.drawBoard(grid);
+    // const connectButton = document.getElementById("but");
+    // connectButton.addEventListener("click", () => {
+    //   console.log("Button is clicked");
+    //   const fromInput = document.getElementById("from-input");
+    //   const toInput = document.getElementById("to-input");
+    //   if(fromInput !== null && toInput !== null){
+    //     const from = fromInput.value;
+    //     const to = toInput.value;
+    //     this.takeInputFromUser(from,to);
+    //   }
+    // });
     // this.controller();
     // let from = arr[0];
     // let to = arr[1];
     // console.log(`from = ${from}, to = ${to}`)
     // this.makeMove(from, to);
-    const curPlayer = document.getElementById("currPlayer");
-    curPlayer.value = this.currentPlayer === -1?"White":"Black"
+    // const curPlayer = document.getElementById("currPlayer");
+    // curPlayer.value = this.currentPlayer === -1?"White":"Black"
+    return {
+      grid: grid,
+      players: noOfPlayers,
+    };
   }   
 }
-
 // -1 is white, 1 is black
 const game = new Checkers(grid);
-game.init();
+// game.init();
+game.play();
+module.exports = GameEngine;
