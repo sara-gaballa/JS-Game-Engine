@@ -90,9 +90,7 @@ export class GameEngine {//
       //   alert("Invalid");
       // }
       // If some condition is met, exit the loop
-      if (input == "4") {
-        exitLoop = true;
-      }
+      
     }
     
     // if(this.valid){
