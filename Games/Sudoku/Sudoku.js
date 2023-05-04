@@ -186,7 +186,7 @@ drawBoard(grid) {
       let [i,j,num] = input;
       if(i>=0 && i<=8 && j>=0 && j<=8 && num>=0 && num<=9 ){
         if(num >0 ){//add
-          if( this.checkIfSafe(grid,i, j, num)){
+          if( grid[i][j]>=0 && this.checkIfSafe(grid,i, j, num)){
             return true;
           }else{
             alert("invalid place");
