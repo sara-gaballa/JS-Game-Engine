@@ -4,6 +4,7 @@
 import {Checkers} from "../Games/Checkers/Checkers.js";
 import {Sudoku} from "../Games/Sudoku/Sudoku.js";
 import {TicTacToe} from "../Games/Tic-Tac-Toe/Tic-Tac-Toe.js";
+import {Chess} from "../Games/Chess/Chess.js";
 
 if (typeof window !== "undefined") {
 
@@ -17,8 +18,9 @@ if (typeof window !== "undefined") {
         console.log(game);
         // window.location.href = "../Games/" + game + "/" + game +".html";
     } else if (game === 'chess') {
-        // let chess = new Chess();
-        window.location.href = "../Games/" + game + "/" + game +".html";
+        let chess = new Chess();
+        chess.play();
+        // window.location.href = "../Games/" + game + "/" + game +".html";
         console.log(game);
     } else if (game === 'Connect4') {
         console.log(game);

@@ -19,8 +19,24 @@
           <button id="but">Connect</button>
         </li>
       </ul>
-      <canvas id="canvas1" width="650" height="650" style="position:absolute;"></canvas>
+      <canvas id="canvas" width="650" height="650" style="position:absolute;"></canvas>
       <iframe src="../../Game-Engine/draw.html" width="1000" height="740" style="border: none;" scrolling="no"></iframe>
     <script type="module" src="./Chess.js"></script>
+
+    <script>
+        // Create a new script element
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = '../../Initial-Screen/screen.js';
+
+        // Get the head or body element
+        const head = document.head || document.body;
+
+        // Check if the script has already been added
+        if (!head.querySelector(`script[src="${script.src}"]`)) {
+            // Add the script to the head or body
+            head.appendChild(script);
+        }
+    </script>
   </body>
 </html>

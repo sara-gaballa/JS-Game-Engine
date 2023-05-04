@@ -68,7 +68,7 @@ async play(){
   let exitLoop = false;
   var valid=true;
   while(!exitLoop){
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 500));
     const input = await this.takeInputFromUser();
     console.log("In engine Input: ",input);
     //const input = [5,0,4,1];
