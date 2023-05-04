@@ -2,7 +2,23 @@
 export class GameEngine {// 
     drawBoard(grid){}
 
-    controller(grid,input,turn){} // return grid, boolean that is valid
+    controller(grid,input,turn){
+      // console.log("In Controller");
+      // const input= this.takeInputFromUser();
+      // console.log("I am here ")
+      // console.log("input:",input,"grid:",grid,"parent:", turn)
+      // this.play(input,grid,turn);
+      console.log("in controller trun = ",turn);
+      let valid=this.isValid(input,grid,turn);
+      if(valid){
+        grid=this.makeMove(input,grid);
+      }
+      console.log("in controller valid =",valid);
+      return {
+        grid:grid,
+        valid:valid,
+      }
+    } // return grid, boolean that is valid
     
     isValid(input,grid,turn){ // return boolean
       throw new Error("Method 'isValid()' must be implemented in each class.");
