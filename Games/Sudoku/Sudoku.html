@@ -5,21 +5,19 @@
     <link rel="stylesheet" href="Sudoku.css">
   </head>
   <body>
-    <ul class="controls">
-        <li>
-            <label for="to-input">To:</label>
-            <input type="text" placeholder="row column" id="to-input">
-          </li>
-          <li>
-            <button id="but">Connect</button>
-          </li>
-        </ul>
-    <ul class="row-numbers">
+    <table id="board"></table>
+    <ul class="row-letters">
         <li>a</li>
         <li>b</li>
         <li>c</li>
+        <li>d</li>
+        <li>e</li>
+        <li>f</li>
+        <li>g</li>
+        <li>h</li>
+        <li>i</li>
     </ul>
-    <ul class="col-letters">
+    <ul class="col-numbers">
         <li>0</li>
         <li>1</li>
         <li>2</li>
@@ -30,8 +28,24 @@
         <li>7</li>
         <li>8</li>
     </ul>
-    <table id="board"></table>
+    
+    
     <iframe src="../../Game-Engine/draw.html" width="1000" height="740" style="border: none;" scrolling="no"></iframe>
-    <script type="module" src="./Sudoku.js"></script>
+    <script>
+      // Create a new script element
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = '../../Initial-Screen/screen.js';
+    
+      // Get the head or body element
+      const head = document.head || document.body;
+    
+      // Check if the script has already been added
+      if (!head.querySelector(`script[src="${script.src}"]`)) {
+        // Add the script to the head or body
+        head.appendChild(script);
+      }
+    </script>
+    <script>var exports = {};</script>
   </body>
 </html>

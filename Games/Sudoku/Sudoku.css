@@ -56,10 +56,6 @@
     background-color: white;
   }
   
-  table#board td.black {
-    background-color: #494949;
- 
-  }
   
   table#board .piece {
     width: 90%;
@@ -71,7 +67,6 @@
   
   /* Add pseudo-elements to the .piece.red and .piece.blue selectors */
   table#board .piece.red::before {
-    content: "X"; /* Add content "X" */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -79,9 +74,8 @@
     font-size: 50px;
     color: rgb(255, 0, 0);
   }
-  
   table#board .piece.blue::after {
-    content: "O"; /* Add content "O" */
+    /* content: "O"; Add content "O" */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -89,6 +83,23 @@
     font-size: 50px;
     color: rgb(21, 0, 255);
   }
+
+  table#board td.c1 {
+    background-color: #a4c6f9;
+ 
+  }
+
+  table#board td.c2 {
+    background-color: #96a3fb;
+ 
+  }
+
+  table#board td.c3 {
+    background-color: #c1a7f5;
+ 
+  }
+  
+
   
   #board {
     position: absolute;
@@ -105,7 +116,7 @@
     height: 100%;
     z-index: 0; /* set a lower z-index value */
   }
-  .row-numbers {
+  .row-letters {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -113,13 +124,13 @@
     flex-direction: row;
     align-items: center;
     position: absolute;
-    top: 270px; /* adjust as needed */
-    left: 85px; /* adjust as needed */
+    top: 50px; /* adjust as needed */
+    left: 100px; /* adjust as needed */
   }
   
-  .row-numbers li {
-    width: 60px;
-    height: 30px;
+  .row-letters li {
+    width: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,7 +143,7 @@
     margin-right: 0px;
   }
 
-  .col-letters{
+  .col-numbers{
     list-style: none;
     margin: 0;
     padding: 0;
@@ -144,7 +155,7 @@
     left: 40px; /* adjust as needed */
   }
   
-  .col-letters li {
+  .col-numbers li {
     width: 60px;
     height: 50px;
     display: flex;

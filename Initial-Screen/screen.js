@@ -2,6 +2,9 @@
 
 // Check if running in a browser environment
 import {Checkers} from "../Games/Checkers/Checkers.js";
+import {Sudoku} from "../Games/Sudoku/Sudoku.js";
+import {TicTacToe} from "../Games/Tic-Tac-Toe/Tic-Tac-Toe.js";
+
 if (typeof window !== "undefined") {
 
     const queryString = window.location.search;
@@ -21,14 +24,18 @@ if (typeof window !== "undefined") {
         console.log(game);
         window.location.href = "../Games/" + game + "/" + game +".html";
     } else if (game === 'Sudoku') {
+        let sudoku= new Sudoku();
+        sudoku.play();
         console.log(game);
-        window.location.href = "../Games/" + game + "/" + game +".html";
+       // window.location.href = "../Games/" + game + "/" + game +".html";
     } else if (game === 'Eight-Queens') {
         console.log(game);
         window.location.href = "../Games/" + game + "/" + game +".html";
     } else if (game === 'Tic-Tac-Toe') {
+        let Tic=new TicTacToe();
+        Tic.play();
         console.log(game);
-        window.location.href = "../Games/" + game + "/" + game +".html";
+        // window.location.href = "../Games/" + game + "/" + game +".html";
     } else {
         console.log(game);
     }
