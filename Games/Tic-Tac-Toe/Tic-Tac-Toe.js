@@ -1,24 +1,15 @@
 import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
-export default class TicTacToe extends GameEngine {
-  constructor(grid) {
-    super([3, 3], ["x", "o"]);
-    this.currentPlayer = 1;
-    this.grid = grid;
-  }
-
-  whichPlayer(turn){
-    (turn == 1) ? this.currentPlayer = -1 : this.currentPlayer = 1;
-  }
-
-  drawBoard() {
+export class TicTacToe extends GameEngine {
+  drawBoard(grid) {
     const board = document.getElementById("board");
     board.innerHTML = ""; // clear the board before drawing the new board
+    console.log("In drawboard: ", grid);
     for (let i = 0; i < 3; i++) {
       const row = document.createElement("tr");
       for (let j = 0; j < 3; j++) {
         const cell = document.createElement("td");
-        const pieceValue = this.grid[i][j];
+        const pieceValue = grid[i][j];
         if (pieceValue === 1) {
         const piece = document.createElement("div");
         piece.className = "piece red";
@@ -31,55 +22,54 @@ export default class TicTacToe extends GameEngine {
         row.appendChild(cell);
       }
       board.appendChild(row);
-      
     }
     
   }
 
-      makeMove(to) {
-        const toRow = parseInt(to.charAt(0));
-        const toCol = to.charAt(1).charCodeAt(0) - 97;
-        
-        console.log(`to row ${toRow}, column ${toCol}`);
-        if(this.isValid(toRow, toCol)){
-            this.grid[toRow][toCol]=this.currentPlayer;
-            this.whichPlayer(this.currentPlayer);
-            this.drawBoard();
-        }else{
-            alert("invaled move");
-        }
-    }
-    
-    isValid(toRow,toCol){
-      const toInt = parseInt(toRow, 10);
-      if (!Number.isInteger(toInt)) {
-        
+  makeMove(input,grid,turn) {
+    let [toRow,toCol] = input;
+    console.log(`to row ${toRow}, column ${toCol}`);
+    grid[toRow][toCol] = turn;
+    console.log("New grid = ",grid)
+    return grid;
+  }
+  
+  isValid(input,grid,turn){
+    let [toRow, toCol] = input;
+    console.log(`${toRow},${toCol}`);
+      if(toRow > 2 || toCol >2)  {
+        alert("Invalid move");
         return false;
       }
-        if(toRow > 2 || toCol >2)  return false;
-        if(this.grid[toRow][toCol]!=0){
-            //full 
-            return false;
-        } else {
-            return true;
-        }
-    }
-    
-      init() {
-        this.drawBoard();
-        const connectButton = document.getElementById("but");
-        connectButton.addEventListener("click", () => {
-            const toInput = document.getElementById("to-input");
-            const to = toInput.value;
-            this.makeMove(to);
-        });
+      if(grid[toRow][toCol] != 0){
+          //full 
+          alert("Invalid move");
+          return false;
+      } else {
+          return true;
       }
-      
+  }
+
+  takeInputFromUser() {
+    return new Promise(resolve => {
+      const toRow = parseInt(prompt("Enter the row number of the piece to move (0-2)"));
+      const toCol = prompt("Enter the column letter of the piece to move (a-c)").charCodeAt(0) - 97;
+      const input = [toRow, toCol];
+      console.log("input: ", input);
+      resolve(input);
+    });
+  }
+  init() {
+    var grid = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ];
+    var noOfPlayers = 2;
+    return{
+      grid: grid,
+      noOfPlayers: noOfPlayers,
+    }
+  }   
 }
-var grid = [
-  [0, 0, 0],
-  [0, 0, 0],
-  [0, 0, 0]
-];
-const game = new TicTacToe(grid);
-game.init();
+
