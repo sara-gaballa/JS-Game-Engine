@@ -1,10 +1,10 @@
 import {GameEngine} from "../../Game-Engine/Engine-abstract.js";
 
 export class Checkers extends GameEngine {// export default
-  constructor() {
-    super([8, 8], ["white", "black"]);
-    // this.currentPlayer = -1;
-  }
+  // constructor() {
+  //   // super([8, 8], ["white", "black"]);
+  //   // turn = -1;
+  // }
 
   drawBoard(grid) {
     const board = document.getElementById("board");
@@ -48,9 +48,9 @@ export class Checkers extends GameEngine {// export default
     }
   }
 
-  check_grand_right(fromRow,fromCol,toRow,toCol,grid){// method to check if you can eat your opponent if right grand parent is empty
+  check_grand_right(fromRow,fromCol,toRow,toCol,grid,turn){// method to check if you can eat your opponent if right grand parent is empty
     let sign = 1;
-    if(this.currentPlayer === -1){
+    if(turn === -1){
       sign = -1;
     }
     if((fromCol+2) < 0 || (fromCol+2) > 8) {
@@ -70,9 +70,9 @@ export class Checkers extends GameEngine {// export default
       }
     }return 0; //means that  there is nothing to eat
   }
-  check_grand_left(fromRow,fromCol,toRow,toCol,grid){
+  check_grand_left(fromRow,fromCol,toRow,toCol,grid,turn){
     let sign = 1;
-    if(this.currentPlayer === -1){
+    if(turn === -1){
       sign = -1;
     }
     if((fromCol-2) < 0 || (fromCol-2) > 8) {
@@ -91,9 +91,9 @@ export class Checkers extends GameEngine {// export default
     }return 0; //means that  there is nothing to eat
   }
 
-  check_move(fromRow,fromCol,toRow,toCol,grid){
+  check_move(fromRow,fromCol,toRow,toCol,grid,turn){
     let sign = 1;
-    if(this.currentPlayer === -1){
+    if(turn === -1){
       sign = -1;
     }
     if((toRow ===fromRow+1*sign && toCol === fromCol-1*sign) || (fromRow+1*sign === toRow && fromCol+1*sign== toCol)){
@@ -106,7 +106,7 @@ export class Checkers extends GameEngine {// export default
   }
   
   // TODO isValid
-  isValid(input,grid){
+  isValid(input,grid,turn){
     // console.log("inputvalid: "+input);
     console.log("In isValid:in checkers")
     // if(input == NaN) return false;
@@ -124,15 +124,15 @@ export class Checkers extends GameEngine {// export default
       console.log("In second")
       return false;
     }
-    if(grid[fromRow][fromCol] === this.currentPlayer){
-      let rightSide = this.check_grand_right(fromRow,fromCol,toRow,toCol,grid);
+    if(grid[fromRow][fromCol] === turn){
+      let rightSide = this.check_grand_right(fromRow,fromCol,toRow,toCol,grid,turn);
       console.log("rightSide = ", rightSide);
       if(rightSide === 1){
         console.log("rightSide === 1")
         return true;
       }
       else if(rightSide === 2 || rightSide === 0){ //this is a valid path but user didn't choose it
-        let leftSide = this.check_grand_left(fromRow,fromCol,toRow,toCol,grid);
+        let leftSide = this.check_grand_left(fromRow,fromCol,toRow,toCol,grid,turn);
         console.log("LeftSide = ", leftSide);
         if(leftSide === 1){
           return true;
@@ -140,7 +140,7 @@ export class Checkers extends GameEngine {// export default
           alert("You can attack!");
           return false;
         }else if(leftSide ===  0){
-          if(this.check_move(fromRow,fromCol,toRow,toCol,grid)){
+          if(this.check_move(fromRow,fromCol,toRow,toCol,grid,turn)){
             console.log("I am here in check_move");
             return true;
           }else{
@@ -150,8 +150,9 @@ export class Checkers extends GameEngine {// export default
         }
       }
     }else{
+      console.log("Current player:", turn);
       alert("Not current player's piece");
-      console.log("Current player:", this.currentPlayer)
+      
       return false;
     }
   }
@@ -196,27 +197,36 @@ export class Checkers extends GameEngine {// export default
     //this.controller([fromRow,fromCol,toRow,toCol]);
   // }
 
-  controller(input){
+  controller(grid,input,turn){
     // console.log("In Controller");
     // const input= this.takeInputFromUser();
     // console.log("I am here ")
-    // console.log("input:",input,"grid:",grid,"parent:", this.currentPlayer)
-    this.play(input,grid,this.currentPlayer);
-  }
-  whichPlayer(){
-    return this.currentPlayer;
-  }
-  reverseTurns(){
-
-    if(this.currentPlayer === 1){
-      this.currentPlayer = -1;
-    }else{
-      this.currentPlayer = 1;
+    // console.log("input:",input,"grid:",grid,"parent:", turn)
+    // this.play(input,grid,turn);
+    console.log("in controller trun = ",turn);
+    let valid=this.isValid(input,grid,turn);
+    if(valid){
+      grid=this.makeMove(input,grid);
     }
-    const curPlayer = document.getElementById("currPlayer");
-    curPlayer.value = this.currentPlayer === -1?"White":"Black"
-    console.log("Current player:", this.currentPlayer === -1?"white":"black");
+    console.log("in controller valid =",valid);
+    return {
+      grid:grid,
+      valid:valid,
+    }
   }
+  
+  // reverseTurns(turn){
+  //   if(turn === 1){
+  //     turn = -1;
+  //   }else{
+  //     turn = 1;
+  //   }
+  //   const curPlayer = document.getElementById("currPlayer");
+  //   curPlayer.value = turn === -1?"White":"Black"
+  //   console.log("Current player:", turn === -1?"white":"black");
+  //   return turn;
+  // }
+  
   takeInputFromUser() {
     return new Promise(resolve => {
       const fromRow = parseInt(prompt("Enter the row number of the piece to move (1-8)")) - 1;
@@ -285,7 +295,7 @@ export class Checkers extends GameEngine {// export default
       [-1, 0, -1, 0, -1, 0, -1, 0]
     ];
     // this.drawBoard(grid);
-    let noOfPlayers = 2;
+    var noOfPlayers = 2;
     // console.log("Current player: ",currentPlayer === -1?"white":"black");
     // this.drawBoard(grid);
     // const connectButton = document.getElementById("but");
@@ -305,10 +315,10 @@ export class Checkers extends GameEngine {// export default
     // console.log(`from = ${from}, to = ${to}`)
     // this.makeMove(from, to);
     // const curPlayer = document.getElementById("currPlayer");
-    // curPlayer.value = this.currentPlayer === -1?"White":"Black"
+    // curPlayer.value = turn === -1?"White":"Black"
     return {
       grid: grid,
-      players: noOfPlayers,
+      noOfPlayers: noOfPlayers,
     };
   }   
 }

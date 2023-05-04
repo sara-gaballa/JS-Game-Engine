@@ -1,22 +1,10 @@
 
 export class GameEngine {// 
-  constructor() {//boardSize, pieces
-    // this.boardSize = boardSize;
-    // this.pieces = pieces;
-    // this.board = Array.from({ length: boardSize[0] }, () => Array.from({ length: boardSize[1] }, () => null));
-
-
-    // const readline = require('readline');
-    // this.rl = readline.createInterface({
-    //   input: process.stdin,
-    //   output: process.stdout
-    // });
-  }
     drawBoard(grid){}
 
-    controller(grid,input){} // return grid, boolean that is valid
+    controller(grid,input,turn){} // return grid, boolean that is valid
     
-    isValid(input,grid){ // return boolean
+    isValid(input,grid,turn){ // return boolean
       throw new Error("Method 'isValid()' must be implemented in each class.");
     }
 
@@ -39,12 +27,12 @@ export class GameEngine {//
 
     takeInputFromUser() { // called by play
       //4a 5c, a, 3a 4, 3a,
-      return new Promise(() => {
-        this.rl.question('Enter a move: ', (input) => {
-          console.log(`You entered, ${input}`);
-          console.log('In take input:in the game engine');
-        });
-      });
+      // return new Promise(() => {
+      //   this.rl.question('Enter a move: ', (input) => {
+      //     console.log(`You entered, ${input}`);
+      //     console.log('In take input:in the game engine');
+      //   });
+      // });
     }
 
 
@@ -55,26 +43,36 @@ export class GameEngine {//
 
   async play(){
     let {grid, noOfPlayers}= this.init();
-    
+    let turn = 0;
+    console.log("before noOfPlayers");
+    if(noOfPlayers === 2){
+      console.log("in noOfPlayers");
+        turn = 1;
+    }
     console.log("play");
     this.drawBoard(grid);
     let exitLoop = false;
+    var valid=true;
     while(!exitLoop){
       await new Promise(resolve => setTimeout(resolve, 100));
       const input = await this.takeInputFromUser();
       console.log("input: ",input);
       //const input = [5,0,4,1];
-      if(this.isValid(input,grid)){
+      ({grid, valid }= this.controller(grid,input,turn));
+      console.log("in play valid =",valid);
+      if(valid){
         console.log("valid");
-        this.makeMove(input,grid);
+        // this.makeMove(input,grid);
         this.drawBoard(grid);
-        this.reverseTurns();
-
-      }else {
-        console.log("Invalid");
+        if(noOfPlayers === 2){
+          console.log("in nP=2 reverse");
+          turn = this.reverseTurns(turn);
+        }
+          
       }
-      
-      
+      // else {
+      //   alert("Invalid");
+      // }
       // If some condition is met, exit the loop
       if (input == "4") {
         exitLoop = true;
@@ -100,16 +98,12 @@ export class GameEngine {//
     //   });
     //   if(valid){
     //     this.drawBoard(state);
-    //     if(noOfPlayers === 2)
-    //       turn = this.reverseTurns(turn);
-    //   }
+      //   if(noOfPlayers === 2)
+      //     turn = this.reverseTurns(turn);
+      // }
     // }
   }
   
-
-  whichPlayer(){
-    throw new Error("Method 'whichPlayer()' must be implemented in each class.");
-  }
   reverseTurns(turn){
     return -1 * turn;
   } 
