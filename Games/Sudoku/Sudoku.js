@@ -152,6 +152,7 @@ drawBoard(grid) {
         cell.appendChild(piece);
         } else if (pieceValue <0) {
         const piece = document.createElement("div");
+        piece.className="init";
         piece.innerHTML=`${-1*pieceValue}`;
         cell.appendChild(piece);
         }

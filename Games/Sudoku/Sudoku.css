@@ -98,6 +98,10 @@
     background-color: #c1a7f5;
  
   }
+
+  table#board div.init {
+    color: #40157b; 
+  }
   
 
   
