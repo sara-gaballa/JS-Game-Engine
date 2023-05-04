@@ -2,8 +2,8 @@
 
 // Check if running in a browser environment
 import {Checkers} from "../Games/Checkers/Checkers.js";
-
 if (typeof window !== "undefined") {
+
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const game = urlParams.get('game');
@@ -12,7 +12,7 @@ if (typeof window !== "undefined") {
         let checkers = new Checkers();
         checkers.play();
         console.log(game);
-        window.location.href = "../Games/" + game + "/" + game +".html";
+        // window.location.href = "../Games/" + game + "/" + game +".html";
     } else if (game === 'chess') {
         // let chess = new Chess();
         window.location.href = "../Games/" + game + "/" + game +".html";

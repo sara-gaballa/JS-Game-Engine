@@ -48,26 +48,62 @@ export class GameEngine {//
     }
 
 
-  init(){} 
+  init(){
+
+  } 
 
 
   async play(){
-    let turn = 0;
-    let {grid, noOfPlayers} = this.init();
-    if(noOfPlayers === 2){
-      turn = 1;
-    }
-    while(true){
-      let valid;
-      await this.takeInputFromUser().then((input) => {
-        valid = this.controller(grid,input);
-      });
-      if(valid){
-        this.drawBoard(state);
-        if(noOfPlayers === 2)
-          turn = this.reverseTurns(turn);
+    let {grid, noOfPlayers}= this.init();
+    
+    console.log("play");
+    this.drawBoard(grid);
+    let exitLoop = false;
+    while(!exitLoop){
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const input = await this.takeInputFromUser();
+      console.log("input: ",input);
+      //const input = [5,0,4,1];
+      if(this.isValid(input,grid)){
+        console.log("valid");
+        this.makeMove(input,grid);
+        this.drawBoard(grid);
+        this.reverseTurns();
+
+      }else {
+        console.log("Invalid");
+      }
+      
+      
+      // If some condition is met, exit the loop
+      if (input == "4") {
+        exitLoop = true;
       }
     }
+    
+    // if(this.valid){
+    //   this.makeMove();
+    //   this.drawBoard(grid);
+    // }else{
+    //   console.log("invalid");
+    // }
+    
+    // let turn = 0;
+    // let {grid, noOfPlayers} = this.init();
+    // if(noOfPlayers === 2){
+    //   turn = 1;
+    // }
+    // while(true){
+    //   let valid;
+    //   await this.takeInputFromUser().then((input) => {
+    //     valid = this.controller(grid,input);
+    //   });
+    //   if(valid){
+    //     this.drawBoard(state);
+    //     if(noOfPlayers === 2)
+    //       turn = this.reverseTurns(turn);
+    //   }
+    // }
   }
   
 
@@ -82,16 +118,6 @@ export class GameEngine {//
 // const game = new GameEngine();
 
 // const game = new Checkers(grid);
-// var grid = [
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [0, 0, 0, 0, 0, 0, 0, 0],
-//   [1, 1, 1, 1, 1, 1, 1, 1]
-// ];
+
 // game.play();
 // module.exports = Checkers;

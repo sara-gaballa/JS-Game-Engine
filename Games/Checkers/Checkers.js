@@ -48,7 +48,7 @@ export class Checkers extends GameEngine {// export default
     }
   }
 
-  check_grand_right(fromRow,fromCol,toRow,toCol){// method to check if you can eat your opponent if right grand parent is empty
+  check_grand_right(fromRow,fromCol,toRow,toCol,grid){// method to check if you can eat your opponent if right grand parent is empty
     let sign = 1;
     if(this.currentPlayer === -1){
       sign = -1;
@@ -70,7 +70,7 @@ export class Checkers extends GameEngine {// export default
       }
     }return 0; //means that  there is nothing to eat
   }
-  check_grand_left(fromRow,fromCol,toRow,toCol){
+  check_grand_left(fromRow,fromCol,toRow,toCol,grid){
     let sign = 1;
     if(this.currentPlayer === -1){
       sign = -1;
@@ -91,7 +91,7 @@ export class Checkers extends GameEngine {// export default
     }return 0; //means that  there is nothing to eat
   }
 
-  check_move(fromRow,fromCol,toRow,toCol){
+  check_move(fromRow,fromCol,toRow,toCol,grid){
     let sign = 1;
     if(this.currentPlayer === -1){
       sign = -1;
@@ -106,7 +106,8 @@ export class Checkers extends GameEngine {// export default
   }
   
   // TODO isValid
-  isValid(input){
+  isValid(input,grid){
+    // console.log("inputvalid: "+input);
     console.log("In isValid:in checkers")
     // if(input == NaN) return false;
     let [fromRow,fromCol,toRow,toCol] = input;
@@ -124,14 +125,14 @@ export class Checkers extends GameEngine {// export default
       return false;
     }
     if(grid[fromRow][fromCol] === this.currentPlayer){
-      let rightSide = this.check_grand_right(fromRow,fromCol,toRow,toCol);
+      let rightSide = this.check_grand_right(fromRow,fromCol,toRow,toCol,grid);
       console.log("rightSide = ", rightSide);
       if(rightSide === 1){
         console.log("rightSide === 1")
         return true;
       }
       else if(rightSide === 2 || rightSide === 0){ //this is a valid path but user didn't choose it
-        let leftSide = this.check_grand_left(fromRow,fromCol,toRow,toCol);
+        let leftSide = this.check_grand_left(fromRow,fromCol,toRow,toCol,grid);
         console.log("LeftSide = ", leftSide);
         if(leftSide === 1){
           return true;
@@ -139,7 +140,7 @@ export class Checkers extends GameEngine {// export default
           alert("You can attack!");
           return false;
         }else if(leftSide ===  0){
-          if(this.check_move(fromRow,fromCol,toRow,toCol)){
+          if(this.check_move(fromRow,fromCol,toRow,toCol,grid)){
             console.log("I am here in check_move");
             return true;
           }else{
@@ -160,7 +161,7 @@ export class Checkers extends GameEngine {// export default
   // whichPlayer
   // reverseTurns
 
-  makeMove(input) {
+  makeMove(input,grid) {
     let [fromRow,fromCol,toRow,toCol] = input ||[0,0,0,0];
     if(fromRow == undefined ||fromCol == undefined || toRow == undefined || toCol == undefined) return grid;
     if(fromRow !== 0 || fromCol !== 0 || toRow !== 0 || toCol !== 0){
@@ -175,24 +176,25 @@ export class Checkers extends GameEngine {// export default
     return grid;
   }
 
-  takeInputFromUser(from,to) {
-    let fromRow = parseInt(from?.charAt(0));
-    let fromCol = from?.charAt(1);
+  // takeInputFromUser1(from,to) {
+  //   let fromRow = parseInt(from?.charAt(0));
+  //   let fromCol = from?.charAt(1);
     // while(fromRow === undefined || fromCol === undefined);
-    let toRow = parseInt(to?.charAt(0));
-    let toCol = to?.charAt(1);
+    // let toRow = parseInt(to?.charAt(0));
+    // let toCol = to?.charAt(1);
     // console.log(`fromRow = ${fromRow} ,fromCol = ${fromCol} ,toRow = ${toRow} ,toCol = ${toCol}`);
     // console.log("returning from the takeInput");
-    fromRow = fromRow-1;
-    toRow = toRow-1;
-    toCol = (toCol?.charCodeAt(0) - 96) -1;
-    fromCol = (fromCol?.charCodeAt(0) - 96) -1;
-    const fromInput = document.getElementById("from-input");
-    const toInput = document.getElementById("to-input");
-    fromInput.value = "";
-    toInput.value = "";
-    this.controller([fromRow,fromCol,toRow,toCol]);
-  }
+    // fromRow = fromRow-1;
+    // toRow = toRow-1;
+    // toCol = (toCol?.charCodeAt(0) - 96) -1;
+    // fromCol = (fromCol?.charCodeAt(0) - 96) -1;
+    // const fromInput = document.getElementById("from-input");
+    // const toInput = document.getElementById("to-input");
+    
+    // fromInput.value = "";
+    // toInput.value = "";
+    //this.controller([fromRow,fromCol,toRow,toCol]);
+  // }
 
   controller(input){
     // console.log("In Controller");
@@ -215,8 +217,63 @@ export class Checkers extends GameEngine {// export default
     curPlayer.value = this.currentPlayer === -1?"White":"Black"
     console.log("Current player:", this.currentPlayer === -1?"white":"black");
   }
+  takeInputFromUser() {
+    return new Promise(resolve => {
+      const fromRow = parseInt(prompt("Enter the row number of the piece to move (1-8)")) - 1;
+      const fromCol = prompt("Enter the column letter of the piece to move (a-h)").charCodeAt(0) - 97;
+      const toRow = parseInt(prompt("Enter the row number of the destination square (1-8)")) - 1;
+      const toCol = prompt("Enter the column letter of the destination square (a-h)").charCodeAt(0) - 97;
+      const input = [fromRow, fromCol, toRow, toCol];
+      console.log("input: ", input);
+      resolve(input);
+    });
+    // console.log("input");
+    // let onClickHandler = null;
+    // return new Promise(resolve => {
+    //     const connectButton = document.getElementById("but");
+    //     onClickHandler = () => {
+    //         console.log("Button is clicked");
+    //         const fromInput = document.getElementById("from-input");
+    //         const toInput = document.getElementById("to-input");
+    //         if(fromInput !== null && toInput !== null){
+    //             const from = fromInput.value;
+    //             const to = toInput.value;
+    //             let fromRow = parseInt(from?.charAt(0));
+    //             let fromCol = from?.charAt(1);
+    //             while(fromRow === undefined || fromCol === undefined);
+    //             let toRow = parseInt(to?.charAt(0));
+    //             let toCol = to?.charAt(1);
+    //             fromRow = fromRow-1;
+    //             toRow = toRow-1;
+    //             toCol = (toCol?.charCodeAt(0) - 96) -1;
+    //             fromCol = (fromCol?.charCodeAt(0) - 96) -1;
+    //             const newFromInput = document.getElementById("from-input");
+    //             const newToInput = document.getElementById("to-input");
+    //             newFromInput.value = "";
+    //             newToInput.value = "";
+    //             const input = [fromRow, fromCol, toRow, toCol];
+    //             console.log("input11111: "+input);
+    //             resolve(input);
+    //             connectButton.removeEventListener("click", onClickHandler);
+    //         }
+    //     };
+    //     connectButton.addEventListener("click", onClickHandler);
+    // });
+   
+}
 
+    //   grid = [
+    //   [0, 1, 0, 1, 0, 1, 0, 1],
+    //   [1, 0, 1, 0, 1, 0, 1, 0],
+    //   [0, 1, 0, 1, 0, 1, 0, 1],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    //   [0, 0, 0, 0, 0, 0, 0, 0],
+    //   [-1, 0, -1, 0, -1, 0, -1, 0],
+    //   [0, -1, 0, -1, 0, -1, 0, -1],
+    //   [-1, 0, -1, 0, -1, 0, -1, 0]
+    // ];
   init() {
+
     var grid = [
       [0, 1, 0, 1, 0, 1, 0, 1],
       [1, 0, 1, 0, 1, 0, 1, 0],
@@ -227,7 +284,7 @@ export class Checkers extends GameEngine {// export default
       [0, -1, 0, -1, 0, -1, 0, -1],
       [-1, 0, -1, 0, -1, 0, -1, 0]
     ];
-    this.drawBoard(grid);
+    // this.drawBoard(grid);
     let noOfPlayers = 2;
     // console.log("Current player: ",currentPlayer === -1?"white":"black");
     // this.drawBoard(grid);
