@@ -1,12 +1,10 @@
 import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
-export default class EightQueens extends GameEngine {
-  constructor(grid) {
-    super([9, 8], ["red", "yellow"]);
-    this.grid = grid;
-  }
+export class EightQueens extends GameEngine {
 
-  drawBoard() {
+
+  drawBoard(grid) {
+
     const canvas = document.getElementById("canvas1");
     const ctx = canvas.getContext("2d");
   
@@ -49,7 +47,7 @@ export default class EightQueens extends GameEngine {
     img.onload = function() {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 8; j++) {
-          if (this.grid[i][j] == 1) {
+          if (grid[i][j] == 1) {
             ctx.drawImage(img, j * CELL_SIZE + 50, i * CELL_SIZE + 50, 55, 55);
           }
         }
@@ -57,68 +55,61 @@ export default class EightQueens extends GameEngine {
     }.bind(this);
   }
   
-  
-
-      makeMove(queen,to) {
-        const queenInt = queen.charCodeAt(0) - 97;
-        if(this.isValid(queenInt,to)){
-          console.log("to: "+to );
-          console.log("queen: " +queenInt);
-          this.grid[to][queenInt]=1;
-          this.grid[8][queenInt]=0;
-          console.log(this.grid);
-          this.drawBoard();
-        } else{
-            console.log("invalid move");
-            alert("invalid move");
-        }
+      makeMove(input,grid) {
+        const column = input[0].charCodeAt(0) - 97; // column is now 0
+        const row = input[1];
+        grid[row][column]=1;
+        grid[8][column]=0;
+        return grid;
         
     }
-    isValid(queen,to){
-      const toInt = parseInt(to, 10);
+
+    isValid(input,grid,turn){//What The???
+      const column = input[0].charCodeAt(0) - 97; // column is now 0
+      const row = input[1];
+      const toInt = parseInt(row, 10);
       if (!Number.isInteger(toInt)) {
         
         return false;
       }
-      if(queen < 0 || queen > 7 || to < 0 || to > 7){
+      if(column < 0 || column > 7 || row < 0 || row > 7){
         
         return false;
       }
       else {
         for(let i = 0 ;i < 8;i++ ){
-          if(grid[to][i]==1){
+          if(grid[row][i]==1){
             
             return false;
           }
         }
         for(let j = 0 ;j < 8 ;j++){
-          if(grid[j][queen]==1){
+          if(grid[j][column]==1){
             
             return false;
           }
         }
-        let i = to;
-        for(let j = queen ;j >= 0 && i >=0; j-- ){
+        let i = row;
+        for(let j = column ;j >= 0 && i >=0; j-- ){
           if(grid[i][j]==1){
             
             return false;
           }else i--;
         }
-        let k = to;
-        for(let j = queen ;j < 8 && k != 8; j++ ){
+        let k = row;
+        for(let j = column ;j < 8 && k != 8; j++ ){
           if(grid[k][j]==1){
-            console.log("here?");
             return false;
           }else k++;
         }
-        let l = to;
-        for(let j = queen ;j >= 0 && l != 8; j-- ){
+        let l = row;
+        for(let j = column ;j >= 0 && l != 8; j-- ){
           if(grid[l][j]==1){
             return false;
           }else l++;
         }
-        let p = to;
-        for(let j = queen ;j < 8 && p >= 0; j++ ){
+        let p = row;
+        for(let j = column ;j < 8 && p >= 0; j++ ){
           if(grid[p][j]==1){
             return false;
           }else p--;
@@ -126,32 +117,33 @@ export default class EightQueens extends GameEngine {
       }
      return true;
   }
-    
-    
+
+
+
+  takeInputFromUser() {
+    return new Promise(resolve => {
+      const input = prompt("Enter the queen letter and the column number (a 1)");
+      const inputArray = input.split(" ");
+      resolve(inputArray);
+    });
+  }
       init() {
-        this.drawBoard();
-        const connectButton = document.getElementById("but");
-        connectButton.addEventListener("click", () => {
-          const queenInput = document.getElementById("from-input");
-          const toInput = document.getElementById("to-input");
-          const queen =queenInput.value;
-          const to = toInput.value;
-          this.makeMove(queen,to);
-        });
-      }
+        var grid = [
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0],
+          [1, 1, 1, 1, 1, 1, 1, 1]
+        ];
+        var noOfPlayers = 1;
+        return {
+          grid: grid,
+          noOfPlayers: noOfPlayers,
+        };
+      } 
       
 }
-var grid = [
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [1, 1, 1, 1, 1, 1, 1, 1]
-  
-];
-const game = new EightQueens(grid);
-game.init();

@@ -5,7 +5,7 @@ import {Checkers} from "../Games/Checkers/Checkers.js";
 import {Sudoku} from "../Games/Sudoku/Sudoku.js";
 import {TicTacToe} from "../Games/Tic-Tac-Toe/Tic-Tac-Toe.js";
 import {Chess} from "../Games/Chess/Chess.js";
-
+import {EightQueens} from "../Games/Eight-Queens/Eight-Queens.js";
 if (typeof window !== "undefined") {
 
     const queryString = window.location.search;
@@ -31,8 +31,10 @@ if (typeof window !== "undefined") {
         console.log(game);
        // window.location.href = "../Games/" + game + "/" + game +".html";
     } else if (game === 'Eight-Queens') {
+        let eightqueens = new EightQueens();
+        eightqueens.play();
         console.log(game);
-        window.location.href = "../Games/" + game + "/" + game +".html";
+        // window.location.href = "../Games/" + game + "/" + game +".html";
     } else if (game === 'Tic-Tac-Toe') {
         let Tic=new TicTacToe();
         Tic.play();
