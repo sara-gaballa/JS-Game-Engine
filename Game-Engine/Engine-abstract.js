@@ -49,7 +49,13 @@ export class GameEngine {//
     //     console.log('In take input:in the game engine');
     //   });
     // });
+    return new Promise(resolve => {
+      const input = prompt("Enter input");
+      resolve(input);
+    });
   }
+
+  parseInput(input){}
 
 init(){} 
 
@@ -73,8 +79,10 @@ async play(){
     await new Promise(resolve => setTimeout(resolve, 500));
     const input = await this.takeInputFromUser();
     console.log("In engine Input: ",input);
+    let parsedInput=this.parseInput(input);
+    console.log("In engine parsedInput: ",parsedInput);
     //const input = [5,0,4,1];
-    ({grid, valid}= this.controller(grid,input,turn));
+    ({grid, valid}= this.controller(grid,parsedInput,turn));
     console.log("in play valid =",valid);
     if(valid){
       console.log("valid");

@@ -164,15 +164,23 @@ drawBoard(grid) {
     
   }
 
-  takeInputFromUser(){
-    return new Promise(resolve => {
-      const i = parseInt(prompt("Enter the row number of the piece to move (0-8)"));
-      const j = prompt("Enter the column letter of the piece to move (a-i)").charCodeAt(0) - 97;
-      const num = parseInt(prompt("Enter 0 to delet or a number (1-9) to enter"));
-      const input = [i, j, num];
-      console.log("input: ", input);
-      resolve(input);
-    });
+  // takeInputFromUser(){
+  //   return new Promise(resolve => {
+  //     const i = parseInt(prompt("Enter the row number of the piece to move (0-8)"));
+  //     const j = prompt("Enter the column letter of the piece to move (a-i)").charCodeAt(0) - 97;
+  //     const num = parseInt(prompt("Enter 0 to delet or a number (1-9) to enter"));
+  //     const input = [i, j, num];
+  //     console.log("input: ", input);
+  //     resolve(input);
+  //   });
+  // }
+
+  parseInput(input){//0a 1
+    if(input.length>4) return[NaN,NaN,NaN];
+    const i = parseInt(input.charAt(0));//Enter the row number of the piece to move (0-8)"
+    const j = input.charAt(1).charCodeAt(0)- 97;//"Enter the column letter of the piece to move (a-i)"
+    const num = parseInt(input.charAt(3));//"Enter 0 to delet or a number (1-9) to enter"
+    return [i, j, num];
   }
 
 
@@ -185,6 +193,10 @@ drawBoard(grid) {
     
     isValid(input,grid){
       let [i,j,num] = input;
+      if(isNaN(i)  ||isNaN(j) || isNaN(num) ) {
+        alert("Invalid input!!");
+        return false;
+      }
       if(i>=0 && i<=8 && j>=0 && j<=8 && num>=0 && num<=9 ){
         if(num >0 ){//add
           if( grid[i][j]>=0 && this.checkIfSafe(grid,i, j, num)){

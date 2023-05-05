@@ -207,19 +207,29 @@ export class Chess extends GameEngine {
             return false
         }
     }
-    takeInputFromUser() {
-        // window.onload = function() {
-            return new Promise(resolve => {
-                const fromRow = parseInt(prompt("Enter the row number of the piece to move (1-8)")) - 1;
-                const fromCol = prompt("Enter the column letter of the piece to move (a-h)").charCodeAt(0) - 97;
-                const toRow = parseInt(prompt("Enter the row number of the destination square (1-8)")) - 1;
-                const toCol = prompt("Enter the column letter of the destination square (a-h)").charCodeAt(0) - 97;
-                const input = [fromRow, fromCol, toRow, toCol];
-                console.log("input: ", input);
-                resolve(input);
-            });
-// }
+//     takeInputFromUser() {
+//         // window.onload = function() {
+//             return new Promise(resolve => {
+//                 const fromRow = parseInt(prompt("Enter the row number of the piece to move (1-8)")) - 1;
+//                 const fromCol = prompt("Enter the column letter of the piece to move (a-h)").charCodeAt(0) - 97;
+//                 const toRow = parseInt(prompt("Enter the row number of the destination square (1-8)")) - 1;
+//                 const toCol = prompt("Enter the column letter of the destination square (a-h)").charCodeAt(0) - 97;
+//                 const input = [fromRow, fromCol, toRow, toCol];
+//                 console.log("input: ", input);
+//                 resolve(input);
+//             });
+// // }
+//     }
+
+    parseInput(input){//2a 3a
+        if(input.length>5) return[NaN,NaN,NaN,NaN];
+        const fromRow = parseInt(input.charAt(0)) - 1;
+        const fromCol = input.charAt(1).charCodeAt(0) - 97;
+        const toRow = parseInt(input.charAt(3)) - 1;
+        const toCol = input.charAt(4).charCodeAt(0) - 97;
+        return [fromRow, fromCol, toRow, toCol];
     }
+
     isValid(input,grid,turn){
         console.log(input)
         const fromRow = input[0];
@@ -227,6 +237,21 @@ export class Chess extends GameEngine {
         const toRow = input[2];
         const toCol = input[3];
         console.log("fromR "+ fromRow+" fromcol "+ fromCol +"ftoR "+ toRow+" tocol "+ toCol)
+        if(isNaN(fromRow)  ||isNaN(fromCol) || isNaN(toRow) || isNaN(toCol)) {
+            console.log("In first2");
+            alert("Invalid input!!");
+            return false;
+          }
+        if(fromRow < 0 || fromRow > 7 || fromCol < 0 || fromCol > 7 || toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) {
+            console.log("In second");
+            alert("Invalid input!!");
+            return false;
+        }
+        if((grid[7 - fromRow][fromCol].toString().charAt(0)=='-' && turn!=-1)||(grid[7 - fromRow][fromCol].toString().charAt(0)!='-' && turn!=1)){
+            console.log("In third");
+            alert("Not current player's piece");
+            return false;
+        }
         if((fromRow != toRow || fromCol != toCol) && (grid[7 - toRow][toCol].toString().charAt(0) != grid[7 - fromRow][fromCol].toString().charAt(0))){
             if(grid[7 - fromRow][fromCol] == "+P" &&turn == 1){
                 return this.pawnMove(fromRow, fromCol, toRow, toCol, "black", grid)

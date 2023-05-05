@@ -47,19 +47,32 @@ export class Connect4 extends GameEngine {
     }
     
     isValid(input,grid,turn){
-        if(grid[0][input]!=0){
-            //full 
-            return false;
-        } else {
-            return true;
-        }
-    }
+      if(isNaN(input)||input<0 || input>6){
+        alert("invaild input");
+        return false;
+      }
+      else if(grid[0][input]!=0){
+          //full 
+          alert("this column is full");
+          return false;
+      } else {
+          return true;
+      }
+  }
 
-    takeInputFromUser() {
-      return new Promise(resolve => {
-        const input = prompt("Enter the column number (0)");
-        resolve(input);
-      });
+    // takeInputFromUser() {
+    //   return new Promise(resolve => {
+    //     const input = prompt("Enter the column number (0)");
+    //     resolve(input);
+    //   });
+    // }
+
+    parseInput(input){// 1
+      if(input.length==1 && input>=0 && input<=6){
+        return input
+      }else{
+        return NaN //out of bound
+      }
     }
     
       // init() {

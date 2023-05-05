@@ -37,7 +37,7 @@ export class TicTacToe extends GameEngine {
   isValid(input,grid,turn){
     let [toRow, toCol] = input;
     console.log(`${toRow},${toCol}`);
-      if(toRow > 2 || toCol >2)  {
+      if(isNaN(toRow) || isNaN(toCol) || toRow > 2 || toCol >2 || toRow <0 || toCol <0)  {
         alert("Invalid move");
         return false;
       }
@@ -54,16 +54,21 @@ export class TicTacToe extends GameEngine {
     const curPlayer = document.getElementById("currPlayer");
     curPlayer.value = turn === -1? "Blue" : "Red";
   }
-
-  takeInputFromUser() {
-    return new Promise(resolve => {
-      const toRow = parseInt(prompt("Enter the row number of the piece to move (0-2)"));
-      const toCol = prompt("Enter the column letter of the piece to move (a-c)").charCodeAt(0) - 97;
-      const input = [toRow, toCol];
-      console.log("input: ", input);
-      resolve(input);
-    });
+  parseInput(input){//0a
+    if(input.length>2) return[NaN,NaN];
+    const toRow = parseInt(input.charAt(0));
+    const toCol = input.charAt(1).charCodeAt(0) - 97;
+    return [toRow, toCol];
   }
+  // takeInputFromUser() {
+  //   return new Promise(resolve => {
+  //     const toRow = parseInt(prompt("Enter the row number of the piece to move (0-2)"));
+  //     const toCol = prompt("Enter the column letter of the piece to move (a-c)").charCodeAt(0) - 97;
+  //     const input = [toRow, toCol];
+  //     console.log("input: ", input);
+  //     resolve(input);
+  //   });
+  // }
   init() {
     var grid = [
       [0, 0, 0],

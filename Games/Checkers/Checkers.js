@@ -113,15 +113,18 @@ export class Checkers extends GameEngine {// export default
     let [fromRow,fromCol,toRow,toCol] = input;
     console.log(`${fromRow},${fromCol} : ${toRow},${toCol}`)
     if(fromRow == undefined ||fromCol == undefined || toRow == undefined || toCol == undefined) {
-      console.log("In first")
+      console.log("In first");
+      alert("Invalid input!!");
       return false;
     }
-    if(fromRow == NaN ||fromCol == NaN || toRow == NaN || toCol == NaN) {
-      console.log("In first2")
+    if(isNaN(fromRow)  ||isNaN(fromCol) || isNaN(toRow) || isNaN(toCol)) {
+      console.log("In first2");
+      alert("Invalid input!!");
       return false;
     }
-    if(fromRow < 0 || fromRow > 8 || fromCol < 0 || fromCol > 8 || toRow < 0 || toRow > 8 || toCol < 0 || toCol > 8) {
-      console.log("In second")
+    if(fromRow < 0 || fromRow > 7 || fromCol < 0 || fromCol > 7 || toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) {
+      console.log("In second");
+      alert("Invalid input!!");
       return false;
     }
     if(grid[fromRow][fromCol] === turn){
@@ -197,23 +200,23 @@ export class Checkers extends GameEngine {// export default
     //this.controller([fromRow,fromCol,toRow,toCol]);
   // }
 
-  controller(grid,input,turn){
-    // console.log("In Controller");
-    // const input= this.takeInputFromUser();
-    // console.log("I am here ")
-    // console.log("input:",input,"grid:",grid,"parent:", turn)
-    // this.play(input,grid,turn);
-    console.log("in controller trun = ",turn);
-    let valid=this.isValid(input,grid,turn);
-    if(valid){
-      grid=this.makeMove(input,grid);
-    }
-    console.log("in controller valid =",valid);
-    return {
-      grid:grid,
-      valid:valid,
-    }
-  }
+  // controller(grid,input,turn){
+  //   // console.log("In Controller");
+  //   // const input= this.takeInputFromUser();
+  //   // console.log("I am here ")
+  //   // console.log("input:",input,"grid:",grid,"parent:", turn)
+  //   // this.play(input,grid,turn);
+  //   console.log("in controller trun = ",turn);
+  //   let valid=this.isValid(input,grid,turn);
+  //   if(valid){
+  //     grid=this.makeMove(input,grid);
+  //   }
+  //   console.log("in controller valid =",valid);
+  //   return {
+  //     grid:grid,
+  //     valid:valid,
+  //   }
+  // }
   whichPlayer(turn){
     const curPlayer = document.getElementById("currPlayer");
     curPlayer.value = turn === -1? "White" : "Black";
@@ -230,17 +233,24 @@ export class Checkers extends GameEngine {// export default
   //   console.log("Current player:", turn === -1?"white":"black");
   //   return turn;
   // }
-  
-  takeInputFromUser() {
-    return new Promise(resolve => {
-      const fromRow = parseInt(prompt("Enter the row number of the piece to move (1-8)")) - 1;
-      const fromCol = prompt("Enter the column letter of the piece to move (a-h)").charCodeAt(0) - 97;
-      const toRow = parseInt(prompt("Enter the row number of the destination square (1-8)")) - 1;
-      const toCol = prompt("Enter the column letter of the destination square (a-h)").charCodeAt(0) - 97;
-      const input = [fromRow, fromCol, toRow, toCol];
-      console.log("input: ", input);
-      resolve(input);
-    });
+  parseInput(input){//3b 4a
+    if(input.length>5) return[NaN,NaN,NaN,NaN];
+    const fromRow = parseInt(input.charAt(0)) - 1;
+    const fromCol = input.charAt(1).charCodeAt(0) - 97;
+    const toRow = parseInt(input.charAt(3)) - 1;
+    const toCol = input.charAt(4).charCodeAt(0) - 97;
+    return [fromRow, fromCol, toRow, toCol];
+  }
+  // takeInputFromUser() {
+    // return new Promise(resolve => {
+    //   const fromRow = parseInt(prompt("Enter the row number of the piece to move (1-8)")) - 1;
+    //   const fromCol = prompt("Enter the column letter of the piece to move (a-h)").charCodeAt(0) - 97;
+    //   const toRow = parseInt(prompt("Enter the row number of the destination square (1-8)")) - 1;
+    //   const toCol = prompt("Enter the column letter of the destination square (a-h)").charCodeAt(0) - 97;
+    //   const input = [fromRow, fromCol, toRow, toCol];
+    //   console.log("input: ", input);
+    //   resolve(input);
+    // });
     // console.log("input");
     // let onClickHandler = null;
     // return new Promise(resolve => {
@@ -274,7 +284,7 @@ export class Checkers extends GameEngine {// export default
     //     connectButton.addEventListener("click", onClickHandler);
     // });
    
-}
+// }
 
     //   grid = [
     //   [0, 1, 0, 1, 0, 1, 0, 1],

@@ -54,9 +54,22 @@ export class EightQueens extends GameEngine {
       }
     }.bind(this);
   }
-  
-      makeMove(input,grid) {
-        const column = input[0].charCodeAt(0) - 97; // column is now 0
+
+  // takeInputFromUser() {
+  //   return new Promise(resolve => {
+  //     const input = prompt("Enter the queen letter and the column number (a 1)");
+  //     const inputArray = input.split(" ");
+  //     resolve(inputArray);
+  //   });
+  // }
+  parseInput(input){//a 7
+    if(input.length>3) return[NaN,NaN];
+    const column = input.charAt(0).charCodeAt(0) - 97;
+    const row = parseInt(input.charAt(2));
+    return [column,row];
+  }
+    makeMove(input,grid) {
+        const column = input[0]; // column is now 0
         const row = input[1];
         grid[row][column]=1;
         grid[8][column]=0;
@@ -65,52 +78,60 @@ export class EightQueens extends GameEngine {
     }
 
     isValid(input,grid,turn){//What The???
-      const column = input[0].charCodeAt(0) - 97; // column is now 0
+      const column = input[0]; // column is now 0
       const row = input[1];
       const toInt = parseInt(row, 10);
-      if (!Number.isInteger(toInt)) {
-        
+      if(isNaN(row)||isNaN(column)){
+        alert("invaild input");
         return false;
       }
+      if (!Number.isInteger(toInt)) {
+        alert("invaild input");
+        return false;
+      }
+      console.log("row= "+row+" col = "+column);
       if(column < 0 || column > 7 || row < 0 || row > 7){
-        
+        alert("invaild input");
         return false;
       }
       else {
         for(let i = 0 ;i < 8;i++ ){
           if(grid[row][i]==1){
-            
+            alert("invaild place");
             return false;
           }
         }
         for(let j = 0 ;j < 8 ;j++){
           if(grid[j][column]==1){
-            
+            alert("invaild place");
             return false;
           }
         }
         let i = row;
         for(let j = column ;j >= 0 && i >=0; j-- ){
           if(grid[i][j]==1){
-            
+            alert("invaild place");
             return false;
           }else i--;
         }
         let k = row;
         for(let j = column ;j < 8 && k != 8; j++ ){
           if(grid[k][j]==1){
+            alert("invaild place");
             return false;
           }else k++;
         }
         let l = row;
         for(let j = column ;j >= 0 && l != 8; j-- ){
           if(grid[l][j]==1){
+            alert("invaild place");
             return false;
           }else l++;
         }
         let p = row;
         for(let j = column ;j < 8 && p >= 0; j++ ){
           if(grid[p][j]==1){
+            alert("invaild place");
             return false;
           }else p--;
         }
@@ -120,13 +141,7 @@ export class EightQueens extends GameEngine {
 
 
 
-  takeInputFromUser() {
-    return new Promise(resolve => {
-      const input = prompt("Enter the queen letter and the column number (a 1)");
-      const inputArray = input.split(" ");
-      resolve(inputArray);
-    });
-  }
+ 
       init() {
         var grid = [
           [0, 0, 0, 0, 0, 0, 0, 0],
