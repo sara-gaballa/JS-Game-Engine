@@ -85,17 +85,16 @@
   }
 
   table#board td.c1 {
-    background-color: #faae51;
- 
+    background-color: #dad6ffda;
   }
 
   table#board td.c2 {
-    background-color: #fe0ee2;
+    background-color: #f1f2f6;
  
   }
 
   table#board td.c3 {
-    background-color: #fa0632;
+    background-color: #b7aef2de;
  
   }
 
@@ -103,7 +102,15 @@
     color: #40157b; 
   }
   
-
+  div#formate {
+    border-collapse: collapse;
+    margin: 0 auto;
+    color: #ffffff;
+    position: absolute;
+    top: 690px;
+    left: 700px;
+    z-index: 1; /* set a higher z-index value */
+  }
   
   #board {
     position: absolute;

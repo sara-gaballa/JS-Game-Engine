@@ -36,6 +36,17 @@ ul.controls {
     box-sizing: border-box;
     z-index: 1; /* set a higher z-index value */
   }
+
+  div#formate {
+    border-collapse: collapse;
+    margin: 0 auto;
+    color: #ffffff;
+    position: absolute;
+    top: 690px;
+    left: 700px;
+    z-index: 1; /* set a higher z-index value */
+  }
+  
   iframe {
     position: absolute;
     top: 0;

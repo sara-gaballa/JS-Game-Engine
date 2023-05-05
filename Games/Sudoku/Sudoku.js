@@ -209,6 +209,9 @@ drawBoard(grid) {
           if(grid[i][j]<0){
             alert("can't delet intial value");
             return false;
+          }else if(grid[i][j]===0){
+            alert("Nothing to delet: empty cell");
+            return false;
           }else{
             return true;
           }

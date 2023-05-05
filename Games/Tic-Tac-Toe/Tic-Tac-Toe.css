@@ -90,6 +90,16 @@
     font-size: 50px;
     color: rgb(21, 0, 255);
   }
+
+  div#formate {
+    border-collapse: collapse;
+    margin: 0 auto;
+    color: #ffffff;
+    position: absolute;
+    top: 690px;
+    left: 700px;
+    z-index: 1; /* set a higher z-index value */
+  }
   
   #board {
     position: absolute;
