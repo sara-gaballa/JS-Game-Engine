@@ -50,6 +50,11 @@ export class TicTacToe extends GameEngine {
       }
   }
 
+  whichPlayer(turn){
+    const curPlayer = document.getElementById("currPlayer");
+    curPlayer.value = turn === -1? "Blue" : "Red";
+  }
+
   takeInputFromUser() {
     return new Promise(resolve => {
       const toRow = parseInt(prompt("Enter the row number of the piece to move (0-2)"));

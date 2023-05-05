@@ -214,7 +214,11 @@ export class Checkers extends GameEngine {// export default
       valid:valid,
     }
   }
-  
+  whichPlayer(turn){
+    const curPlayer = document.getElementById("currPlayer");
+    curPlayer.value = turn === -1? "White" : "Black";
+  }
+
   // reverseTurns(turn){
   //   if(turn === 1){
   //     turn = -1;

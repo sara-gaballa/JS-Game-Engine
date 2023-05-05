@@ -63,11 +63,13 @@ async play(){
   if(noOfPlayers === 2){
     console.log("in noOfPlayers");
       turn = 1;
+      this.whichPlayer(turn);
   }
   this.drawBoard(grid);
   let exitLoop = false;
   var valid=true;
   while(!exitLoop){
+
     await new Promise(resolve => setTimeout(resolve, 500));
     const input = await this.takeInputFromUser();
     console.log("In engine Input: ",input);
@@ -81,6 +83,7 @@ async play(){
       if(noOfPlayers === 2){
         console.log("in nP=2 reverse");
         turn = this.reverseTurns(turn);
+        this.whichPlayer(turn);
       }    
     }
     // else {
@@ -116,6 +119,7 @@ async play(){
     // }
   // }
 }
+whichPlayer(turn){}
 
 reverseTurns(turn){
   return -1 * turn;
