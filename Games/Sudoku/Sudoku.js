@@ -2,10 +2,6 @@ import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
 export class Sudoku extends GameEngine {
 
-  // JS program to implement the approach
-
-	// Constructor
-
 	// Sudoku Generator
 	fillValues(grid) {
 		// Fill the diagonal of SRN x SRN matrices
@@ -27,8 +23,6 @@ export class Sudoku extends GameEngine {
 		}
     return grid;
 	}
-
-	
 
 	// Fill a 3 x 3 matrix.
 	fillBox(grid,row, col) {

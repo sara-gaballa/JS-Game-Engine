@@ -296,6 +296,13 @@ export class Chess extends GameEngine {
         }
         return grid;
     }
+
+    whichPlayer(turn){
+        const curPlayer = document.getElementById("currPlayer");
+        curPlayer.value = turn === -1? "White" : "Black";
+    }
+
+
     init(){
         var grid = [
             ["-R", "-Kn", "-B", "-Q", "-K", "-B", "-Kn", "-R"],

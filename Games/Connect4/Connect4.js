@@ -74,6 +74,11 @@ export class Connect4 extends GameEngine {
         return NaN //out of bound
       }
     }
+
+    whichPlayer(turn){
+      const curPlayer = document.getElementById("currPlayer");
+      curPlayer.value = turn === -1? "Yellow" : "Red";
+    }
     
       // init() {
       //   this.drawBoard();
