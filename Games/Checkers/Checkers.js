@@ -59,7 +59,7 @@ export class Checkers extends GameEngine {// export default
     }
     console.log("grid[fromRow+1*sign][fromCol+1] = ",grid[fromRow+1*sign][fromCol+1]);
     
-    if(grid[fromRow+1*sign][fromCol+1] === -1*sign && (grid[fromRow+2*sign][fromCol+2] === 0)){ // same as before //|| grid[fromRow+2][fromCol] === 0
+    if(grid[fromRow+1*sign][fromCol+1] === -1*sign && (grid[fromRow+2*sign][fromCol+2] === 0)){ // same as before 
       if(toRow === fromRow+2*sign && toCol === fromCol+2){
         console.log("Eating my oponent");
         grid[fromRow+1*sign][fromCol+1] = 0;
@@ -79,7 +79,7 @@ export class Checkers extends GameEngine {// export default
       console.log("In third2")
       return 0;
     }
-    if(grid[fromRow+1*sign][fromCol-1] === -1*sign && grid[fromRow+2*sign][fromCol-2] === 0){ // same as before //|| grid[fromRow+2][fromCol] === 0
+    if(grid[fromRow+1*sign][fromCol-1] === -1*sign && grid[fromRow+2*sign][fromCol-2] === 0){ // same as before
       if(toRow === fromRow+2*sign && toCol === fromCol-2){
         console.log("Eating my oponent")
         grid[fromRow+1*sign][fromCol-1] = 0;
@@ -139,7 +139,7 @@ export class Checkers extends GameEngine {// export default
         console.log("LeftSide = ", leftSide);
         if(leftSide === 1){
           return true;
-        }else if(leftSide === 2){
+        }else if(leftSide === 2 || rightSide === 2){
           alert("You can attack!");
           return false;
         }else if(leftSide ===  0){
