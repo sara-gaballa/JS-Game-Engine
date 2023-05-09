@@ -254,33 +254,70 @@ export class Chess extends GameEngine {
         }
         if((fromRow != toRow || fromCol != toCol) && (grid[7 - toRow][toCol].toString().charAt(0) != grid[7 - fromRow][fromCol].toString().charAt(0))){
             if(grid[7 - fromRow][fromCol] == "+P" &&turn == 1){
-                return this.pawnMove(fromRow, fromCol, toRow, toCol, "black", grid)
+                if(!this.pawnMove(fromRow, fromCol, toRow, toCol, "black", grid)){
+                    alert("Invalid input!!");
+                    return false;
+                }
             }else if(grid[7 - fromRow][fromCol] == "-P" && turn == -1){
-               return this.pawnMove(fromRow, fromCol, toRow, toCol, "white", grid)
+               if(!this.pawnMove(fromRow, fromCol, toRow, toCol, "white", grid)){
+                    alert("Invalid input!!");
+                    return false;
+               }
             }else if(grid[7 - fromRow][fromCol] == "+R" && turn == 1){
-                return this.rookMove(fromRow, fromCol, toRow, toCol, grid)
+                if(!this.rookMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+                }
             }else if(grid[7 - fromRow][fromCol] == "-R" && turn == -1){
-                return this.rookMove(fromRow, fromCol, toRow, toCol, grid)
+                if(!this.rookMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+                }
             }else if(grid[7 - fromRow][fromCol] == "+B" && turn == 1){
-                return this.bishopMove(fromRow, fromCol, toRow, toCol, grid)
+                if(!this.bishopMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+                }
             }else if(grid[7 - fromRow][fromCol] == "-B" && turn == -1){
-                return this.bishopMove(fromRow, fromCol, toRow, toCol, grid)
+               if(!this.bishopMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+               }
             }else if(grid[7 - fromRow][fromCol] == "+K" && turn == 1){
-                return this.kingMove(fromRow, fromCol, toRow, toCol, grid)
+                if(!this.kingMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+                }
             }else if(grid[7 - fromRow][fromCol] == "-K" && turn == -1){
-                return this.kingMove(fromRow, fromCol, toRow, toCol, grid)
+               if(!this.kingMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+               }
             }else if(grid[7 - fromRow][fromCol] == "+Kn" && turn == 1){
-                return this.knightMove(fromRow, fromCol, toRow, toCol, "black", grid)
+                if(!this.knightMove(fromRow, fromCol, toRow, toCol, "black", grid)){
+                    alert("Invalid input!!");
+                    return false;
+                }
             }else if(grid[7 - fromRow][fromCol] == "-Kn" && turn == -1){
-               return this.knightMove(fromRow, fromCol, toRow, toCol, "white", grid)
+               if(!this.knightMove(fromRow, fromCol, toRow, toCol, "white", grid)){
+                    alert("Invalid input!!");
+                    return false;
+               }
             }else if(grid[7 - fromRow][fromCol] == "+Q" && turn == 1){
-                return this.queenMove(fromRow, fromCol, toRow, toCol, grid)
+                if(!this.queenMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+                }
             }else if( grid[7 - fromRow][fromCol] == "-Q" && turn == -1){
-               return this.queenMove(fromRow, fromCol, toRow, toCol, grid)
+               if(!this.queenMove(fromRow, fromCol, toRow, toCol, grid)){
+                    alert("Invalid input!!");
+                    return false;
+               }
             }
    }
     else{
-            return false
+        alert("Invalid input!!");
+            return false;
         }
     }
 

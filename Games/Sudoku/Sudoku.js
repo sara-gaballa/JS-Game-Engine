@@ -201,10 +201,10 @@ export class Sudoku extends GameEngine {
         }
       }else{
         if(grid[i][j]<0){
-          alert("can't delet intial value");
+          alert("can't delete intial value");
           return false;
         }else if(grid[i][j]===0){
-          alert("Nothing to delet: empty cell");
+          alert("Nothing to delete: empty cell");
           return false;
         }else{
           return true;
