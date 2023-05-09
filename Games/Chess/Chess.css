@@ -1,14 +1,17 @@
-
+#canvas{
+  top: 100px; /* adjust as needed */
+  left: 410px; /* adjust as needed */
+}
 ul.controls {
     list-style: none;
     margin: 0;
     padding: 10px;
     display: flex;
-    justify-content: right;
+    justify-content: left;
   }
   
   ul.controls li {
-    margin-right: 10px;
+    margin-left: 10px;
   }
   
   ul.controls label {
@@ -40,10 +43,12 @@ ul.controls {
   div#formate {
     border-collapse: collapse;
     margin: 0 auto;
-    color: #ffffff;
+    color: #000000;
     position: absolute;
-    top: 690px;
-    left: 700px;
+    bottom: 10px;
+    right: 10px;
+    font-size: large;
+    font-weight: bold;
     z-index: 1; /* set a higher z-index value */
   }
   

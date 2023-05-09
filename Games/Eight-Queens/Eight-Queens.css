@@ -1,4 +1,8 @@
 
+#canvas1{
+  top: 100px; /* adjust as needed */
+  left: 470px; /* adjust as needed */
+}
 ul.controls {
   list-style: none;
   margin: 0;
@@ -35,15 +39,18 @@ ul.controls button {
 * {
   box-sizing: border-box;
   z-index: 1; /* set a higher z-index value */
+  overflow: hidden;
 }
 
 div#formate {
   border-collapse: collapse;
   margin: 0 auto;
-  color: #ffffff;
+  color: #000000;
   position: absolute;
   top: 690px;
-  left: 700px;
+  left: 680px;
+  font-size: large;
+  font-weight: bold;
   z-index: 1; /* set a higher z-index value */
 }
 
@@ -63,8 +70,8 @@ iframe {
   flex-direction: row;
   align-items: center;
   position: absolute;
-  top: 600px; /* adjust as needed */
-  left: 55px; /* adjust as needed */
+  top: 650px; /* adjust as needed */
+  left: 520px; /* adjust as needed */
 }
 
 .row-numbers li {

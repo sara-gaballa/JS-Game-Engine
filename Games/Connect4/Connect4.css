@@ -8,7 +8,7 @@
     margin: 0;
     padding: 10px;
     display: flex;
-    justify-content: center;
+    justify-content: left;
   }
   
   ul.controls li {
@@ -40,8 +40,8 @@
   table#board {
   border-collapse: collapse;
   margin: 0 auto;
-  background-color :rgb(109, 119, 225);
-  border: 3px solid rgb(114, 26, 158);
+  background-color :#a99ef2de;
+  border: 3px solid #40157b;
   width: 560px; /* set the width to fit 7 columns of 80px each */
   height: 480px; /* set the height to fit 6 rows of 80px each */
 }
@@ -78,18 +78,20 @@ table#board .piece.yellow {
 
   #board {
     position: absolute;
-    top: 100px;
-    left: 100px;
+    top: 150px;
+    left: 460px;
     z-index: 1; /* set a higher z-index value */
   }
 
   div#formate {
     border-collapse: collapse;
     margin: 0 auto;
-    color: #ffffff;
+    color: #000000;
     position: absolute;
-    top: 690px;
-    left: 700px;
+    top: 670px;
+    left: 680px;
+    font-size: large;
+    font-weight: bold;
     z-index: 1; /* set a higher z-index value */
   }
   
@@ -109,8 +111,8 @@ table#board .piece.yellow {
     flex-direction: row;
     align-items: center;
     position: absolute;
-    top: 600px; /* adjust as needed */
-    left: 100px; /* adjust as needed */
+    top: 640px; /* adjust as needed */
+    left: 460px; /* adjust as needed */
   }
   
   .row-numbers li {

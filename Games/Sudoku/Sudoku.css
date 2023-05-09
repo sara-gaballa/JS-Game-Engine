@@ -42,6 +42,7 @@
     border-collapse: collapse;
     margin: 0 auto;
     border: 2px solid #444;
+    
   }
   
   table#board td {
@@ -66,23 +67,7 @@
   }
   
   /* Add pseudo-elements to the .piece.red and .piece.blue selectors */
-  table#board .piece.red::before {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 50px;
-    color: rgb(255, 0, 0);
-  }
-  table#board .piece.blue::after {
-    /* content: "O"; Add content "O" */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 50px;
-    color: rgb(21, 0, 255);
-  }
+  
 
   table#board td.c1 {
     background-color: #dad6ffda;
@@ -105,18 +90,21 @@
   div#formate {
     border-collapse: collapse;
     margin: 0 auto;
-    color: #ffffff;
+    color: #40157b;
     position: absolute;
-    top: 690px;
-    left: 700px;
+    top: 650px;
+    left: 590px;
+    font-size: large;
+    font-weight: bold;
     z-index: 1; /* set a higher z-index value */
   }
   
   #board {
     position: absolute;
-    top: 100px;
-    left: 100px;
+    top: 180px;
+    left: 515px;
     z-index: 1; /* set a higher z-index value */
+    
   }
   
   iframe {
@@ -135,8 +123,8 @@
     flex-direction: row;
     align-items: center;
     position: absolute;
-    top: 50px; /* adjust as needed */
-    left: 100px; /* adjust as needed */
+    top: 130px; /* adjust as needed */
+    left: 515px; /* adjust as needed */
   }
   
   .row-letters li {
@@ -162,8 +150,8 @@
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: 100px; /* adjust as needed */
-    left: 40px; /* adjust as needed */
+    top: 180px; /* adjust as needed */
+    left: 460px; /* adjust as needed */
   }
   
   .col-numbers li {

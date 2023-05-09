@@ -19,7 +19,7 @@
   }
   
   ul.controls li {
-    margin-right: 10px;
+    margin-left: 10px;
   }
   
   ul.controls label {
@@ -87,17 +87,19 @@
   div#formate {
     border-collapse: collapse;
     margin: 0 auto;
-    color: #ffffff;
+    color: #000000;
     position: absolute;
     top: 690px;
-    left: 700px;
+    left: 660px;
+    font-size: large;
+    font-weight: bold;
     z-index: 1; /* set a higher z-index value */
   }
   
   #board {
     position: absolute;
-    top: 100px;
-    left: 100px;
+    top: 150px; /* adjust as needed */
+    left: 490px; /* adjust as needed */
     z-index: 1; /* set a higher z-index value */
   }
   

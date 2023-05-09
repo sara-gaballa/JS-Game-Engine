@@ -11,21 +11,7 @@
     <div id="content">
       <!-- existing content here -->
     </div>
-    <script>
-      let hours = 0;
-      let minutes = 0;
-      setInterval(() => {
-        if (minutes === 59) {
-          hours++;
-          minutes = 0;
-        } else 
-          minutes++;
-        let formattedHours = hours < 10 ? `0${hours}` : hours;
-        let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-        document.getElementById("timer").innerHTML = `${formattedHours}:${formattedMinutes}`;
-      }, 1000);
-    </script>
+  
     <script>var exports = {};</script>
     <script type="module" src="../Initial-Screen/screen.js"></script>
 
