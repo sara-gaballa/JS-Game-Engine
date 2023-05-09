@@ -129,7 +129,7 @@ export class Sudoku extends GameEngine {
 		return grid;
 	}
 
-drawBoard(grid) {
+  drawBoard(grid) {
     const board = document.getElementById("board");
     board.innerHTML = ""; // clear the board before drawing the new board
     for (let i = 0; i < 9; i++) {
@@ -185,62 +185,63 @@ drawBoard(grid) {
     return grid;
   }
     
-    isValid(input,grid){
-      let [i,j,num] = input;
-      if(isNaN(i)  ||isNaN(j) || isNaN(num) ) {
-        alert("Invalid input!!");
-        return false;
-      }
-      if(i>=0 && i<=8 && j>=0 && j<=8 && num>=0 && num<=9 ){
-        if(num >0 ){//add
-          if( grid[i][j]>=0 && this.checkIfSafe(grid,i, j, num)){
-            return true;
-          }else{
-            alert("invalid place");
-            return false;
-          }
-        }else{
-          if(grid[i][j]<0){
-            alert("can't delet intial value");
-            return false;
-          }else if(grid[i][j]===0){
-            alert("Nothing to delet: empty cell");
-            return false;
-          }else{
-            return true;
-          }
-        }
-    }else{
-      alert("invalid input");
+  isValid(input,grid){
+    let [i,j,num] = input;
+    if(isNaN(i)  ||isNaN(j) || isNaN(num) ) {
+      alert("Invalid input!!");
       return false;
     }
-      
-    }
+    if(i>=0 && i<=8 && j>=0 && j<=8 && num>=0 && num<=9 ){
+      if(num >0 ){//add
+        if( grid[i][j]>=0 && this.checkIfSafe(grid,i, j, num)){
+          return true;
+        }else{
+          alert("invalid place");
+          return false;
+        }
+      }else{
+        if(grid[i][j]<0){
+          alert("can't delet intial value");
+          return false;
+        }else if(grid[i][j]===0){
+          alert("Nothing to delet: empty cell");
+          return false;
+        }else{
+          return true;
+        }
+      }
+  }else{
+    alert("invalid input");
+    return false;
+  }
+    
+  }
     
   init() {
-        var grid = [
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ];
-        
-        grid=this.fillValues(grid);
-        for (let i = 0; i < 9; i++) {
-          for (let j = 0; j < 9; j++) {
-            grid[i][j]*=-1
-        }}
-        this.printSudoku(grid);
-        var noOfPlayers = 1;
-        return {
-          grid: grid,
-          noOfPlayers: noOfPlayers,
-        };
+    var grid = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+    
+    grid=this.fillValues(grid);
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        grid[i][j] *= -1
+      }
+    }
+    this.printSudoku(grid);
+    var noOfPlayers = 1;
+    return {
+      grid: grid,
+      noOfPlayers: noOfPlayers,
+    };
   }
       
 }

@@ -33,31 +33,31 @@ export class Connect4 extends GameEngine {
     
   }
 
-      makeMove(input,grid,turn) {
-            let row = -1;
-            for(let i = 5;i>=0;i--){
-                if(grid[i][input]==0){
-                    row = i;
-                    break;
-                }
-            }
-            grid[row][input] = turn;
-            console.log(grid);
-            return grid;
+  makeMove(input,grid,turn) {
+    let row = -1;
+    for(let i = 5;i>=0;i--){
+      if(grid[i][input]==0){
+          row = i;
+          break;
+      }
     }
+    grid[row][input] = turn;
+    console.log(grid);
+    return grid;
+  }
     
-    isValid(input,grid,turn){
-      if(isNaN(input)||input<0 || input>6){
-        alert("invaild input");
-        return false;
-      }
-      else if(grid[0][input]!=0){
-          //full 
-          alert("this column is full");
-          return false;
-      } else {
-          return true;
-      }
+  isValid(input,grid,turn){
+    if(isNaN(input)||input<0 || input>6){
+      alert("invaild input");
+      return false;
+    }
+    else if(grid[0][input]!=0){
+        //full 
+      alert("this column is full");
+      return false;
+    } else {
+      return true;
+    }
   }
 
     // takeInputFromUser() {
@@ -67,18 +67,18 @@ export class Connect4 extends GameEngine {
     //   });
     // }
 
-    parseInput(input){// 1
-      if(input.length==1 && input>=0 && input<=6){
-        return input
-      }else{
-        return NaN //out of bound
-      }
+  parseInput(input){// 1
+    if(input.length==1 && input>=0 && input<=6){
+      return input
+    }else{
+      return NaN //out of bound
     }
+  }
 
-    whichPlayer(turn){
-      const curPlayer = document.getElementById("currPlayer");
-      curPlayer.value = turn === -1? "Yellow" : "Red";
-    }
+  whichPlayer(turn){
+    const curPlayer = document.getElementById("currPlayer");
+    curPlayer.value = turn === -1? "Yellow" : "Red";
+  }
     
       // init() {
       //   this.drawBoard();
@@ -90,20 +90,20 @@ export class Connect4 extends GameEngine {
       //   });
       // }
 
-      init() {
-        var grid = [
-          [0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0]
-        ];
-        var noOfPlayers = 2;
-        return {
-          grid: grid,
-          noOfPlayers: noOfPlayers,
-        };
-      }   
+  init() {
+    var grid = [
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0]
+    ];
+    var noOfPlayers = 2;
+    return {
+      grid: grid,
+      noOfPlayers: noOfPlayers,
+    };
+  }
 }
 

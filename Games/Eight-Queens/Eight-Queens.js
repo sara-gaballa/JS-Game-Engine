@@ -68,97 +68,93 @@ export class EightQueens extends GameEngine {
     const row = parseInt(input.charAt(2));
     return [column,row];
   }
-    makeMove(input,grid) {
-        const column = input[0]; // column is now 0
-        const row = input[1];
-        grid[row][column]=1;
-        grid[8][column]=0;
-        return grid;
-        
-    }
-
-    isValid(input,grid,turn){//What The???
+  makeMove(input,grid) {
       const column = input[0]; // column is now 0
       const row = input[1];
-      const toInt = parseInt(row, 10);
-      if(isNaN(row)||isNaN(column)){
-        alert("invaild input");
-        return false;
-      }
-      if (!Number.isInteger(toInt)) {
-        alert("invaild input");
-        return false;
-      }
-      console.log("row= "+row+" col = "+column);
-      if(column < 0 || column > 7 || row < 0 || row > 7){
-        alert("invaild input");
-        return false;
-      }
-      else {
-        for(let i = 0 ;i < 8;i++ ){
-          if(grid[row][i]==1){
-            alert("invaild place");
-            return false;
-          }
-        }
-        for(let j = 0 ;j < 8 ;j++){
-          if(grid[j][column]==1){
-            alert("invaild place");
-            return false;
-          }
-        }
-        let i = row;
-        for(let j = column ;j >= 0 && i >=0; j-- ){
-          if(grid[i][j]==1){
-            alert("invaild place");
-            return false;
-          }else i--;
-        }
-        let k = row;
-        for(let j = column ;j < 8 && k != 8; j++ ){
-          if(grid[k][j]==1){
-            alert("invaild place");
-            return false;
-          }else k++;
-        }
-        let l = row;
-        for(let j = column ;j >= 0 && l != 8; j-- ){
-          if(grid[l][j]==1){
-            alert("invaild place");
-            return false;
-          }else l++;
-        }
-        let p = row;
-        for(let j = column ;j < 8 && p >= 0; j++ ){
-          if(grid[p][j]==1){
-            alert("invaild place");
-            return false;
-          }else p--;
-        }
-      }
-     return true;
+      grid[row][column]=1;
+      grid[8][column]=0;
+      return grid;
+      
   }
 
+  isValid(input,grid,turn){//What The???
+    const column = input[0]; // column is now 0
+    const row = input[1];
+    const toInt = parseInt(row, 10);
+    if(isNaN(row)||isNaN(column)){
+      alert("invaild input");
+      return false;
+    }
+    if (!Number.isInteger(toInt)) {
+      alert("invaild input");
+      return false;
+    }
+    console.log("row= "+row+" col = "+column);
+    if(column < 0 || column > 7 || row < 0 || row > 7){
+      alert("invaild input");
+      return false;
+    }
+    else {
+      for(let i = 0 ;i < 8;i++ ){
+        if(grid[row][i]==1){
+          alert("invaild place");
+          return false;
+        }
+      }
+      for(let j = 0 ;j < 8 ;j++){
+        if(grid[j][column]==1){
+          alert("invaild place");
+          return false;
+        }
+      }
+      let i = row;
+      for(let j = column ;j >= 0 && i >=0; j-- ){
+        if(grid[i][j]==1){
+          alert("invaild place");
+          return false;
+        }else i--;
+      }
+      let k = row;
+      for(let j = column ;j < 8 && k != 8; j++ ){
+        if(grid[k][j]==1){
+          alert("invaild place");
+          return false;
+        }else k++;
+      }
+      let l = row;
+      for(let j = column ;j >= 0 && l != 8; j-- ){
+        if(grid[l][j]==1){
+          alert("invaild place");
+          return false;
+        }else l++;
+      }
+      let p = row;
+      for(let j = column ;j < 8 && p >= 0; j++ ){
+        if(grid[p][j]==1){
+          alert("invaild place");
+          return false;
+        }else p--;
+      }
+    }
+    return true;
+  }
 
-
- 
-      init() {
-        var grid = [
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [1, 1, 1, 1, 1, 1, 1, 1]
-        ];
-        var noOfPlayers = 1;
-        return {
-          grid: grid,
-          noOfPlayers: noOfPlayers,
-        };
-      } 
-      
+  init() {
+    var grid = [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    var noOfPlayers = 1;
+    return {
+      grid: grid,
+      noOfPlayers: noOfPlayers,
+    };
+  }
 }
