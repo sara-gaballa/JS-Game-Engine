@@ -62,7 +62,7 @@ export class Checkers extends GameEngine {// export default
     if(grid[fromRow+1*sign][fromCol+1] === -1*sign && (grid[fromRow+2*sign][fromCol+2] === 0)){ // same as before 
       if(toRow === fromRow+2*sign && toCol === fromCol+2){
         console.log("Eating my oponent");
-        grid[fromRow+1*sign][fromCol+1] = 0;
+        // grid[fromRow+1*sign][fromCol+1] = 0;
         return 1;
       } else{
         console.log("User didn't input this path in grand_right");
@@ -82,7 +82,7 @@ export class Checkers extends GameEngine {// export default
     if(grid[fromRow+1*sign][fromCol-1] === -1*sign && grid[fromRow+2*sign][fromCol-2] === 0){ // same as before
       if(toRow === fromRow+2*sign && toCol === fromCol-2){
         console.log("Eating my oponent")
-        grid[fromRow+1*sign][fromCol-1] = 0;
+        // grid[fromRow+1*sign][fromCol-1] = 0;
         return 1;
       } else{
         console.log("User didn't input this path in grand_left");
@@ -172,6 +172,12 @@ export class Checkers extends GameEngine {// export default
       grid[toRow][toCol] = grid[fromRow][fromCol];
       console.log(`Moving from row ${fromRow}, column ${fromCol} , to row ${toRow}, column ${toCol}`);
       grid[fromRow][fromCol] = 0;
+
+      if(Math.abs(fromRow - toRow) == 2) {
+        let eatx = (fromRow + toRow) / 2;
+        let eaty = (fromCol + toCol) / 2;
+        grid[eatx][eaty] = 0;
+      }
     }
   
 
