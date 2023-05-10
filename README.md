@@ -1,7 +1,7 @@
 # <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=30&pause=1000&width=435&lines=JS-Game-Engine" alt="Typing SVG" /></a>
 
 
-[Try it 🦋](https://github.com/sara-gaballa/JS-Game-Engine](https://sara-gaballa.github.io/JS-Game-Engine/)
+[Try it now🦋](https://github.com/sara-gaballa/JS-Game-Engine](https://sara-gaballa.github.io/JS-Game-Engine)
 
 #
 
