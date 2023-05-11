@@ -314,6 +314,7 @@ export class Chess extends GameEngine {
                     return false;
                }
             }
+            return true;
    }
     else{
         alert("Invalid input!!");
