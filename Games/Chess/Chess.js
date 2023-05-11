@@ -117,7 +117,7 @@ export class Chess extends GameEngine {
         if(color == "black"){
             if(((toRow - fromRow == 1 && toCol == fromCol) || (fromRow == 1 && ((toRow - fromRow == 2 && toCol == fromCol))))){//if one move or first move is double celled 
                 bool = true
-            }else if(((toRow - fromRow == 1 &&  Math.abs(toCol - fromCol) == -1) && grid[7 - toRow][toCol] != 0 )){//killing move
+            }else if(((toRow - fromRow == 1 &&  Math.abs(toCol - fromCol) == 1) && grid[7 - toRow][toCol] != 0 )){//killing move
                 bool = true
             }
         }else {//white pawn
