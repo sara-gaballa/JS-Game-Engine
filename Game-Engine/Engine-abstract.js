@@ -57,7 +57,7 @@ export class GameEngine {//
     let exitLoop = false;
     var valid=true;
     while(!exitLoop){
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 700));
       const input = await this.takeInputFromUser();
       console.log("In engine Input: ",input);
       let parsedInput=this.parseInput(input);

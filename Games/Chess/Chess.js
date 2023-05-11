@@ -139,7 +139,8 @@ export class Chess extends GameEngine {
                 return true
             }else {
                 for (let i = 7 - fromRow + 1; i < 7 - toRow; i++) {//check there is not a piece on the way
-                    if(this.grid[i][toCol] != 0) return false
+                    console.log(i)
+                    if(grid[i][toCol] != 0) return false
                 }
                 return true
             }
@@ -207,19 +208,6 @@ export class Chess extends GameEngine {
             return false
         }
     }
-//     takeInputFromUser() {
-//         // window.onload = function() {
-//             return new Promise(resolve => {
-//                 const fromRow = parseInt(prompt("Enter the row number of the piece to move (1-8)")) - 1;
-//                 const fromCol = prompt("Enter the column letter of the piece to move (a-h)").charCodeAt(0) - 97;
-//                 const toRow = parseInt(prompt("Enter the row number of the destination square (1-8)")) - 1;
-//                 const toCol = prompt("Enter the column letter of the destination square (a-h)").charCodeAt(0) - 97;
-//                 const input = [fromRow, fromCol, toRow, toCol];
-//                 console.log("input: ", input);
-//                 resolve(input);
-//             });
-// // }
-//     }
 
     parseInput(input){//2a 3a
         if(input.length>5) return[NaN,NaN,NaN,NaN];
@@ -255,6 +243,7 @@ export class Chess extends GameEngine {
         if((fromRow != toRow || fromCol != toCol) && (grid[7 - toRow][toCol].toString().charAt(0) != grid[7 - fromRow][fromCol].toString().charAt(0))){
             if(grid[7 - fromRow][fromCol] == "+P" &&turn == 1){
                 if(!this.pawnMove(fromRow, fromCol, toRow, toCol, "black", grid)){
+                    console.log("############error");
                     alert("Invalid input!!");
                     return false;
                 }
