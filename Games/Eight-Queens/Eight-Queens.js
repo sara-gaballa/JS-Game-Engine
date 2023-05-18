@@ -1,6 +1,7 @@
 import { GameEngine } from "../../Game-Engine/Engine-abstract.js";
 
 export class EightQueens extends GameEngine {
+  
 
 
   drawBoard(grid) {
@@ -55,18 +56,70 @@ export class EightQueens extends GameEngine {
     }.bind(this);
   }
 
-  // takeInputFromUser() {
-  //   return new Promise(resolve => {
-  //     const input = prompt("Enter the queen letter and the column number (a 1)");
-  //     const inputArray = input.split(" ");
-  //     resolve(inputArray);
-  //   });
-  // }
+  async solve(){
+    const session = pl.create();
+const knowledge_base = `
+father(lucas,mary).
+father(lucas,jason).
+father(lucas,peter).
+father(jason,sean).
+father(jason,jessica).
+father(jason,hannah).
+mother(mary,fred).
+mother(mary,jane).
+mother(jessica,joseph).
+mother(jessica,john).
+mother(jessica,laura).
+female(mary).
+female(jane).
+female(jessica).
+female(hannah).
+female(laura).
+male([[1,2,3,4],
+    [2,3,4,5],
+    [3,4,5,6],
+    [4,5,6,7]]).
+
+has_children(X) :- father(X, _).
+has_children(X) :- mother(X, _).
+`
+
+session.consult(knowledge_base);
+const query = "male(X)."
+
+session.query(query,{
+    success: function(goal){
+        console.log("Query is correct");
+    },
+    error: function(err){console.log("Error!!", err)},
+});
+
+let ans;
+session.answer({
+    
+    success: async function(answer) {
+        ans = session.format_answer(answer);
+    },
+    fail: function() {console.log("No more answers")},
+    error: function(err) {alert("Error occured while trying to find answers!"+ err)},
+    limit: function(){alert("Time limit exceeded!!!")},
+});
+
+await new Promise(resolve => setTimeout(resolve, 0)); // no meaning
+console.log("ans = ", ans);
+var grid = JSON.parse(ans.slice(4));
+console.log("array = ", grid);
+return grid;
+
+  }
+
+  
   parseInput(input){//a 7 //new input => 0a
     if(input.length>2) return[NaN,NaN];
     const to = parseInt(input.charAt(0));
     const queen = input.charAt(1).charCodeAt(0) - 97;
-
+    console.log(to);
+    console.log(queen);
     return [to,queen];
     // if(input.length>3) return[NaN,NaN];
     // const column = input.charAt(0).charCodeAt(0) - 97;
@@ -81,7 +134,10 @@ export class EightQueens extends GameEngine {
         // return grid;
         
         let [to,queen] = input;
-        if(grid[to][queen]==1){
+        if(to==0 && queen==-49){
+          grid=this.solve();
+        }
+        else if(grid[to][queen]==1){
           grid[8][queen]=1;
           grid[to][queen]=0;
         } else{
@@ -93,7 +149,7 @@ export class EightQueens extends GameEngine {
         
     }
 
-    isValid(input,grid,turn){
+    isValid(input,grid){
       let [to,queen] = input;
       console.log(`${to},${queen}`)
       // const column = input[0]; // column is now 0
@@ -103,10 +159,10 @@ export class EightQueens extends GameEngine {
         alert("invaild input");
         return false;
       }
-      // if (!Number.isInteger(toInt)) {
-      //   alert("invaild input");
-      //   return false;
-      // }
+      if (to==0 && queen==-49) {
+        console.log("solve");
+        return true;
+      }
       if(to < 0 || to > 7 || queen < 0 || queen > 7){
         console.log("2")
         alert("invaild input");
@@ -164,7 +220,7 @@ export class EightQueens extends GameEngine {
 
 
 
- 
+  
       init() {
         var grid = [
           [0, 0, 0, 0, 0, 0, 0, 0],
