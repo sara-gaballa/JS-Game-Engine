@@ -2,12 +2,13 @@
 export class GameEngine {// 
   drawBoard(grid){}
 
-  controller(grid,input,turn){
+  async controller(grid,input,turn){
     console.log("In Controller");
     console.log("in controller turn = ",turn);
     let valid=this.isValid(input,grid,turn);
     if(valid){
-      grid=this.makeMove(input,grid,turn);
+      grid=await this.makeMove(input,grid,turn);
+    
     }
     console.log("in controller valid =",valid);
     return {
@@ -24,14 +25,7 @@ export class GameEngine {//
     throw new Error("Method 'makeMove()' must be implemented in each class.");
   }
 
-  takeInputFromUser() { // called by play
-    //4a 5c, a, 3a 4, 3a,
-    // return new Promise(() => {
-    //   this.rl.question('Enter a move: ', (input) => {
-    //     console.log(`You entered, ${input}`);
-    //     console.log('In take input:in the game engine');
-    //   });
-    // });
+  takeInputFromUser() { 
     return new Promise(resolve => {
       const input = prompt("Enter input");
       resolve(input);
@@ -53,7 +47,7 @@ export class GameEngine {//
         turn = 1;
         this.whichPlayer(turn);
     }
-    this.drawBoard(grid);
+    await this.drawBoard(grid);
     let exitLoop = false;
     var valid=true;
     while(!exitLoop){
@@ -63,7 +57,7 @@ export class GameEngine {//
       let parsedInput=this.parseInput(input);
       console.log("In engine parsedInput: ",parsedInput);
       //const input = [5,0,4,1];
-      ({grid, valid}= this.controller(grid,parsedInput,turn));
+      ({grid, valid}= await this.controller(grid,parsedInput,turn));
       console.log("in play valid =",valid);
       if(valid){
         console.log("valid");

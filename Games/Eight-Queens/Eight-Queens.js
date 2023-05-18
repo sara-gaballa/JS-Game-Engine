@@ -41,7 +41,8 @@ export class EightQueens extends GameEngine {
       ctx.fillText(num[i], x1, y);
       ctx.fillText(num[i], x2, y);
     }
-  
+    console.log("grid in draw= ",grid);
+    
     // Load the image and draw it on the canvas when it has finished loading
     const img = new Image();
     img.src = "https://cdn-icons-png.flaticon.com/512/4880/4880372.png";
@@ -56,61 +57,109 @@ export class EightQueens extends GameEngine {
     }.bind(this);
   }
 
-  async solve(){
+  async  solve(grid) {
     const session = pl.create();
-const knowledge_base = `
-father(lucas,mary).
-father(lucas,jason).
-father(lucas,peter).
-father(jason,sean).
-father(jason,jessica).
-father(jason,hannah).
-mother(mary,fred).
-mother(mary,jane).
-mother(jessica,joseph).
-mother(jessica,john).
-mother(jessica,laura).
-female(mary).
-female(jane).
-female(jessica).
-female(hannah).
-female(laura).
-male([[1,2,3,4],
-    [2,3,4,5],
-    [3,4,5,6],
-    [4,5,6,7]]).
-
-has_children(X) :- father(X, _).
-has_children(X) :- mother(X, _).
-`
-
-session.consult(knowledge_base);
-const query = "male(X)."
-
-session.query(query,{
-    success: function(goal){
-        console.log("Query is correct");
-    },
-    error: function(err){console.log("Error!!", err)},
-});
-
-let ans;
-session.answer({
-    
-    success: async function(answer) {
-        ans = session.format_answer(answer);
-    },
-    fail: function() {console.log("No more answers")},
-    error: function(err) {alert("Error occured while trying to find answers!"+ err)},
-    limit: function(){alert("Time limit exceeded!!!")},
-});
-
-await new Promise(resolve => setTimeout(resolve, 0)); // no meaning
-console.log("ans = ", ans);
-var grid = JSON.parse(ans.slice(4));
-console.log("array = ", grid);
-return grid;
-
+    const knowledge_base = `
+      convert(Board, Converted) :-
+        transposeBoard(Board, Transposed),
+        convertColumns(Transposed, Converted),
+        !,  % Cut operator - prevents backtracking
+        queens(Converted).
+  
+      transposeBoard([], []).
+      transposeBoard([[]|_], []).
+      transposeBoard(Matrix, [FirstCol|TransposedRest]) :-
+        extractFirstColumn(Matrix, FirstCol, RestMatrix),
+        transposeBoard(RestMatrix, TransposedRest).
+  
+      extractFirstColumn([], [], []).
+      extractFirstColumn([[X|Xs]|Matrix], [X|FirstCol], [Xs|RestMatrix]) :-
+        extractFirstColumn(Matrix, FirstCol, RestMatrix).
+  
+      convertColumns([], []).
+      convertColumns([Column|Rest], [ConvertedCol|ConvertedRest]) :-
+        convertColumn(Column, ConvertedCol),
+        convertColumns(Rest, ConvertedRest).
+  
+      convertColumn(Column, ConvertedCol) :-
+        member(1, Column),
+        convertColumnHelper(Column, 1, ConvertedCol).
+  
+      convertColumn(_, ConvertedCol) :-
+        ConvertedCol = _.
+  
+      convertColumnHelper([1|_], Row, ConvertedCol) :-
+        ConvertedCol = Row.
+      convertColumnHelper([0|Rest], Row, ConvertedCol) :-
+        NewRow is Row + 1,
+        convertColumnHelper(Rest, NewRow, ConvertedCol).
+  
+      queens(Board) :-
+        length(Board, 8),
+        Board ins 1..8,
+        safe(Board),
+        label(Board).
+  
+      safe([]).
+      safe([Q|Queens]) :-
+        safe(Queens),
+        no_attack(Q, Queens, 1).
+  
+      no_attack(_, [], _).
+      no_attack(Q, [Q1|Queens], D) :-
+        Q #\= Q1,
+        abs(Q1 - Q) #\= D,
+        D1 #= D + 1,
+        no_attack(Q, Queens, D1).
+    `;
+  
+    session.consult(knowledge_base);
+    let GridP=[
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+      ];
+  
+    const query = `convert(${GridP}, X).`;
+  
+    let ans;
+    try {
+      session.query(query, {
+        success: function (goal) {
+          console.log("Query is correct",goal);
+        },
+        error: function (err) {
+          console.log("Error:", err);
+        },
+      });
+  
+      await session.answer({
+        success: function (answer) {
+          ans = session.format_answer(answer);
+        },
+        fail: function () {
+          console.log("No more answers");
+        },
+        error: function (err) {
+          console.log("Error:", err);
+        },
+        limit: function () {
+          alert("Time limit exceeded!!!");
+        },
+      });
+    } catch (err) {
+      console.log("Error:", err);
+    }
+  
+    console.log("ans = ", ans);
+    grid = JSON.parse(ans.slice(4));
+    console.log("array = ", grid);
+    return grid;
   }
 
   
@@ -126,16 +175,17 @@ return grid;
     // const row = parseInt(input.charAt(2));
     // return [column,row];
   }
-    makeMove(input,grid) {
-        // const column = input[0]; // column is now 0
-        // const row = input[1];
-        // grid[row][column]=1;
-        // grid[8][column]=0;
-        // return grid;
-        
+     async makeMove(input,grid) {
+        console.log("grid before= ",grid);
         let [to,queen] = input;
         if(to==0 && queen==-49){
-          grid=this.solve();
+          grid= await this.solve(grid);     
+          // // do{
+          //   gridAfterPromise.then((grid) => {
+          //   console.log("grid in then= ",grid);
+          // });
+        // } while(grid==null);
+          console.log("grid aftere= ",grid);
         }
         else if(grid[to][queen]==1){
           grid[8][queen]=1;
