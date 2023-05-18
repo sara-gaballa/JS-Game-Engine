@@ -57,109 +57,102 @@ export class EightQueens extends GameEngine {
     }.bind(this);
   }
 
-  async  solve(grid) {
+   async solve(grid){
     const session = pl.create();
-    const knowledge_base = `
-      convert(Board, Converted) :-
-        transposeBoard(Board, Transposed),
-        convertColumns(Transposed, Converted),
-        !,  % Cut operator - prevents backtracking
-        queens(Converted).
-  
-      transposeBoard([], []).
-      transposeBoard([[]|_], []).
-      transposeBoard(Matrix, [FirstCol|TransposedRest]) :-
-        extractFirstColumn(Matrix, FirstCol, RestMatrix),
-        transposeBoard(RestMatrix, TransposedRest).
-  
-      extractFirstColumn([], [], []).
-      extractFirstColumn([[X|Xs]|Matrix], [X|FirstCol], [Xs|RestMatrix]) :-
-        extractFirstColumn(Matrix, FirstCol, RestMatrix).
-  
-      convertColumns([], []).
-      convertColumns([Column|Rest], [ConvertedCol|ConvertedRest]) :-
-        convertColumn(Column, ConvertedCol),
-        convertColumns(Rest, ConvertedRest).
-  
-      convertColumn(Column, ConvertedCol) :-
-        member(1, Column),
-        convertColumnHelper(Column, 1, ConvertedCol).
-  
-      convertColumn(_, ConvertedCol) :-
-        ConvertedCol = _.
-  
-      convertColumnHelper([1|_], Row, ConvertedCol) :-
-        ConvertedCol = Row.
-      convertColumnHelper([0|Rest], Row, ConvertedCol) :-
-        NewRow is Row + 1,
-        convertColumnHelper(Rest, NewRow, ConvertedCol).
-  
-      queens(Board) :-
-        length(Board, 8),
-        Board ins 1..8,
-        safe(Board),
-        label(Board).
-  
-      safe([]).
-      safe([Q|Queens]) :-
-        safe(Queens),
-        no_attack(Q, Queens, 1).
-  
-      no_attack(_, [], _).
-      no_attack(Q, [Q1|Queens], D) :-
-        Q #\= Q1,
-        abs(Q1 - Q) #\= D,
-        D1 #= D + 1,
-        no_attack(Q, Queens, D1).
-    `;
-  
-    session.consult(knowledge_base);
-    let GridP=[
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 1, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0]
-      ];
-  
-    const query = `convert(${GridP}, X).`;
-  
-    let ans;
-    try {
-      session.query(query, {
-        success: function (goal) {
-          console.log("Query is correct",goal);
-        },
-        error: function (err) {
-          console.log("Error:", err);
-        },
-      });
-  
-      await session.answer({
-        success: function (answer) {
-          ans = session.format_answer(answer);
-        },
-        fail: function () {
-          console.log("No more answers");
-        },
-        error: function (err) {
-          console.log("Error:", err);
-        },
-        limit: function () {
-          alert("Time limit exceeded!!!");
-        },
-      });
-    } catch (err) {
-      console.log("Error:", err);
-    }
-  
-    console.log("ans = ", ans);
-    grid = JSON.parse(ans.slice(4));
-    console.log("array = ", grid);
-    return grid;
+const knowledge_base = `
+convert(Board, Converted) :-
+transposeBoard(Board, Transposed),
+convertColumns(Transposed, Converted),
+!,  % Cut operator - prevents backtracking
+queens(Converted).
+
+transposeBoard([], []).
+transposeBoard([[]|_], []).
+transposeBoard(Matrix, [FirstCol|TransposedRest]) :-
+extractFirstColumn(Matrix, FirstCol, RestMatrix),
+transposeBoard(RestMatrix, TransposedRest).
+
+extractFirstColumn([], [], []).
+extractFirstColumn([[X|Xs]|Matrix], [X|FirstCol], [Xs|RestMatrix]) :-
+extractFirstColumn(Matrix, FirstCol, RestMatrix).
+
+convertColumns([], []).
+convertColumns([Column|Rest], [ConvertedCol|ConvertedRest]) :-
+convertColumn(Column, ConvertedCol),
+convertColumns(Rest, ConvertedRest).
+
+convertColumn(Column, ConvertedCol) :-
+member(1, Column),
+convertColumnHelper(Column, 1, ConvertedCol).
+
+convertColumn(_, ConvertedCol) :-
+ConvertedCol = _.
+
+convertColumnHelper([1|_], Row, ConvertedCol) :-
+ConvertedCol = Row.
+convertColumnHelper([0|Rest], Row, ConvertedCol) :-
+NewRow is Row + 1,
+convertColumnHelper(Rest, NewRow, ConvertedCol).
+
+
+:- use_module(library(clpfd)).
+queens(Board) :-
+length(Board, 8),
+Board ins 1..8,
+safe(Board),
+label(Board).
+
+safe([]).
+safe([Q|Queens]) :-
+safe(Queens),
+no_attack(Q, Queens, 1).
+
+no_attack(_, [], _).
+no_attack(Q, [Q1|Queens], D) :-
+Q #\= Q1,
+abs(Q1 - Q) #\= D,
+D1 #= D + 1,
+no_attack(Q, Queens, D1).`
+
+session.consult(knowledge_base);
+let GridP=[
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 1, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
+];
+pl.type.is_variable(GridP);
+const query =  "convert(GridP, X).";
+
+session.query(query,{
+    success: function(goal){
+        console.log("Query is correct");
+    },
+    error: function(err){console.log("Error!!", err)},
+});
+
+let ans;
+session.answer({
+    
+    success:  function(answer) {
+        ans = session.format_answer(answer);
+    },
+    fail: function() {console.log("No more answers")},
+    error: function(err) {alert("Error occured while trying to find answers!"+ err)},
+    limit: function(){alert("Time limit exceeded!!!")},
+});
+
+await new Promise(resolve => setTimeout(resolve, 0)); // no meaning
+
+console.log("ans = ", ans);
+grid = JSON.parse(ans.slice(4));
+console.log("array = ", grid);
+return grid;
+
   }
 
   
