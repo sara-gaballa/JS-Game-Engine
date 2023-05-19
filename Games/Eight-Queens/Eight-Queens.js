@@ -58,6 +58,7 @@ export class EightQueens extends GameEngine {
   }
 
    async solve(grid){
+
     const session = pl.create();
     const knowledge_base = `
    
@@ -78,7 +79,6 @@ export class EightQueens extends GameEngine {
     
     convertColumns([], []).
     convertColumns([Column|Rest], [ConvertedCol|ConvertedRest]) :-
-      write('in convertcolums'),
       convertColumn(Column, ConvertedCol),
       convertColumns(Rest, ConvertedRest).
     
@@ -123,19 +123,15 @@ export class EightQueens extends GameEngine {
 
 
     convert(Board, Converted) :-
-    write(Board),
     transposeBoard(Board, Transposed),
-    write(Transposed),
     convertColumns(Transposed, Converted),
-    write(Converted),
-    write('allllllllooooooooOOOO\\n'),
     !, % Cut operator - prevents backtracking
-    write('allllllllooooooooOOOO!\\n'),
     queens(8,Converted).
   
 
 `;
 
+let found=false;
 
 session.consult(knowledge_base);
 let GridP=grid.slice(0, -1);
@@ -152,25 +148,35 @@ let ans;
 session.answer({
     
     success:  function(answer) {
+        found=true;
         ans = session.format_answer(answer);
     },
-    fail: function() {console.log("No more answers")},
+    fail: function() {
+      found=false;
+      console.log("No more answers")
+    },
     error: function(err) {alert("Error occured while trying to find answers!"+ err)},
     limit: function(){alert("Time limit exceeded!!!")},
 });
 
 await new Promise(resolve => setTimeout(resolve, 0)); // no meaning
 
-console.log("ans = ", ans);
-GridP = JSON.parse(ans.slice(4));
-for(let i=0;i<9;i++){
-  for(let j=0;j<8;j++){
-    grid[i][j]=0;
+
+if(found){
+  console.log("ans = ", ans);
+  GridP = JSON.parse(ans.slice(4));
+  for(let i=0;i<9;i++){
+    for(let j=0;j<8;j++){
+      grid[i][j]=0;
+    }
   }
+  for(let i=0;i<8;i++){
+    grid[GridP[i]-1][i]=1;
+  }
+}else{
+  alert("No solution");
 }
-for(let i=0;i<8;i++){
-  grid[GridP[i]-1][i]=1;
-}
+
 return grid;
 
   }
@@ -182,20 +188,21 @@ return grid;
     const queen = input.charAt(1).charCodeAt(0) - 97;
     return [to,queen];
   }
-     async makeMove(input,grid) {
-        let [to,queen] = input;
-        if(to==0 && queen==-49){
-          grid= await this.solve(grid);     
-         
-        }
-        else if(grid[to][queen]==1){
-          grid[8][queen]=1;
-          grid[to][queen]=0;
-        } else{
-          grid[8][queen]=0;
-          grid[to][queen]=1;
-        }
-        return grid;
+
+  async makeMove(input,grid) {
+    let [to,queen] = input;
+    if(to==0 && queen==-49){
+      grid= await this.solve(grid);     
+      
+    }
+    else if(grid[to][queen]==1){
+      grid[8][queen]=1;
+      grid[to][queen]=0;
+    } else{
+      grid[8][queen]=0;
+      grid[to][queen]=1;
+    }
+    return grid;
         
         
     }

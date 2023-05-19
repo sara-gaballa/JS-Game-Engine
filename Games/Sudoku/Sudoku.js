@@ -158,16 +158,66 @@ export class Sudoku extends GameEngine {
     
   }
 
-  // takeInputFromUser(){
-  //   return new Promise(resolve => {
-  //     const i = parseInt(prompt("Enter the row number of the piece to move (0-8)"));
-  //     const j = prompt("Enter the column letter of the piece to move (a-i)").charCodeAt(0) - 97;
-  //     const num = parseInt(prompt("Enter 0 to delet or a number (1-9) to enter"));
-  //     const input = [i, j, num];
-  //     console.log("input: ", input);
-  //     resolve(input);
-  //   });
-  // }
+
+  async solve(grid){
+
+    const session = pl.create();
+    const knowledge_base = ``;
+
+    let found=false;
+
+    session.consult(knowledge_base);
+    let GridP;
+    for(let i=0;i<9;i++){
+      for(let j=0;j<9;j++){
+        GridP[i][j]=grid[i][j]
+        if(grid[i][j]<0)GridP[i][j]*=(-1);
+      }
+    }
+    const query = `convert(${JSON.stringify(GridP)}, X).`;
+
+    session.query(query,{
+        success: function(goal){
+            console.log("Query is correct");
+        },
+        error: function(err){console.log("Error!!", err)},
+    });
+
+    let ans;
+    session.answer({
+        
+        success:  function(answer) {
+            found=true;
+            ans = session.format_answer(answer);
+        },
+        fail: function() {
+          found=false;
+          console.log("No more answers")
+        },
+        error: function(err) {alert("Error occured while trying to find answers!"+ err)},
+        limit: function(){alert("Time limit exceeded!!!")},
+    });
+
+    await new Promise(resolve => setTimeout(resolve, 0)); // no meaning
+
+
+    if(found){
+      console.log("ans = ", ans);
+      GridP = JSON.parse(ans.slice(4));
+      for(let i=0;i<9;i++){
+        for(let j=0;j<9;j++){
+          if(grid[i][j]<0)grid[i][j]=GridP[i][j]*(-1);
+          else grid[i][j]=GridP[i][j];
+        }
+      }
+    }else{
+      alert("No solution");
+    }
+
+    return grid;
+
+  }
+
 
   parseInput(input){//0a 1
     if(input.length>4) return[NaN,NaN,NaN];
