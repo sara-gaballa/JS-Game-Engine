@@ -59,74 +59,87 @@ export class EightQueens extends GameEngine {
 
    async solve(grid){
     const session = pl.create();
-const knowledge_base = `
-convert(Board, Converted) :-
-transposeBoard(Board, Transposed),
-convertColumns(Transposed, Converted),
-!,  % Cut operator - prevents backtracking
-queens(Converted).
+    const knowledge_base = `
+   
+    :- use_module(library(clpfd)).
+    :- use_module(library(lists)).
+    :- use_module(library(tipc/tipc_linda)).
+    
+  
+    transposeBoard([], []).
+    transposeBoard([[]|_], []).
+    transposeBoard(Matrix, [FirstCol|TransposedRest]) :-
+      extractFirstColumn(Matrix, FirstCol, RestMatrix),
+      transposeBoard(RestMatrix, TransposedRest).
+    
+    extractFirstColumn([], [], []).
+    extractFirstColumn([[X|Xs]|Matrix], [X|FirstCol], [Xs|RestMatrix]) :-
+      extractFirstColumn(Matrix, FirstCol, RestMatrix).
+    
+    convertColumns([], []).
+    convertColumns([Column|Rest], [ConvertedCol|ConvertedRest]) :-
+      write('in convertcolums'),
+      convertColumn(Column, ConvertedCol),
+      convertColumns(Rest, ConvertedRest).
+    
+    convertColumn(Column, ConvertedCol) :-
+      member(1, Column),
+      convertColumnHelper(Column, 1, ConvertedCol).
+    
+    convertColumn(_, ConvertedCol) :-
+      ConvertedCol = _.
+    
+    convertColumnHelper([1|_], Row, ConvertedCol) :-
+      ConvertedCol = Row.
+    convertColumnHelper([0|Rest], Row, ConvertedCol) :-
+      NewRow is Row + 1,
+      convertColumnHelper(Rest, NewRow, ConvertedCol).
 
-transposeBoard([], []).
-transposeBoard([[]|_], []).
-transposeBoard(Matrix, [FirstCol|TransposedRest]) :-
-extractFirstColumn(Matrix, FirstCol, RestMatrix),
-transposeBoard(RestMatrix, TransposedRest).
 
-extractFirstColumn([], [], []).
-extractFirstColumn([[X|Xs]|Matrix], [X|FirstCol], [Xs|RestMatrix]) :-
-extractFirstColumn(Matrix, FirstCol, RestMatrix).
-
-convertColumns([], []).
-convertColumns([Column|Rest], [ConvertedCol|ConvertedRest]) :-
-convertColumn(Column, ConvertedCol),
-convertColumns(Rest, ConvertedRest).
-
-convertColumn(Column, ConvertedCol) :-
-member(1, Column),
-convertColumnHelper(Column, 1, ConvertedCol).
-
-convertColumn(_, ConvertedCol) :-
-ConvertedCol = _.
-
-convertColumnHelper([1|_], Row, ConvertedCol) :-
-ConvertedCol = Row.
-convertColumnHelper([0|Rest], Row, ConvertedCol) :-
-NewRow is Row + 1,
-convertColumnHelper(Rest, NewRow, ConvertedCol).
+      queens(N, Queens) :-
+      length(Queens, N),
+    board(Queens, Board, 0, N, _, _),
+    queens(Board, 0, Queens).
+  
+  board([], [], N, N, _, _).
+  board([_|Queens], [Col-Vars|Board], Col0, N, [_|VR], VC) :-
+    Col is Col0+1,
+    functor(Vars, f, N),
+    constraints(N, Vars, VR, VC),
+    board(Queens, Board, Col, N, VR, [_|VC]).
+  
+  constraints(0, _, _, _) :- !.
+  constraints(N, Row, [R|Rs], [C|Cs]) :-
+    arg(N, Row, R-C),
+    M is N-1,
+    constraints(M, Row, Rs, Cs).
+  
+  queens([], _, []).
+  queens([C|Cs], Row0, [Col|Solution]) :-
+    Row is Row0+1,
+    select(Col-Vars, [C|Cs], Board),
+    arg(Row, Vars, Row-Row),
+    queens(Board, Row, Solution).
 
 
-:- use_module(library(clpfd)).
-queens(Board) :-
-length(Board, 8),
-Board ins 1..8,
-safe(Board),
-label(Board).
+    convert(Board, Converted) :-
+    write(Board),
+    transposeBoard(Board, Transposed),
+    write(Transposed),
+    convertColumns(Transposed, Converted),
+    write(Converted),
+    write('allllllllooooooooOOOO\\n'),
+    !, % Cut operator - prevents backtracking
+    write('allllllllooooooooOOOO!\\n'),
+    queens(8,Converted).
+  
 
-safe([]).
-safe([Q|Queens]) :-
-safe(Queens),
-no_attack(Q, Queens, 1).
+`;
 
-no_attack(_, [], _).
-no_attack(Q, [Q1|Queens], D) :-
-Q #\= Q1,
-abs(Q1 - Q) #\= D,
-D1 #= D + 1,
-no_attack(Q, Queens, D1).`
 
 session.consult(knowledge_base);
-let GridP=[
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 1, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0]
-];
-pl.type.is_variable(GridP);
-const query =  "convert(GridP, X).";
+let GridP=grid.slice(0, -1);
+const query = `convert(${JSON.stringify(GridP)}, X).`;
 
 session.query(query,{
     success: function(goal){
@@ -149,8 +162,15 @@ session.answer({
 await new Promise(resolve => setTimeout(resolve, 0)); // no meaning
 
 console.log("ans = ", ans);
-grid = JSON.parse(ans.slice(4));
-console.log("array = ", grid);
+GridP = JSON.parse(ans.slice(4));
+for(let i=0;i<9;i++){
+  for(let j=0;j<8;j++){
+    grid[i][j]=0;
+  }
+}
+for(let i=0;i<8;i++){
+  grid[GridP[i]-1][i]=1;
+}
 return grid;
 
   }
@@ -160,25 +180,13 @@ return grid;
     if(input.length>2) return[NaN,NaN];
     const to = parseInt(input.charAt(0));
     const queen = input.charAt(1).charCodeAt(0) - 97;
-    console.log(to);
-    console.log(queen);
     return [to,queen];
-    // if(input.length>3) return[NaN,NaN];
-    // const column = input.charAt(0).charCodeAt(0) - 97;
-    // const row = parseInt(input.charAt(2));
-    // return [column,row];
   }
      async makeMove(input,grid) {
-        console.log("grid before= ",grid);
         let [to,queen] = input;
         if(to==0 && queen==-49){
           grid= await this.solve(grid);     
-          // // do{
-          //   gridAfterPromise.then((grid) => {
-          //   console.log("grid in then= ",grid);
-          // });
-        // } while(grid==null);
-          console.log("grid aftere= ",grid);
+         
         }
         else if(grid[to][queen]==1){
           grid[8][queen]=1;
