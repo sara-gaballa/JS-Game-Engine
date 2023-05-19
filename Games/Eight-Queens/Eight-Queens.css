@@ -104,6 +104,7 @@ iframe {
   --x: -100%;
   --initialY: 100vmin;
   content: "";
+  z-index: 2;
   position: absolute;
   top: 100%;
   left: 100%;
@@ -212,8 +213,6 @@ iframe {
   top: 60%;
   animation-delay: -0.2s;
 }
-
-
 
 
 /* Add the "firework" animation only when the "active" class is present */
