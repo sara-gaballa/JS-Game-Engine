@@ -63,6 +63,8 @@ export class GameEngine {//
         console.log("valid");
         // this.makeMove(input,grid);
         this.drawBoard(grid);
+        if(input == '00')
+          await new Promise(resolve => setTimeout(resolve, 1500)); // no meaning
         if(noOfPlayers === 2){
           console.log("in nP=2 reverse");
           turn = this.reverseTurns(turn);

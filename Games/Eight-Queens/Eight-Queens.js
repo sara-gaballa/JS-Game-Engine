@@ -152,6 +152,18 @@ await new Promise(resolve => setTimeout(resolve, 0)); // no meaning
 
 
 if(found){
+  
+  // Activate the fireworks
+  const fireworks = document.querySelectorAll('.firework');
+
+  // Print the active state of each firework
+  fireworks.forEach((firework, index) => {
+    console.log(`Firework ${index + 1} active state: ${firework.classList.contains('active')}`);
+  });
+  document.querySelectorAll('.firework').forEach((firework) => {
+    firework.classList.add('active');
+  });
+
   console.log("ans = ", ans);
   GridP = JSON.parse(ans.slice(4));
   for(let i=0;i<9;i++){
@@ -197,6 +209,10 @@ return grid;
     }
 
     isValid(input,grid){
+      // Deactivate the fireworks
+      document.querySelectorAll('.firework').forEach((firework) => {
+        firework.classList.remove('active');
+      });
       let [to,queen] = input;
       console.log(`${to},${queen}`)
       // const column = input[0]; // column is now 0
@@ -269,6 +285,10 @@ return grid;
 
   
       init() {
+        // Deactivate the fireworks
+        document.querySelectorAll('.firework').forEach((firework) => {
+          firework.classList.remove('active');
+        });
         var grid = [
           [0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0],
